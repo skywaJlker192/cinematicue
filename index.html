@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Синематека — Главная</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+
+  <!-- ШАПКА -->
+  <header class="site-header">
+    <div class="nav-inner">
+      <a href="index.html" class="logo">
+        <div class="logo-icon">C</div>
+        <span class="logo-text">CINEMATHEQUE</span>
+      </a>
+      
+      <nav class="main-nav">
+        <a href="index.html" class="active">Главная</a>
+        <a href="about.html">О сервисе</a>
+        <a href="contacts.html">Контакты</a>
+      </nav>
+
+      <!-- BB-8 Theme Toggle -->
+      <label class="bb8-toggle">
+        <input class="bb8-toggle__checkbox" type="checkbox">
+        <div class="bb8-toggle__container">
+          <div class="bb8-toggle__scenery">
+            <div class="bb8-toggle__star"></div>
+            <div class="bb8-toggle__star"></div>
+            <div class="bb8-toggle__star"></div>
+            <div class="bb8-toggle__star"></div>
+            <div class="bb8-toggle__star"></div>
+            <div class="bb8-toggle__star"></div>
+            <div class="bb8-toggle__star"></div>
+            <div class="tatto-1"></div>
+            <div class="tatto-2"></div>
+            <div class="gomrassen"></div>
+            <div class="hermes"></div>
+            <div class="chenini"></div>
+            <div class="bb8-toggle__cloud"></div>
+            <div class="bb8-toggle__cloud"></div>
+            <div class="bb8-toggle__cloud"></div>
+          </div>
+          <div class="bb8">
+            <div class="bb8__head-container">
+              <div class="bb8__antenna"></div>
+              <div class="bb8__antenna"></div>
+              <div class="bb8__head"></div>
+            </div>
+            <div class="bb8__body"></div>
+          </div>
+          <div class="artificial__hidden">
+            <div class="bb8__shadow"></div>
+          </div>
+        </div>
+      </label>
+
+      <!-- New Futuristic Search -->
+      <div id="poda">
+        <div class="poda-glow"></div>
+        <div class="poda-darkBorderBg"></div>
+        <div class="poda-darkBorderBg"></div>
+        <div class="poda-darkBorderBg"></div>
+      
+        <div class="poda-white"></div>
+      
+        <div class="poda-border"></div>
+      
+        <div id="main">
+          <input placeholder="Поиск фильма..." type="text" name="q" class="poda-input" />
+          <div id="input-mask"></div>
+          <div id="pink-mask"></div>
+          <div class="filterBorder"></div>
+          <div id="filter-icon">
+            <svg
+              preserveAspectRatio="none"
+              height="27"
+              width="27"
+              viewBox="4.8 4.56 14.832 15.408"
+              fill="none"
+            >
+              <path
+                d="M8.16 6.65002H15.83C16.47 6.65002 16.99 7.17002 16.99 7.81002V9.09002C16.99 9.56002 16.7 10.14 16.41 10.43L13.91 12.64C13.56 12.93 13.33 13.51 13.33 13.98V16.48C13.33 16.83 13.1 17.29 12.81 17.47L12 17.98C11.24 18.45 10.2 17.92 10.2 16.99V13.91C10.2 13.5 9.97 12.98 9.73 12.69L7.52 10.36C7.23 10.08 7 9.55002 7 9.20002V7.87002C7 7.17002 7.52 6.65002 8.16 6.65002Z"
+                stroke="#ffffff"
+                stroke-width="1"
+                stroke-miterlimit="10"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              ></path>
+            </svg>
+          </div>
+          <div id="search-icon">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              viewBox="0 0 24 24"
+              stroke-width="2"
+              stroke-linejoin="round"
+              stroke-linecap="round"
+              height="24"
+              fill="none"
+              class="feather feather-search"
+            >
+              <circle stroke="url(#search)" r="8" cy="11" cx="11"></circle>
+              <line
+                stroke="url(#searchl)"
+                y2="16.65"
+                y1="22"
+                x2="16.65"
+                x1="22"
+              ></line>
+              <defs>
+                <linearGradient gradientTransform="rotate(50)" id="search">
+                  <stop stop-color="#cca43b" offset="0%"></stop>
+                  <stop stop-color="#e09f3e" offset="50%"></stop>
+                </linearGradient>
+                <linearGradient id="searchl">
+                  <stop stop-color="#cca43b" offset="0%"></stop>
+                  <stop stop-color="#e09f3e" offset="50%"></stop>
+                </linearGradient>
+              </defs>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- HERO SECTION: DUNE PART TWO -->
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-image-layer" style="background-image: url('https://image.tmdb.org/t/p/original/xOMo8BRK7PfcJv9JCnx7s5hj0PX.jpg');"></div>
+    
+    <div class="hero-content">
+      <div class="hero-tags">
+        <span class="tag gold">ПРЕМЬЕРА 2024</span>
+        <span class="tag">IMAX</span>
+        <span class="tag">SCI-FI</span>
+      </div>
+      <h1>Дюна: Часть вторая</h1>
+      <p class="hero-desc">
+        Пол Атрейдес объединяется с Чани и фрименами, чтобы отомстить заговорщикам, уничтожившим его семью. Эпическое завершение саги Дени Вильнева уже доступно в максимальном качестве.
+      </p>
+      <div class="hero-actions">
+        <button class="btn btn-primary"><i class="fa fa-play"></i> СМОТРЕТЬ СЕЙЧАС</button>
+        <button class="btn btn-outline"><i class="fa fa-plus"></i> В ИЗБРАННОЕ</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- КАТАЛОГ -->
+  <main class="section">
+    <div class="container">
+      
+      <!-- Фильтрация (Radio Button Hack) -->
+      <input type="radio" name="filter" id="filter-all" checked>
+      <input type="radio" name="filter" id="filter-movies">
+      <input type="radio" name="filter" id="filter-series">
+      <input type="radio" name="filter" id="filter-new">
+
+      <div class="section-header">
+        <h2>Каталог</h2>
+        <div class="filter-tabs">
+          <label for="filter-all" class="filter-tab">Все</label>
+          <label for="filter-movies" class="filter-tab">Фильмы</label>
+          <label for="filter-series" class="filter-tab">Сериалы</label>
+          <label for="filter-new" class="filter-tab">Новинки 2026</label>
+        </div>
+      </div>
+
+      <div class="films-grid">
+
+        <!-- 1. Очень странные дела (ОСД) -->
+        <article class="film-card type-series">
+          <div class="card-poster">
+            <img src="images/strange_things.jpeg" alt="Stranger Things" class="card-img">
+            <div class="card-badges">
+              <span class="badge badge-rating">8.9</span>
+              <span class="badge badge-series">Series</span>
+              <span class="badge badge-new">Final</span>
+            </div>
+          </div>
+          <div class="card-info">
+            <div>
+              <div class="card-meta"><span>2026</span><span>5 Сезонов</span></div>
+              <h3 class="card-title">Очень странные дела</h3>
+              <div class="card-genre">Ужасы, Фантастика</div>
+            </div>
+          </div>
+        </article>
+
+        <!-- 2. Дюна 2 -->
+        <article class="film-card type-movie old">
+          <div class="card-poster">
+            <img src="images/dune2.webp" alt="Dune 2" class="card-img">
+            <div class="card-badges">
+              <span class="badge badge-rating">8.9</span>
+            </div>
+          </div>
+          <div class="card-info">
+            <div>
+              <div class="card-meta"><span>2024</span><span>2ч 46м</span></div>
+              <h3 class="card-title">Дюна: Часть вторая</h3>
+              <div class="card-genre">Фантастика, Эпик</div>
+            </div>
+          </div>
+        </article>
+
+        <!-- 3. F1 (Movie) -->
+        <article class="film-card type-movie">
+          <div class="card-poster">
+            <img src="images/f1.jpg" alt="F1" class="card-img">
+            <div class="card-badges">
+              <span class="badge badge-rating">8.5</span>
+              <span class="badge badge-new">New</span>
+            </div>
+          </div>
+          <div class="card-info">
+            <div>
+              <div class="card-meta"><span>2025</span><span>2ч 15м</span></div>
+              <h3 class="card-title">F1</h3>
+              <div class="card-genre">Спорт, Драма</div>
+            </div>
+          </div>
+        </article>
+
+        <!-- 4. Фоллаут -->
+        <article class="film-card type-series old">
+          <div class="card-poster">
+            <img src="images/i.webp" alt="Fallout" class="card-img">
+            <div class="card-badges">
+              <span class="badge badge-rating">8.7</span>
+              <span class="badge badge-series">Series</span>
+            </div>
+          </div>
+          <div class="card-info">
+            <div>
+              <div class="card-meta"><span>2024</span><span>2 Сезона</span></div>
+              <h3 class="card-title">Фоллаут</h3>
+              <div class="card-genre">Постапокалипсис</div>
+            </div>
+          </div>
+        </article>
+
+        <!-- 5. Оппенгеймер -->
+        <article class="film-card type-movie old">
+          <div class="card-poster">
+            <img src="images/oppenheimer.webp" alt="Oppenheimer" class="card-img">
+            <div class="card-badges">
+              <span class="badge badge-rating">9.4</span>
+              <span class="badge badge-res">4K</span>
+            </div>
+          </div>
+          <div class="card-info">
+            <div>
+              <div class="card-meta"><span>2023</span><span>3ч 00м</span></div>
+              <h3 class="card-title">Оппенгеймер</h3>
+              <div class="card-genre">Биография, Драма</div>
+            </div>
+          </div>
+        </article>
+
+        <!-- 6. Сёгун -->
+        <article class="film-card type-series old">
+          <div class="card-poster">
+            <img src="images/shogun.webp" alt="Shogun" class="card-img">
+            <div class="card-badges">
+              <span class="badge badge-rating">9.2</span>
+              <span class="badge badge-series">Series</span>
+            </div>
+          </div>
+          <div class="card-info">
+            <div>
+              <div class="card-meta"><span>2024</span><span>Мини-сериал</span></div>
+              <h3 class="card-title">Сёгун</h3>
+              <div class="card-genre">Исторический</div>
+            </div>
+          </div>
+        </article>
+
+        <!-- 7. Падение империи -->
+        <article class="film-card type-movie old">
+          <div class="card-poster">
+            <img src="images/civilwar.webp" alt="Civil War" class="card-img">
+            <div class="card-badges">
+              <span class="badge badge-rating">7.8</span>
+            </div>
+          </div>
+          <div class="card-info">
+            <div>
+              <div class="card-meta"><span>2024</span><span>1ч 49м</span></div>
+              <h3 class="card-title">Падение империи</h3>
+              <div class="card-genre">Военный, Триллер</div>
+            </div>
+          </div>
+        </article>
+
+        <!-- 8. Медведь -->
+        <article class="film-card type-series old">
+          <div class="card-poster">
+            <img src="images/bear.webp" alt="The Bear" class="card-img">
+            <div class="card-badges">
+              <span class="badge badge-rating">8.8</span>
+              <span class="badge badge-series">Series</span>
+            </div>
+          </div>
+          <div class="card-info">
+            <div>
+              <div class="card-meta"><span>2023</span><span>4 Сезона</span></div>
+              <h3 class="card-title">Медведь</h3>
+              <div class="card-genre">Драмеди</div>
+            </div>
+          </div>
+        </article>
+
+        <!-- 9. Фуриоса -->
+        <article class="film-card type-movie old">
+          <div class="card-poster">
+            <img src="images/furiosa.webp" alt="Furiosa" class="card-img">
+            <div class="card-badges">
+              <span class="badge badge-rating">8.0</span>
+            </div>
+          </div>
+          <div class="card-info">
+            <div>
+              <div class="card-meta"><span>2024</span><span>2ч 28м</span></div>
+              <h3 class="card-title">Фуриоса: Сага</h3>
+              <div class="card-genre">Боевик, Фантастика</div>
+            </div>
+          </div>
+        </article>
+
+        <!-- 10. Аватар 3 (New for 2026) -->
+        <article class="film-card type-movie">
+          <div class="card-poster">
+            <img src="images/avatar.webp" alt="Avatar 3" class="card-img">
+            <div class="card-badges">
+              <span class="badge badge-rating">9.1</span>
+              <span class="badge badge-new">2025</span>
+            </div>
+          </div>
+          <div class="card-info">
+            <div>
+              <div class="card-meta"><span>2025</span><span>3ч 10м</span></div>
+              <h3 class="card-title">Аватар: Огонь и пепел</h3>
+              <div class="card-genre">Фантастика</div>
+            </div>
+          </div>
+        </article>
+
+        <!-- 11. Кунг-фу Панда 4 -->
+        <article class="film-card type-movie type-cartoon old">
+          <div class="card-poster">
+            <img src="images/panda4.webp" alt="Kung Fu Panda 4" class="card-img">
+            <div class="card-badges">
+              <span class="badge badge-rating">7.8</span>
+            </div>
+          </div>
+          <div class="card-info">
+            <div>
+              <div class="card-meta"><span>2024</span><span>1ч 34м</span></div>
+              <h3 class="card-title">Кунг-фу Панда 4</h3>
+              <div class="card-genre">Мультфильм</div>
+            </div>
+          </div>
+        </article>
+
+        <!-- 12. Годзилла и Конг -->
+        <article class="film-card type-movie old">
+          <div class="card-poster">
+            <img src="images/gk.webp" alt="Godzilla" class="card-img">
+            <div class="card-badges">
+              <span class="badge badge-rating">7.0</span>
+            </div>
+          </div>
+          <div class="card-info">
+            <div>
+              <div class="card-meta"><span>2024</span><span>1ч 55м</span></div>
+              <h3 class="card-title">Годзилла и Конг</h3>
+              <div class="card-genre">Фантастика, Боевик</div>
+            </div>
+          </div>
+        </article>
+
+        <!-- 13. Каскадеры -->
+        <article class="film-card type-movie old">
+          <div class="card-poster">
+            <img src="images/duble.jpg" alt="Fall Guy" class="card-img">
+            <div class="card-badges">
+              <span class="badge badge-rating">7.6</span>
+            </div>
+          </div>
+          <div class="card-info">
+            <div>
+              <div class="card-meta"><span>2024</span><span>2ч 06м</span></div>
+              <h3 class="card-title">Каскадеры</h3>
+              <div class="card-genre">Комедия, Боевик</div>
+            </div>
+          </div>
+        </article>
+
+        <!-- 14. Дэдпул и Росомаха -->
+        <article class="film-card type-movie old">
+          <div class="card-poster">
+            <img src="images/dedpool&wolverine.webp" alt="Deadpool" class="card-img">
+            <div class="card-badges">
+              <span class="badge badge-rating">8.2</span>
+            </div>
+          </div>
+          <div class="card-info">
+            <div>
+              <div class="card-meta"><span>2024</span><span>2ч 10м</span></div>
+              <h3 class="card-title">Дэдпул и Росомаха</h3>
+              <div class="card-genre">Комикс, Экшн</div>
+            </div>
+          </div>
+        </article>
+
+        <!-- 15. The Last of Us -->
+        <article class="film-card type-series">
+          <div class="card-poster">
+            <img src="images/thelastofus.jpg" alt="TLOU" class="card-img">
+            <div class="card-badges">
+              <span class="badge badge-rating">9.0</span>
+              <span class="badge badge-series">Series</span>
+              <span class="badge badge-new">S2</span>
+            </div>
+          </div>
+          <div class="card-info">
+            <div>
+              <div class="card-meta"><span>2025</span><span>2 Сезона</span></div>
+              <h3 class="card-title">Одни из нас</h3>
+              <div class="card-genre">Драма, Ужасы</div>
+            </div>
+          </div>
+        </article>
+
+        <!-- 16. Дом Дракона -->
+        <article class="film-card type-series old">
+          <div class="card-poster">
+            <img src="images/dragon.webp" alt="HOD" class="card-img">
+            <div class="card-badges">
+              <span class="badge badge-rating">8.6</span>
+              <span class="badge badge-series">Series</span>
+            </div>
+          </div>
+          <div class="card-info">
+            <div>
+              <div class="card-meta"><span>2024</span><span>2 Сезона</span></div>
+              <h3 class="card-title">Дом Дракона</h3>
+              <div class="card-genre">Фэнтези</div>
+            </div>
+          </div>
+        </article>
+
+        <!-- 17. Задача трех тел -->
+        <article class="film-card type-series old">
+          <div class="card-poster">
+            <img src="images/zadacha.jpg" alt="3 Body" class="card-img">
+            <div class="card-badges">
+              <span class="badge badge-rating">7.9</span>
+              <span class="badge badge-series">Series</span>
+            </div>
+          </div>
+          <div class="card-info">
+            <div>
+              <div class="card-meta"><span>2024</span><span>1 Сезон</span></div>
+              <h3 class="card-title">Задача 3-х тел</h3>
+              <div class="card-genre">Sci-Fi</div>
+            </div>
+          </div>
+        </article>
+
+        <!-- 18. Пацаны -->
+        <article class="film-card type-series old">
+          <div class="card-poster">
+            <img src="images/boys.webp" alt="The Boys" class="card-img">
+            <div class="card-badges">
+              <span class="badge badge-rating">8.7</span>
+              <span class="badge badge-series">Series</span>
+            </div>
+          </div>
+          <div class="card-info">
+            <div>
+              <div class="card-meta"><span>2024</span><span>4 Сезона</span></div>
+              <h3 class="card-title">Пацаны</h3>
+              <div class="card-genre">Экшн, Сатира</div>
+            </div>
+          </div>
+        </article>
+
+        <!-- 19. Барби -->
+        <article class="film-card type-movie old">
+          <div class="card-poster">
+            <img src="images/barbie.webp" alt="Barbie" class="card-img">
+            <div class="card-badges">
+              <span class="badge badge-rating">7.9</span>
+            </div>
+          </div>
+          <div class="card-info">
+            <div>
+              <div class="card-meta"><span>2023</span><span>1ч 54м</span></div>
+              <h3 class="card-title">Барби</h3>
+              <div class="card-genre">Комедия</div>
+            </div>
+          </div>
+        </article>
+        
+        <!-- 20. Головоломка 2 -->
+        <article class="film-card type-movie type-cartoon old">
+          <div class="card-poster">
+            <img src="images/insideout2.webp" alt="Inside Out 2" class="card-img">
+            <div class="card-badges">
+              <span class="badge badge-rating">8.4</span>
+            </div>
+          </div>
+          <div class="card-info">
+            <div>
+              <div class="card-meta"><span>2024</span><span>1ч 40м</span></div>
+              <h3 class="card-title">Головоломка 2</h3>
+              <div class="card-genre">Мультфильм</div>
+            </div>
+          </div>
+        </article>
+
+        <!-- 21. Человек-паук: Паутина вселенных -->
+        <article class="film-card type-movie type-cartoon old">
+          <div class="card-poster">
+            <img src="images/sm.webp" alt="Spider-Man" class="card-img">
+            <div class="card-badges">
+              <span class="badge badge-rating">9.0</span>
+            </div>
+          </div>
+          <div class="card-info">
+            <div>
+              <div class="card-meta"><span>2023</span><span>2ч 20м</span></div>
+              <h3 class="card-title">Человек-паук: Паутина</h3>
+              <div class="card-genre">Анимация</div>
+            </div>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <h4 class="footer-title">Cinematheque</h4>
+          <ul class="footer-links">
+            <li><a href="about.html">О сервисе</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="footer-title">Поддержка</h4>
+          <ul class="footer-links">
+            <li><a href="contacts.html">Контакты</a></li>
+            <li><a href="contacts.html">FAQ</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="footer-title">Мы в соцсетях</h4>
+          <div class="social-icons">
+            <a href="https://vk.com/"><i class="fa-brands fa-vk"></i></a>
+            <a href="https://web.telegram.org/"><i class="fa-brands fa-telegram"></i></a>
+            <a href="https://www.youtube.com/"><i class="fa-brands fa-youtube"></i></a>
+          </div>
+        </div>
+      </div>
+      <p style="text-align: center; color: var(--text-muted);">&copy; 2026 Cinematheque Project. Учебный проект.</p>
+    </div>
+  </footer>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const toggle = document.querySelector('.bb8-toggle__checkbox');
+      const body = document.body;
+
+      // Check saved theme
+      const savedTheme = localStorage.getItem('theme');
+      if (savedTheme === 'light') {
+        body.classList.add('light-theme');
+        toggle.checked = true;
+      }
+
+      // Toggle listener
+      toggle.addEventListener('change', () => {
+        if (toggle.checked) {
+          body.classList.add('light-theme');
+          localStorage.setItem('theme', 'light');
+        } else {
+          body.classList.remove('light-theme');
+          localStorage.setItem('theme', 'dark');
+        }
+      });
+    });
+  </script>
+
+</body>
+</html>
