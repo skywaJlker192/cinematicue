@@ -9,6 +9,9 @@
 </head>
 <body>
 
+  <!-- Прогресс чтения -->
+  <div class="reading-progress-bar" id="reading-progress"></div>
+
   <header class="site-header">
     <div class="nav-inner">
       <a href="index.html" class="logo">
@@ -165,13 +168,30 @@
       <!-- PRICING -->
       <div style="margin-top: 6rem;">
         <h2 style="text-align: center;">Тарифные планы</h2>
-        <p style="text-align: center; color: var(--text-secondary); margin-bottom: 3rem;">Выберите подписку, которая подходит именно вам</p>
+        <p style="text-align: center; color: var(--text-secondary); margin-bottom: 1.5rem;">Выберите подписку, которая подходит именно вам</p>
+
+        <!-- Промокод + кнопка колеса -->
+        <div class="promo-bar">
+          <div class="promo-input-wrap">
+            <i class="fas fa-tag promo-icon"></i>
+            <input type="text" id="promo-input" class="promo-input" placeholder="Введите промокод..." maxlength="12">
+            <button class="btn-promo-apply" id="promo-apply-btn">Применить</button>
+          </div>
+          <div class="promo-status" id="promo-status"></div>
+          <button class="btn-wheel-open" id="wheel-open-btn">
+            <i class="fas fa-dharmachakra"></i> Колесо удачи
+          </button>
+        </div>
         
         <div class="pricing-grid">
           <!-- Plan 1 -->
           <div class="plan-card">
             <h3 class="plan-name">Базовый</h3>
-            <div class="plan-price">199 ₽ <span>/ мес</span></div>
+            <div class="plan-price-basic">
+              <span class="price-original" style="display:none"></span>
+              <span class="price-discount-badge" style="display:none"></span>
+              <div class="plan-price price-current">199 ₽ <span>/ мес</span></div>
+            </div>
             <ul class="plan-features">
               <li><i class="fa fa-check"></i> Качество HD (720p)</li>
               <li><i class="fa fa-check"></i> 1 устройство</li>
@@ -179,33 +199,20 @@
               <li class="disabled"><i class="fa fa-times"></i> Загрузка оффлайн</li>
               <li class="disabled"><i class="fa fa-times"></i> 4K HDR</li>
             </ul>
-            <!-- New Transaction Button -->
             <div class="tx-button">
-             <div class="tx-left">
-              <div class="tx-card">
-               <div class="tx-card-line"></div>
-               <div class="tx-buttons"></div>
-              </div>
-              <div class="tx-post">
-               <div class="tx-post-line"></div>
-               <div class="tx-screen">
-                <div class="tx-dollar">$</div>
-               </div>
-               <div class="tx-numbers"></div>
-               <div class="tx-numbers-line2"></div>
-              </div>
-             </div>
-             <div class="tx-right">
-              <div class="tx-text">Оформить</div>
-              <svg viewBox="0 0 451.846 451.847" height="512" width="512" xmlns="http://www.w3.org/2000/svg" class="tx-arrow"><path fill="#cfcfcf" data-old_color="#000000" class="active-path" data-original="#000000" d="M345.441 248.292L151.154 442.573c-12.359 12.365-32.397 12.365-44.75 0-12.354-12.354-12.354-32.391 0-44.744L278.318 225.92 106.409 54.017c-12.354-12.359-12.354-32.394 0-44.748 12.354-12.359 32.391-12.359 44.75 0l194.287 194.284c6.177 6.18 9.262 14.271 9.262 22.366 0 8.099-3.091 16.196-9.267 22.373z"></path></svg>
-             </div>
+             <div class="tx-left"><div class="tx-card"><div class="tx-card-line"></div><div class="tx-buttons"></div></div><div class="tx-post"><div class="tx-post-line"></div><div class="tx-screen"><div class="tx-dollar">$</div></div><div class="tx-numbers"></div><div class="tx-numbers-line2"></div></div></div>
+             <div class="tx-right"><div class="tx-text">Оформить</div><svg viewBox="0 0 451.846 451.847" height="512" width="512" xmlns="http://www.w3.org/2000/svg" class="tx-arrow"><path fill="#cfcfcf" d="M345.441 248.292L151.154 442.573c-12.359 12.365-32.397 12.365-44.75 0-12.354-12.354-12.354-32.391 0-44.744L278.318 225.92 106.409 54.017c-12.354-12.359-12.354-32.394 0-44.748 12.354-12.359 32.391-12.359 44.75 0l194.287 194.284c6.177 6.18 9.262 14.271 9.262 22.366 0 8.099-3.091 16.196-9.267 22.373z"></path></svg></div>
             </div>
           </div>
 
           <!-- Plan 2 -->
           <div class="plan-card featured">
             <h3 class="plan-name">Стандарт</h3>
-            <div class="plan-price">399 ₽ <span>/ мес</span></div>
+            <div class="plan-price-standard">
+              <span class="price-original" style="display:none"></span>
+              <span class="price-discount-badge" style="display:none"></span>
+              <div class="plan-price price-current">399 ₽ <span>/ мес</span></div>
+            </div>
             <ul class="plan-features">
               <li><i class="fa fa-check"></i> Качество Full HD (1080p)</li>
               <li><i class="fa fa-check"></i> 2 устройства</li>
@@ -213,33 +220,20 @@
               <li><i class="fa fa-check"></i> Загрузка оффлайн</li>
               <li class="disabled"><i class="fa fa-times"></i> 4K HDR</li>
             </ul>
-            <!-- New Transaction Button -->
             <div class="tx-button">
-             <div class="tx-left">
-              <div class="tx-card">
-               <div class="tx-card-line"></div>
-               <div class="tx-buttons"></div>
-              </div>
-              <div class="tx-post">
-               <div class="tx-post-line"></div>
-               <div class="tx-screen">
-                <div class="tx-dollar">$</div>
-               </div>
-               <div class="tx-numbers"></div>
-               <div class="tx-numbers-line2"></div>
-              </div>
-             </div>
-             <div class="tx-right">
-              <div class="tx-text">Оформить</div>
-              <svg viewBox="0 0 451.846 451.847" height="512" width="512" xmlns="http://www.w3.org/2000/svg" class="tx-arrow"><path fill="#cfcfcf" data-old_color="#000000" class="active-path" data-original="#000000" d="M345.441 248.292L151.154 442.573c-12.359 12.365-32.397 12.365-44.75 0-12.354-12.354-12.354-32.391 0-44.744L278.318 225.92 106.409 54.017c-12.354-12.359-12.354-32.394 0-44.748 12.354-12.359 32.391-12.359 44.75 0l194.287 194.284c6.177 6.18 9.262 14.271 9.262 22.366 0 8.099-3.091 16.196-9.267 22.373z"></path></svg>
-             </div>
+             <div class="tx-left"><div class="tx-card"><div class="tx-card-line"></div><div class="tx-buttons"></div></div><div class="tx-post"><div class="tx-post-line"></div><div class="tx-screen"><div class="tx-dollar">$</div></div><div class="tx-numbers"></div><div class="tx-numbers-line2"></div></div></div>
+             <div class="tx-right"><div class="tx-text">Оформить</div><svg viewBox="0 0 451.846 451.847" height="512" width="512" xmlns="http://www.w3.org/2000/svg" class="tx-arrow"><path fill="#cfcfcf" d="M345.441 248.292L151.154 442.573c-12.359 12.365-32.397 12.365-44.75 0-12.354-12.354-12.354-32.391 0-44.744L278.318 225.92 106.409 54.017c-12.354-12.359-12.354-32.394 0-44.748 12.354-12.359 32.391-12.359 44.75 0l194.287 194.284c6.177 6.18 9.262 14.271 9.262 22.366 0 8.099-3.091 16.196-9.267 22.373z"></path></svg></div>
             </div>
           </div>
 
           <!-- Plan 3 -->
           <div class="plan-card">
             <h3 class="plan-name">Премиум</h3>
-            <div class="plan-price">599 ₽ <span>/ мес</span></div>
+            <div class="plan-price-premium">
+              <span class="price-original" style="display:none"></span>
+              <span class="price-discount-badge" style="display:none"></span>
+              <div class="plan-price price-current">599 ₽ <span>/ мес</span></div>
+            </div>
             <ul class="plan-features">
               <li><i class="fa fa-check"></i> Качество Ultra HD (4K)</li>
               <li><i class="fa fa-check"></i> 4 устройства</li>
@@ -247,26 +241,9 @@
               <li><i class="fa fa-check"></i> Загрузка оффлайн</li>
               <li><i class="fa fa-check"></i> Звук Dolby Atmos</li>
             </ul>
-            <!-- New Transaction Button -->
             <div class="tx-button">
-             <div class="tx-left">
-              <div class="tx-card">
-               <div class="tx-card-line"></div>
-               <div class="tx-buttons"></div>
-              </div>
-              <div class="tx-post">
-               <div class="tx-post-line"></div>
-               <div class="tx-screen">
-                <div class="tx-dollar">$</div>
-               </div>
-               <div class="tx-numbers"></div>
-               <div class="tx-numbers-line2"></div>
-              </div>
-             </div>
-             <div class="tx-right">
-              <div class="tx-text">Оформить</div>
-              <svg viewBox="0 0 451.846 451.847" height="512" width="512" xmlns="http://www.w3.org/2000/svg" class="tx-arrow"><path fill="#cfcfcf" data-old_color="#000000" class="active-path" data-original="#000000" d="M345.441 248.292L151.154 442.573c-12.359 12.365-32.397 12.365-44.75 0-12.354-12.354-12.354-32.391 0-44.744L278.318 225.92 106.409 54.017c-12.354-12.359-12.354-32.394 0-44.748 12.354-12.359 32.391-12.359 44.75 0l194.287 194.284c6.177 6.18 9.262 14.271 9.262 22.366 0 8.099-3.091 16.196-9.267 22.373z"></path></svg>
-             </div>
+             <div class="tx-left"><div class="tx-card"><div class="tx-card-line"></div><div class="tx-buttons"></div></div><div class="tx-post"><div class="tx-post-line"></div><div class="tx-screen"><div class="tx-dollar">$</div></div><div class="tx-numbers"></div><div class="tx-numbers-line2"></div></div></div>
+             <div class="tx-right"><div class="tx-text">Оформить</div><svg viewBox="0 0 451.846 451.847" height="512" width="512" xmlns="http://www.w3.org/2000/svg" class="tx-arrow"><path fill="#cfcfcf" d="M345.441 248.292L151.154 442.573c-12.359 12.365-32.397 12.365-44.75 0-12.354-12.354-12.354-32.391 0-44.744L278.318 225.92 106.409 54.017c-12.354-12.359-12.354-32.394 0-44.748 12.354-12.359 32.391-12.359 44.75 0l194.287 194.284c6.177 6.18 9.262 14.271 9.262 22.366 0 8.099-3.091 16.196-9.267 22.373z"></path></svg></div>
             </div>
           </div>
         </div>
@@ -335,30 +312,53 @@
     </div>
   </footer>
 
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const toggle = document.querySelector('.bb8-toggle__checkbox');
-      const body = document.body;
+  <!-- Кнопка наверх -->
+  <button class="back-to-top" id="back-to-top" title="Наверх"><i class="fas fa-chevron-up"></i></button>
 
-      // Check saved theme
-      const savedTheme = localStorage.getItem('theme');
-      if (savedTheme === 'light') {
-        body.classList.add('light-theme');
-        toggle.checked = true;
-      }
+  <!-- ═══ КОЛЕСО УДАЧИ ════════════════════════════════ -->
+  <div class="modal-overlay" id="wheel-modal">
+    <div class="wheel-modal-box">
+      <button class="modal-close" id="wheel-modal-close"><i class="fas fa-times"></i></button>
 
-      // Toggle listener
-      toggle.addEventListener('change', () => {
-        if (toggle.checked) {
-          body.classList.add('light-theme');
-          localStorage.setItem('theme', 'light');
-        } else {
-          body.classList.remove('light-theme');
-          localStorage.setItem('theme', 'dark');
-        }
-      });
-    });
-  </script>
+      <div class="wheel-modal-header">
+        <h2 class="wheel-title"><i class="fas fa-dharmachakra"></i> Колесо удачи</h2>
+        <p class="wheel-subtitle">Крути и получай скидку на подписку! Одна попытка в 24 часа.</p>
+      </div>
+
+      <div class="wheel-layout">
+        <div class="wheel-canvas-wrap">
+          <!-- указатель -->
+          <div class="wheel-pointer-outer">▼</div>
+          <canvas id="wheel-canvas" width="420" height="420"></canvas>
+        </div>
+
+        <div class="wheel-side">
+          <!-- список призов -->
+          <div class="wheel-prizes-list">
+            <div class="wpl-title">Возможные призы:</div>
+            <div class="wpl-item"><span class="wpl-dot" style="background:#b8860b"></span>🔥 Скидка 50%</div>
+            <div class="wpl-item"><span class="wpl-dot" style="background:#0f3460"></span>🎁 Месяц бесплатно</div>
+            <div class="wpl-item"><span class="wpl-dot" style="background:#cca43b"></span>⭐ Скидка 30%</div>
+            <div class="wpl-item"><span class="wpl-dot" style="background:#2a1a00"></span>🎥 Скидка 20%</div>
+            <div class="wpl-item"><span class="wpl-dot" style="background:#16213e"></span>🍿 Скидка 15%</div>
+            <div class="wpl-item"><span class="wpl-dot" style="background:#1a1a2e"></span>🎬 Скидка 10%</div>
+            <div class="wpl-item"><span class="wpl-dot" style="background:#1a0a00"></span>🎦 Скидка 5%</div>
+            <div class="wpl-item wpl-lose"><span class="wpl-dot" style="background:#111"></span>😔 Не повезло</div>
+          </div>
+
+          <button class="btn-spin" id="wheel-spin-btn">
+            <i class="fas fa-play"></i> Крутить!
+          </button>
+
+          <!-- результат -->
+          <div class="wheel-result" id="wheel-result"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/about.js"></script>
+  <script src="js/wheel.js"></script>
 
 </body>
 </html>

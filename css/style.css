@@ -2027,3 +2027,1034 @@ textarea.form-control { resize: vertical; min-height: 150px; }
   0% { opacity: 0; transform: translateY(-5px); }
   100% { opacity: 1; transform: translateY(0); }
 }
+/* ═══════════════════════════════════════════════════════════
+   CINEMATHEQUE — JS ADDITIONS CSS
+   Добавлено: карточки из JS, избранное, модалки,
+              прогресс чтения, кнопка наверх
+   ═══════════════════════════════════════════════════════════ */
+
+/* ── Кнопка Избранное в шапке ─────────────────────────────── */
+.wishlist-nav-btn {
+  position: relative;
+  background: transparent;
+  border: 1px solid var(--border);
+  color: #e05a5a;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 1.2rem;
+  transition: border-color 0.2s, color 0.2s, background 0.2s, transform 0.15s;
+  flex-shrink: 0;
+  outline: none;
+  appearance: none;
+  -webkit-appearance: none;
+  padding: 0;
+  line-height: 1;
+}
+.wishlist-nav-btn:hover {
+  border-color: #e05a5a;
+  color: #e05a5a;
+  background: rgba(224,90,90,.12);
+  transform: scale(1.1);
+}
+.wishlist-badge {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  background: var(--accent-gold);
+  color: #000;
+  font-size: 0.65rem;
+  font-weight: 700;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Rajdhani', sans-serif;
+}
+
+/* ── Кнопка «В избранное» на карточке ────────────────────── */
+.card-poster { position: relative; }
+.wishlist-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: rgba(0,0,0,.55);
+  border: 1px solid rgba(255,255,255,.2);
+  color: #fff;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 0.85rem;
+  opacity: 0;
+  transform: scale(0.8);
+  transition: opacity 0.2s, transform 0.2s, color 0.2s, background 0.2s;
+  z-index: 2;
+}
+.film-card:hover .wishlist-btn {
+  opacity: 1;
+  transform: scale(1);
+}
+.wishlist-btn.active {
+  opacity: 1;
+  transform: scale(1);
+  color: #e05a5a;
+  background: rgba(0,0,0,.7);
+  border-color: #e05a5a;
+}
+.wishlist-btn:hover {
+  color: #e05a5a;
+  border-color: #e05a5a;
+}
+
+/* ── Фильтр-кнопки (JS) ───────────────────────────────────── */
+.filter-tab {
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 0.9rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  padding: 6px 14px;
+  border-radius: 2px;
+  color: var(--text-secondary);
+  transition: color 0.2s, background 0.2s;
+}
+.filter-tab:hover {
+  color: var(--accent-gold);
+}
+.filter-tab.active {
+  background: var(--accent-gold);
+  color: #000;
+  font-weight: 700;
+}
+
+/* ── "Ничего не найдено" ──────────────────────────────────── */
+.no-results {
+  grid-column: 1/-1;
+  text-align: center;
+  color: var(--text-secondary);
+  padding: 3rem 0;
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 1.1rem;
+}
+
+/* ══ МОДАЛЬНЫЕ ОКНА ════════════════════════════════════════ */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.8);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  padding: 20px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s;
+}
+.modal-overlay.open {
+  opacity: 1;
+  pointer-events: all;
+}
+.modal-box {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  position: relative;
+  max-height: 90vh;
+  overflow-y: auto;
+  transform: translateY(20px);
+  transition: transform 0.25s;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
+.modal-overlay.open .modal-box {
+  transform: translateY(0);
+}
+.modal-close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 0.8rem;
+  z-index: 1;
+  transition: color 0.2s, border-color 0.2s;
+}
+.modal-close:hover {
+  color: var(--accent-gold);
+  border-color: var(--accent-gold);
+}
+
+/* ── Модалка фильма ──────────────────────────────────────── */
+.film-modal-box {
+  width: 100%;
+  max-width: 820px;
+}
+.film-modal-inner {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 0;
+}
+.film-modal-left {
+  flex-shrink: 0;
+}
+.film-modal-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  border-radius: 6px 0 0 6px;
+  min-height: 320px;
+}
+.film-modal-right {
+  padding: 2rem 2.5rem 2rem 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+.film-modal-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  font-family: 'Rajdhani', sans-serif;
+}
+.film-modal-title {
+  font-family: 'Cinzel', serif;
+  font-size: 1.6rem;
+  color: var(--text-primary);
+  line-height: 1.2;
+  margin: 0;
+}
+.film-modal-genre {
+  color: var(--accent-gold);
+  font-size: 0.85rem;
+  font-family: 'Rajdhani', sans-serif;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.film-modal-desc {
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  line-height: 1.7;
+  flex: 1;
+  margin: 0;
+}
+.film-modal-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 0.5rem;
+}
+.wishlist-modal-btn {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+.wishlist-modal-btn.active {
+  border-color: #e05a5a;
+  color: #e05a5a;
+}
+.wishlist-modal-btn.active:hover {
+  background: rgba(224,90,90,.1);
+}
+@media (max-width: 600px) {
+  .film-modal-inner {
+    grid-template-columns: 1fr;
+  }
+  .film-modal-img {
+    border-radius: 6px 6px 0 0;
+    min-height: 220px;
+    max-height: 280px;
+  }
+  .film-modal-right {
+    padding: 1.5rem;
+  }
+  .film-modal-title { font-size: 1.3rem; }
+}
+
+/* ── Модалка Избранного ───────────────────────────────────── */
+.wishlist-modal-box {
+  width: 100%;
+  max-width: 540px;
+  padding: 2rem;
+  padding-top: 1.5rem;
+}
+.wishlist-modal-title {
+  font-family: 'Cinzel', serif;
+  font-size: 1.4rem;
+  color: var(--text-primary);
+  margin: 0 0 0.4rem;
+  padding-right: 40px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.wishlist-modal-title i { color: #e05a5a; }
+.wishlist-total {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  font-family: 'Rajdhani', sans-serif;
+  margin-bottom: 1.5rem;
+}
+.wishlist-items {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-height: 60vh;
+  overflow-y: auto;
+  padding-right: 4px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
+.wl-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: var(--bg-body);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 10px;
+  transition: border-color 0.2s;
+}
+.wl-item:hover { border-color: var(--accent-gold); }
+.wl-img {
+  width: 52px;
+  height: 72px;
+  object-fit: cover;
+  border-radius: 3px;
+  flex-shrink: 0;
+}
+.wl-info { flex: 1; min-width: 0; }
+.wl-title {
+  font-weight: 600;
+  color: var(--text-primary);
+  font-size: 0.95rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.wl-meta {
+  color: var(--text-secondary);
+  font-size: 0.8rem;
+  font-family: 'Rajdhani', sans-serif;
+  margin: 3px 0;
+}
+.wl-rating {
+  color: var(--accent-gold);
+  font-size: 0.82rem;
+  font-family: 'Rajdhani', sans-serif;
+}
+.wl-remove {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 0.75rem;
+  flex-shrink: 0;
+  transition: color 0.2s, border-color 0.2s;
+}
+.wl-remove:hover {
+  color: #e05a5a;
+  border-color: #e05a5a;
+}
+.wishlist-empty {
+  color: var(--text-secondary);
+  text-align: center;
+  padding: 2rem 0;
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+/* ══ ПРОГРЕСС ЧТЕНИЯ (about.html) ══════════════════════════ */
+.reading-progress-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 3px;
+  width: 0%;
+  background: linear-gradient(90deg, var(--accent-gold), #e09f3e);
+  z-index: 99999;
+  transition: width 0.1s linear;
+  box-shadow: 0 0 8px rgba(204,164,59,.6);
+}
+
+/* ══ КНОПКА «НАВЕРХ» ═══════════════════════════════════════ */
+.back-to-top {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--accent-gold);
+  color: #000;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 1rem;
+  z-index: 9000;
+  box-shadow: 0 4px 16px rgba(204,164,59,.4);
+  opacity: 0;
+  transform: translateY(16px);
+  pointer-events: none;
+  transition: opacity 0.25s, transform 0.25s;
+}
+.back-to-top.visible {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: all;
+}
+.back-to-top:hover {
+  background: #e09f3e;
+  box-shadow: 0 6px 20px rgba(204,164,59,.55);
+}
+
+/* ══ Светлая тема — корректировки для новых элементов ══════ */
+.light-theme .wishlist-nav-btn {
+  border-color: #ccc;
+  color: #333;
+}
+.light-theme .wishlist-nav-btn:hover {
+  border-color: var(--accent-gold);
+  color: var(--accent-gold);
+}
+.light-theme .wl-item {
+  background: #f7f7f7;
+}
+.light-theme .modal-overlay {
+  background: rgba(0,0,0,.6);
+}
+.light-theme .reading-progress-bar {
+  box-shadow: 0 0 8px rgba(204,164,59,.4);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   CINEMATHEQUE — v2 additions CSS
+   Toast, Skeleton, Scroll-анимация, Сортировка,
+   Стрелки модалки, История просмотров, Кнопка «Повезёт»
+   ═══════════════════════════════════════════════════════════ */
+
+/* ── Кнопки управления каталогом ─────────────────────────── */
+.catalog-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+}
+.catalog-extra-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.sort-select {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  color: var(--text-primary);
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 0.88rem;
+  padding: 6px 12px;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: border-color 0.2s;
+  outline: none;
+}
+.sort-select:hover,
+.sort-select:focus { border-color: var(--accent-gold); }
+
+.btn-lucky {
+  background: transparent;
+  border: 1px solid var(--accent-gold);
+  color: var(--accent-gold);
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 0.88rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  padding: 6px 14px;
+  border-radius: 3px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: background 0.2s, color 0.2s, transform 0.15s;
+}
+.btn-lucky:hover {
+  background: var(--accent-gold);
+  color: #000;
+  transform: scale(1.04);
+}
+.btn-lucky:active { transform: scale(0.97); }
+.btn-lucky i { transition: transform 0.3s; }
+.btn-lucky:hover i { transform: rotate(20deg) scale(1.2); }
+
+.results-counter {
+  font-size: 1rem;
+  color: var(--text-secondary);
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 400;
+}
+
+/* ── TOAST-УВЕДОМЛЕНИЯ ───────────────────────────────────── */
+.toast-container {
+  position: fixed;
+  bottom: 1.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  z-index: 99999;
+  pointer-events: none;
+  align-items: center;
+}
+.toast {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  color: var(--text-primary);
+  padding: 10px 18px;
+  border-radius: 30px;
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 0.92rem;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+  opacity: 0;
+  transform: translateY(12px) scale(0.94);
+  transition: opacity 0.22s, transform 0.22s;
+  white-space: nowrap;
+}
+.toast.toast-show {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+.toast-success { border-color: #e05a5a; }
+.toast-success i { color: #e05a5a; }
+.toast-remove i  { color: var(--text-secondary); }
+.toast-dice i    { color: var(--accent-gold); }
+.toast-info i    { color: var(--accent-gold); }
+
+/* ── SKELETON-ЗАГРУЗКА ───────────────────────────────────── */
+@keyframes shimmer {
+  0%   { background-position: -400px 0; }
+  100% { background-position: 400px 0; }
+}
+.skeleton-card .skeleton-poster {
+  width: 100%;
+  aspect-ratio: 2/3;
+  border-radius: 4px 4px 0 0;
+  background: linear-gradient(90deg,
+    rgba(255,255,255,.04) 25%,
+    rgba(255,255,255,.10) 50%,
+    rgba(255,255,255,.04) 75%);
+  background-size: 800px 100%;
+  animation: shimmer 1.4s infinite linear;
+}
+.skeleton-line {
+  height: 14px;
+  border-radius: 4px;
+  margin: 8px 12px;
+  background: linear-gradient(90deg,
+    rgba(255,255,255,.04) 25%,
+    rgba(255,255,255,.10) 50%,
+    rgba(255,255,255,.04) 75%);
+  background-size: 800px 100%;
+  animation: shimmer 1.4s infinite linear;
+}
+.skeleton-line-sm { width: 55%; height: 10px; }
+
+/* ── SCROLL-АНИМАЦИЯ КАРТОЧЕК ────────────────────────────── */
+.card-hidden {
+  opacity: 0;
+  transform: translateY(22px);
+}
+.card-visible {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+/* ── СТРЕЛКИ ЛИСТАНИЯ В МОДАЛКЕ ──────────────────────────── */
+.modal-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0,0,0,.55);
+  border: 1px solid rgba(255,255,255,.15);
+  color: #fff;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 2;
+  font-size: 0.85rem;
+  transition: background 0.2s, border-color 0.2s, opacity 0.2s;
+  opacity: 0.5;
+}
+.modal-nav:hover {
+  background: rgba(204,164,59,.25);
+  border-color: var(--accent-gold);
+  opacity: 1;
+}
+.modal-nav-prev { left: -50px; }
+.modal-nav-next { right: -50px; }
+@media (max-width: 960px) {
+  .modal-nav-prev { left: 4px; top: auto; bottom: -48px; transform: none; }
+  .modal-nav-next { right: 4px; top: auto; bottom: -48px; transform: none; }
+  .film-modal-box { margin-bottom: 60px; }
+}
+
+/* ── ИСТОРИЯ ПРОСМОТРОВ ──────────────────────────────────── */
+.recently-viewed-section {
+  margin-bottom: 2rem;
+  padding: 1.2rem 1.4rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+}
+.recently-title {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 0.85rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  margin: 0 0 1rem;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+.recently-title i { color: var(--accent-gold); }
+.recently-list {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
+.recent-item {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  width: 72px;
+  text-align: center;
+}
+.recent-item:hover .recent-img { border-color: var(--accent-gold); transform: scale(1.05); }
+.recent-img {
+  width: 64px;
+  height: 88px;
+  object-fit: cover;
+  border-radius: 4px;
+  border: 2px solid transparent;
+  transition: border-color 0.2s, transform 0.2s;
+}
+.recent-title {
+  font-size: 0.68rem;
+  color: var(--text-secondary);
+  line-height: 1.3;
+  font-family: 'Rajdhani', sans-serif;
+  word-break: break-word;
+  hyphens: auto;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   WHEEL OF FORTUNE — Колесо удачи
+   ═══════════════════════════════════════════════════════════ */
+
+/* ── Кнопка-триггер «Колесо удачи» ───────────────────────── */
+.btn-wheel-open {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: linear-gradient(135deg, #b8860b, #e0b030, #b8860b);
+  background-size: 200% auto;
+  color: #000;
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 700;
+  font-size: 0.95rem;
+  letter-spacing: 0.05em;
+  padding: 10px 22px;
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+  animation: shimmerBtn 2.5s linear infinite;
+  box-shadow: 0 0 18px rgba(204,164,59,.45), 0 2px 8px rgba(0,0,0,.4);
+  transition: transform 0.15s, box-shadow 0.15s;
+  white-space: nowrap;
+}
+.btn-wheel-open:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 28px rgba(204,164,59,.7), 0 4px 14px rgba(0,0,0,.5);
+}
+.btn-wheel-open i {
+  animation: spinIcon 3s linear infinite;
+}
+@keyframes shimmerBtn {
+  0%   { background-position: 0% center; }
+  100% { background-position: 200% center; }
+}
+@keyframes spinIcon {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+/* ── Промо-бар (поле + кнопка колеса) ───────────────────── */
+.promo-bar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
+  margin-bottom: 2.5rem;
+  padding: 1.2rem 1.5rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+}
+.promo-input-wrap {
+  display: flex;
+  align-items: center;
+  background: var(--bg-body);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  overflow: hidden;
+  transition: border-color 0.2s;
+}
+.promo-input-wrap:focus-within { border-color: var(--accent-gold); }
+.promo-icon {
+  padding: 0 12px;
+  color: var(--accent-gold);
+  font-size: 0.85rem;
+}
+.promo-input {
+  background: transparent;
+  border: none;
+  color: var(--text-primary);
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 1rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 10px 4px 10px 0;
+  width: 180px;
+  outline: none;
+}
+.promo-input::placeholder { text-transform: none; letter-spacing: 0; color: var(--text-secondary); }
+.btn-promo-apply {
+  background: var(--accent-gold);
+  color: #000;
+  border: none;
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 700;
+  font-size: 0.85rem;
+  padding: 10px 16px;
+  cursor: pointer;
+  transition: background 0.2s, opacity 0.2s;
+}
+.btn-promo-apply:hover   { background: #e0b030; }
+.btn-promo-apply.applied { background: #555; color: #fff; }
+
+.promo-status {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+  justify-content: center;
+}
+.promo-active { color: #6dbf67; }
+.promo-error  { color: #e05a5a; }
+
+/* ── Цена со скидкой ─────────────────────────────────────── */
+.price-original {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  text-decoration: line-through;
+  margin-right: 6px;
+  font-family: 'Rajdhani', sans-serif;
+}
+.price-discount-badge {
+  display: inline-flex;
+  align-items: center;
+  background: #e05a5a;
+  color: #fff;
+  font-size: 0.72rem;
+  font-weight: 700;
+  font-family: 'Rajdhani', sans-serif;
+  padding: 2px 7px;
+  border-radius: 3px;
+  margin-right: 6px;
+  vertical-align: middle;
+  animation: pulseBadge 1.5s ease-in-out infinite;
+}
+.price-free {
+  color: var(--accent-gold);
+  font-family: 'Cinzel', serif;
+  font-size: 1.1rem;
+}
+@keyframes pulseBadge {
+  0%, 100% { transform: scale(1); }
+  50%       { transform: scale(1.08); }
+}
+
+/* ── МОДАЛКА КОЛЕСА ──────────────────────────────────────── */
+.wheel-modal-box {
+  background: var(--bg-card);
+  border: 1px solid #2a2000;
+  border-radius: 10px;
+  width: 100%;
+  max-width: 900px;
+  max-height: 92vh;
+  overflow-y: auto;
+  position: relative;
+  padding: 2rem;
+  box-shadow: 0 0 60px rgba(204,164,59,.2), 0 20px 60px rgba(0,0,0,.7);
+}
+/* золотое свечение рамки */
+.wheel-modal-box::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #cca43b33, transparent 40%, #cca43b22 100%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.wheel-modal-header {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+.wheel-title {
+  font-family: 'Cinzel', serif;
+  font-size: 1.8rem;
+  color: var(--accent-gold);
+  margin: 0 0 0.4rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+.wheel-title i { animation: spinIcon 4s linear infinite; }
+.wheel-subtitle {
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  margin: 0;
+}
+
+.wheel-layout {
+  display: grid;
+  grid-template-columns: 1fr 280px;
+  gap: 2rem;
+  align-items: start;
+}
+
+/* ── Канвас + указатель ───────────────────────────────────── */
+.wheel-canvas-wrap {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+}
+.wheel-pointer-outer {
+  font-size: 2rem;
+  color: var(--accent-gold);
+  text-shadow: 0 0 12px rgba(204,164,59,.8);
+  line-height: 1;
+  margin-bottom: -8px;
+  z-index: 2;
+  position: relative;
+  animation: pointerPulse 1.8s ease-in-out infinite;
+}
+@keyframes pointerPulse {
+  0%, 100% { transform: translateY(0); text-shadow: 0 0 12px rgba(204,164,59,.8); }
+  50%       { transform: translateY(-4px); text-shadow: 0 0 22px rgba(204,164,59,1); }
+}
+#wheel-canvas {
+  display: block;
+  border-radius: 50%;
+  box-shadow:
+    0 0 0 3px #cca43b,
+    0 0 0 6px #2a1a00,
+    0 0 40px rgba(204,164,59,.3),
+    0 8px 32px rgba(0,0,0,.6);
+  max-width: 100%;
+  height: auto;
+}
+
+/* ── Боковая панель ───────────────────────────────────────── */
+.wheel-side {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+/* список призов */
+.wheel-prizes-list {
+  background: var(--bg-body);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 1rem;
+}
+.wpl-title {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-secondary);
+  margin-bottom: 0.7rem;
+}
+.wpl-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 0.88rem;
+  color: var(--text-primary);
+  padding: 3px 0;
+}
+.wpl-lose { color: var(--text-secondary); }
+.wpl-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+/* кнопка «Крутить» */
+.btn-spin {
+  width: 100%;
+  padding: 14px;
+  background: linear-gradient(135deg, #b8860b, #e0b030 50%, #b8860b);
+  background-size: 200% auto;
+  color: #000;
+  font-family: 'Cinzel', serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  animation: shimmerBtn 2s linear infinite;
+  box-shadow: 0 4px 20px rgba(204,164,59,.4);
+  transition: transform 0.15s, opacity 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+.btn-spin:hover:not(:disabled)  { transform: scale(1.03); box-shadow: 0 6px 28px rgba(204,164,59,.6); }
+.btn-spin:active:not(:disabled) { transform: scale(0.97); }
+.btn-spin:disabled,
+.btn-spin-cooldown {
+  background: #2a2a2a !important;
+  color: var(--text-secondary) !important;
+  animation: none !important;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+/* результат */
+.wheel-result {
+  opacity: 0;
+  transform: translateY(10px) scale(0.95);
+  transition: opacity 0.35s, transform 0.35s;
+  pointer-events: none;
+}
+.wheel-result.visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  pointer-events: all;
+}
+.wheel-result-inner {
+  border-radius: 8px;
+  padding: 1.2rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+.wheel-result-win {
+  background: linear-gradient(135deg, #1a1000, #2a1a00);
+  border: 1px solid var(--accent-gold);
+  box-shadow: 0 0 24px rgba(204,164,59,.25);
+}
+.wheel-result-lose {
+  background: var(--bg-body);
+  border: 1px solid var(--border);
+}
+.win-emoji  { font-size: 2.2rem; }
+.win-label  { font-family: 'Cinzel', serif; font-size: 1.2rem; color: var(--accent-gold); font-weight: 700; }
+.win-code   { font-family: 'Rajdhani', sans-serif; font-size: 0.9rem; color: var(--text-secondary); }
+.win-code strong { color: var(--text-primary); letter-spacing: 0.12em; font-size: 1rem; }
+.win-sub    { font-family: 'Rajdhani', sans-serif; font-size: 0.85rem; color: var(--text-secondary); }
+
+.btn-activate-promo {
+  margin-top: 4px;
+  padding: 9px 20px;
+  background: var(--accent-gold);
+  color: #000;
+  border: none;
+  border-radius: 4px;
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 700;
+  font-size: 0.9rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  transition: background 0.2s, transform 0.15s;
+}
+.btn-activate-promo:hover { background: #e0b030; transform: scale(1.03); }
+
+/* адаптив для колеса */
+@media (max-width: 700px) {
+  .wheel-layout {
+    grid-template-columns: 1fr;
+  }
+  .wheel-modal-box { padding: 1.2rem; }
+  .wheel-title { font-size: 1.3rem; }
+  #wheel-canvas { width: 280px; height: 280px; }
+  .promo-bar { flex-direction: column; align-items: stretch; }
+  .btn-wheel-open { justify-content: center; }
+}
