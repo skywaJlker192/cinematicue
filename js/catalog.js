@@ -1,21 +1,3 @@
-/* =====================================================
-   CINEMATHEQUE — catalog.js  v2
-   Фичи:
-   1.  Массив данных + генерация карточек
-   2.  JS-фильтрация по типу/году
-   3.  Сортировка (рейтинг, год, название)
-   4.  Живой поиск
-   5.  Skeleton-загрузка
-   6.  Scroll-анимация карточек (IntersectionObserver)
-   7.  Избранное (localStorage)
-   8.  Toast-уведомления
-   9.  История просмотров (localStorage)
-   10. Случайный фильм «Мне повезёт»
-   11. Модальное окно с листанием + клавиши
-   12. Счётчик результатов
-   13. Кнопка «Наверх»
-   ===================================================== */
-
 const FILMS = [
   { id:1,  title:'Очень странные дела',    image:'images/strange_things.jpeg', year:2026, duration:'5 Сезонов',   genre:'Ужасы, Фантастика',   rating:8.9, type:'series',  isNew:true,  badges:[{text:'Final',cls:'badge-new'},{text:'Series',cls:'badge-series'}], description:'Финальный сезон культового сериала о Хокинсе. Группа подростков сталкивается с последней угрозой из Изнанки — и на этот раз ставки как никогда высоки. Мощная концовка одного из лучших сериалов эпохи стриминга.' },
   { id:2,  title:'Дюна: Часть вторая',     image:'images/dune2.webp',          year:2024, duration:'2ч 46м',      genre:'Фантастика, Эпик',    rating:8.9, type:'movie',   isNew:false, badges:[], description:'Пол Атрейдес объединяется с Чани и фрименами, чтобы отомстить заговорщикам, уничтожившим его семью. Дени Вильнёв создал эпический шедевр о власти, пророчестве и цене войны. IMAX-зрелище.' },
@@ -40,7 +22,6 @@ const FILMS = [
   { id:21, title:'Человек-паук: Паутина', image:'images/sm.webp',             year:2023, duration:'2ч 20м',      genre:'Анимация',            rating:9.0, type:'cartoon', isNew:false, badges:[], description:'Майлз Моралес путешествует по мультивселенной и встречает армию Людей-пауков. Sony переизобрела анимационное кино — каждый кадр как произведение искусства.' },
 ];
 
-// ── СОСТОЯНИЕ ─────────────────────────────────────────
 let wishlist       = JSON.parse(localStorage.getItem('cine_wishlist') || '{}');
 let recentlyViewed = JSON.parse(localStorage.getItem('cine_recent')   || '[]');
 let activeFilter   = 'all';
@@ -48,7 +29,6 @@ let activeSortKey  = 'default';
 let currentModalId = null;
 let searchQuery    = '';
 
-// ── PERSISTENCE ───────────────────────────────────────
 function saveWishlist() { localStorage.setItem('cine_wishlist', JSON.stringify(wishlist)); }
 function saveRecent()   { localStorage.setItem('cine_recent',   JSON.stringify(recentlyViewed)); }
 
@@ -58,7 +38,6 @@ function pluralFilm(n) {
   return 'фильмов';
 }
 
-// ── TOAST ─────────────────────────────────────────────
 function showToast(message, type = 'info') {
   const container = document.getElementById('toast-container');
   if (!container) return;
@@ -74,7 +53,6 @@ function showToast(message, type = 'info') {
   }, 2800);
 }
 
-// ── SKELETON ──────────────────────────────────────────
 function showSkeletons(count = 8) {
   const grid = document.getElementById('js-films-grid');
   if (!grid) return;
@@ -89,7 +67,6 @@ function showSkeletons(count = 8) {
     </article>`).join('');
 }
 
-// ── РЕНДЕР КАРТОЧКИ ───────────────────────────────────
 function renderCard(film) {
   const inW = !!wishlist[film.id];
   const badgesHTML = [
@@ -115,7 +92,7 @@ function renderCard(film) {
     </article>`;
 }
 
-// ── ФИЛЬТР + СОРТИРОВКА ───────────────────────────────
+// ИЛЬТР + СОРТИРОВКА
 function getFilteredSortedFilms() {
   let r = [...FILMS];
   if (activeFilter === 'movies')  r = r.filter(f => f.type === 'movie');
@@ -132,7 +109,6 @@ function getFilteredSortedFilms() {
   return r;
 }
 
-// ── РЕНДЕР КАТАЛОГА ───────────────────────────────────
 function renderCatalog(films) {
   const grid = document.getElementById('js-films-grid');
   if (!grid) return;
@@ -153,7 +129,7 @@ function applyFilter(filter) {
   renderCatalog(getFilteredSortedFilms());
 }
 
-// ── SCROLL-АНИМАЦИЯ (IntersectionObserver) ────────────
+
 function initScrollAnimations() {
   const cards = document.querySelectorAll('.card-hidden');
   if (!cards.length) return;
@@ -171,7 +147,7 @@ function initScrollAnimations() {
   cards.forEach(c => obs.observe(c));
 }
 
-// ── ИСТОРИЯ ПРОСМОТРОВ ────────────────────────────────
+// ИСТОРИЯ ПРОСМОТРОВ
 function addToRecent(id) {
   const n = +id;
   recentlyViewed = recentlyViewed.filter(x => x !== n);
@@ -195,7 +171,7 @@ function renderRecent() {
     </div>`).join('');
 }
 
-// ── ИЗБРАННОЕ ─────────────────────────────────────────
+// ИЗБРАННОЕ
 function renderCounter() {
   const count = Object.keys(wishlist).length;
   const badge = document.getElementById('wishlist-badge');
@@ -263,7 +239,7 @@ function closeWishlistModal() {
   document.body.style.overflow = '';
 }
 
-// ── МОДАЛЬНОЕ ОКНО ФИЛЬМА ─────────────────────────────
+
 function openFilmModal(id) {
   const film = FILMS.find(f => f.id === +id);
   if (!film) return;
@@ -304,7 +280,7 @@ function navigateModal(dir) {
   openFilmModal(list[(idx + dir + list.length) % list.length].id);
 }
 
-// ── СЛУЧАЙНЫЙ ФИЛЬМ ───────────────────────────────────
+// СЛУЧАЙНЫЙ ФИЛЬМ 
 function openRandomFilm() {
   const list = getFilteredSortedFilms();
   if (!list.length) return;
@@ -313,7 +289,7 @@ function openRandomFilm() {
   setTimeout(() => openFilmModal(film.id), 400);
 }
 
-// ── ЖИВОЙ ПОИСК ───────────────────────────────────────
+// ЖИВОЙ ПОИСК 
 function applySearch(query) {
   searchQuery = query.toLowerCase().trim();
   if (!searchQuery) { renderCatalog(getFilteredSortedFilms()); return; }
@@ -323,7 +299,7 @@ function applySearch(query) {
   ));
 }
 
-// ── КНОПКА «НАВЕРХ» ───────────────────────────────────
+// КНОПКА НАВЕРХ
 function initBackToTop() {
   const btn = document.getElementById('back-to-top-index');
   if (!btn) return;
@@ -331,9 +307,7 @@ function initBackToTop() {
   btn.addEventListener('click', () => window.scrollTo({ top:0, behavior:'smooth' }));
 }
 
-// ══════════════════════════════════════════════════════
-// ИНИЦИАЛИЗАЦИЯ
-// ══════════════════════════════════════════════════════
+
 document.addEventListener('DOMContentLoaded', () => {
 
   // тема BB-8
