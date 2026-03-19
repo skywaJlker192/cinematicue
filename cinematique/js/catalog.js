@@ -1,21 +1,3 @@
-/* =====================================================
-   CINEMATHEQUE — catalog.js  v2
-   Фичи:
-   1.  Массив данных + генерация карточек
-   2.  JS-фильтрация по типу/году
-   3.  Сортировка (рейтинг, год, название)
-   4.  Живой поиск
-   5.  Skeleton-загрузка
-   6.  Scroll-анимация карточек (IntersectionObserver)
-   7.  Избранное (localStorage)
-   8.  Toast-уведомления
-   9.  История просмотров (localStorage)
-   10. Случайный фильм «Мне повезёт»
-   11. Модальное окно с листанием + клавиши
-   12. Счётчик результатов
-   13. Кнопка «Наверх»
-   ===================================================== */
-
 const FILMS = [
   { id:1,  title:'Очень странные дела',    image:'images/strange_things.jpeg', year:2026, duration:'5 Сезонов',   genre:'Ужасы, Фантастика',   rating:8.9, type:'series',  isNew:true,  badges:[{text:'Final',cls:'badge-new'},{text:'Series',cls:'badge-series'}], description:'Финальный сезон культового сериала о Хокинсе. Группа подростков сталкивается с последней угрозой из Изнанки — и на этот раз ставки как никогда высоки. Мощная концовка одного из лучших сериалов эпохи стриминга.' },
   { id:2,  title:'Дюна: Часть вторая',     image:'images/dune2.webp',          year:2024, duration:'2ч 46м',      genre:'Фантастика, Эпик',    rating:8.9, type:'movie',   isNew:false, badges:[], description:'Пол Атрейдес объединяется с Чани и фрименами, чтобы отомстить заговорщикам, уничтожившим его семью. Дени Вильнёв создал эпический шедевр о власти, пророчестве и цене войны. IMAX-зрелище.' },
@@ -40,25 +22,24 @@ const FILMS = [
   { id:21, title:'Человек-паук: Паутина', image:'images/sm.webp',             year:2023, duration:'2ч 20м',      genre:'Анимация',            rating:9.0, type:'cartoon', isNew:false, badges:[], description:'Майлз Моралес путешествует по мультивселенной и встречает армию Людей-пауков. Sony переизобрела анимационное кино — каждый кадр как произведение искусства.' },
 ];
 
-// ── СОСТОЯНИЕ ─────────────────────────────────────────
-let wishlist       = JSON.parse(localStorage.getItem('cine_wishlist') || '{}');
-let recentlyViewed = JSON.parse(localStorage.getItem('cine_recent')   || '[]');
-let activeFilter   = 'all';
-let activeSortKey  = 'default';
+let wishlist = JSON.parse(localStorage.getItem('cine_wishlist') || '{}');
+let recentlyViewed = JSON.parse(localStorage.getItem('cine_recent') || '[]');
+let activeFilter = 'all';
+let activeSortKey = 'default';
 let currentModalId = null;
-let searchQuery    = '';
+let searchQuery = '';
 
-// ── PERSISTENCE ───────────────────────────────────────
 function saveWishlist() { localStorage.setItem('cine_wishlist', JSON.stringify(wishlist)); }
-function saveRecent()   { localStorage.setItem('cine_recent',   JSON.stringify(recentlyViewed)); }
+function saveRecent() { localStorage.setItem('cine_recent', JSON.stringify(recentlyViewed)); }
 
 function pluralFilm(n) {
   if (n % 10 === 1 && n % 100 !== 11) return 'фильм';
   if ([2,3,4].includes(n % 10) && ![12,13,14].includes(n % 100)) return 'фильма';
   return 'фильмов';
+
 }
 
-// ── TOAST ─────────────────────────────────────────────
+// toast уведомления
 function showToast(message, type = 'info') {
   const container = document.getElementById('toast-container');
   if (!container) return;
@@ -74,7 +55,6 @@ function showToast(message, type = 'info') {
   }, 2800);
 }
 
-// ── SKELETON ──────────────────────────────────────────
 function showSkeletons(count = 8) {
   const grid = document.getElementById('js-films-grid');
   if (!grid) return;
@@ -89,7 +69,6 @@ function showSkeletons(count = 8) {
     </article>`).join('');
 }
 
-// ── РЕНДЕР КАРТОЧКИ ───────────────────────────────────
 function renderCard(film) {
   const inW = !!wishlist[film.id];
   const badgesHTML = [
@@ -115,205 +94,160 @@ function renderCard(film) {
     </article>`;
 }
 
-// ── ФИЛЬТР + СОРТИРОВКА ───────────────────────────────
-function getFilteredSortedFilms() {
-  let r = [...FILMS];
-  if (activeFilter === 'movies')  r = r.filter(f => f.type === 'movie');
-  if (activeFilter === 'series')  r = r.filter(f => f.type === 'series');
-  if (activeFilter === 'new')     r = r.filter(f => f.year >= 2025);
-  if (activeFilter === 'cartoon') r = r.filter(f => f.type === 'cartoon');
-  switch (activeSortKey) {
-    case 'rating-desc': r.sort((a,b) => b.rating - a.rating); break;
-    case 'rating-asc':  r.sort((a,b) => a.rating - b.rating); break;
-    case 'year-desc':   r.sort((a,b) => b.year - a.year); break;
-    case 'year-asc':    r.sort((a,b) => a.year - b.year); break;
-    case 'title-asc':   r.sort((a,b) => a.title.localeCompare(b.title,'ru')); break;
-  }
-  return r;
-}
-
-// ── РЕНДЕР КАТАЛОГА ───────────────────────────────────
 function renderCatalog(films) {
   const grid = document.getElementById('js-films-grid');
   if (!grid) return;
-  const counter = document.getElementById('results-counter');
-  if (counter) counter.textContent = films.length > 0 ? `(${films.length})` : '';
   if (!films.length) {
-    grid.innerHTML = '<p class="no-results"><i class="fas fa-film"></i> По запросу ничего не найдено</p>';
+    grid.innerHTML = '<div class="empty-msg"><i class="fas fa-ghost"></i><p>Ничего не найдено :(</p></div>';
+    renderCounter();
     return;
   }
   grid.innerHTML = films.map(renderCard).join('');
-  initScrollAnimations();
+  setTimeout(() => {
+    const cards = grid.querySelectorAll('.js-card');
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.remove('card-hidden'); observer.unobserve(e.target); } });
+    }, { threshold: 0.1 });
+    cards.forEach(c => observer.observe(c));
+  }, 10);
+  renderCounter();
 }
 
-function applyFilter(filter) {
-  activeFilter = filter;
-  document.querySelectorAll('.js-filter-btn').forEach(b => b.classList.toggle('active', b.dataset.filter === filter));
-  if (searchQuery) { applySearch(searchQuery); return; }
+function renderCounter() {
+  const el = document.getElementById('films-count');
+  if (!el) return;
+  const grid = document.getElementById('js-films-grid');
+  const visible = grid?.querySelectorAll('.film-card:not(.skeleton-card)').length || 0;
+  el.textContent = `${visible} ${pluralFilm(visible)}`;
+}
+
+function getFilteredSortedFilms() {
+  let arr = activeFilter === 'all' ? FILMS : FILMS.filter(f => f.type === activeFilter);
+  if (activeSortKey === 'rating') arr.sort((a, b) => b.rating - a.rating);
+  else if (activeSortKey === 'year') arr.sort((a, b) => b.year - a.year);
+  else if (activeSortKey === 'title') arr.sort((a, b) => a.title.localeCompare(b.title, 'ru'));
+  return arr;
+}
+
+function applyFilter(f) {
+  activeFilter = f;
+  searchQuery = '';
+  const input = document.querySelector('.poda-input');
+  if (input) input.value = '';
   renderCatalog(getFilteredSortedFilms());
+  document.querySelectorAll('.js-filter-btn').forEach(btn => btn.classList.toggle('active', btn.dataset.filter === f));
 }
 
-// ── SCROLL-АНИМАЦИЯ (IntersectionObserver) ────────────
-function initScrollAnimations() {
-  const cards = document.querySelectorAll('.card-hidden');
-  if (!cards.length) return;
-  const obs = new IntersectionObserver((entries) => {
-    entries.forEach((entry, i) => {
-      if (entry.isIntersecting) {
-        setTimeout(() => {
-          entry.target.classList.remove('card-hidden');
-          entry.target.classList.add('card-visible');
-        }, (i % 4) * 60);
-        obs.unobserve(entry.target);
-      }
-    });
-  }, { threshold: 0.08 });
-  cards.forEach(c => obs.observe(c));
+function toggleWishlist(id) {
+  const film = FILMS.find(f => f.id == id);
+  if (!film) return;
+  if (wishlist[id]) {
+    delete wishlist[id];
+    showToast(`«${film.title}» удалён из избранного`, 'remove');
+  } else {
+    wishlist[id] = { id: film.id, title: film.title, image: film.image };
+    showToast(`«${film.title}» добавлен в избранное`, 'success');
+  }
+  saveWishlist();
+  renderCatalog(searchQuery ? FILMS.filter(f => f.title.toLowerCase().includes(searchQuery) || f.genre.toLowerCase().includes(searchQuery)) : getFilteredSortedFilms());
 }
 
-// ── ИСТОРИЯ ПРОСМОТРОВ ────────────────────────────────
 function addToRecent(id) {
-  const n = +id;
-  recentlyViewed = recentlyViewed.filter(x => x !== n);
-  recentlyViewed.unshift(n);
-  if (recentlyViewed.length > 5) recentlyViewed = recentlyViewed.slice(0, 5);
+  recentlyViewed = [id, ...recentlyViewed.filter(x => x != id)].slice(0, 6);
   saveRecent();
   renderRecent();
 }
 
 function renderRecent() {
-  const section = document.getElementById('recently-viewed-section');
-  const list    = document.getElementById('recently-list');
-  if (!section || !list) return;
-  const films = recentlyViewed.map(id => FILMS.find(f => f.id === id)).filter(Boolean);
-  if (!films.length) { section.style.display = 'none'; return; }
-  section.style.display = 'block';
-  list.innerHTML = films.map(f => `
-    <div class="recent-item js-open-modal" data-id="${f.id}" title="${f.title}">
-      <img src="${f.image}" alt="${f.title}" class="recent-img">
-      <span class="recent-title">${f.title}</span>
-    </div>`).join('');
+  const list = document.getElementById('recently-list');
+  if (!list) return;
+  const items = recentlyViewed.map(id => {
+    const f = FILMS.find(x => x.id == id);
+    return f ? `<div class="recent-item js-open-modal" data-id="${f.id}"><img src="${f.image}" alt="${f.title}"><span>${f.title}</span></div>` : '';
+  }).join('');
+  list.innerHTML = items || '<div class="recent-empty">История пуста</div>';
 }
 
-// ── ИЗБРАННОЕ ─────────────────────────────────────────
-function renderCounter() {
-  const count = Object.keys(wishlist).length;
-  const badge = document.getElementById('wishlist-badge');
-  if (!badge) return;
-  badge.textContent = count;
-  badge.style.display = count > 0 ? 'flex' : 'none';
-}
-
-function toggleWishlist(id) {
-  const film = FILMS.find(f => f.id === +id);
-  if (!film) return;
-  const wasIn = !!wishlist[id];
-  if (wasIn) { delete wishlist[id]; showToast(`«${film.title}» убран из избранного`, 'remove'); }
-  else       { wishlist[id] = film; showToast(`«${film.title}» добавлен в избранное`, 'success'); }
-  saveWishlist();
-  renderCounter();
-
-  // кнопка на карточке
-  const cardBtn = document.querySelector(`.wishlist-btn[data-id="${id}"]`);
-  if (cardBtn) {
-    const inW = !!wishlist[id];
-    cardBtn.classList.toggle('active', inW);
-    cardBtn.querySelector('i').className = inW ? 'fas fa-heart' : 'far fa-heart';
-  }
-  // кнопка в модалке фильма
-  const mBtn = document.getElementById('modal-wishlist-btn');
-  if (mBtn && +mBtn.dataset.id === +id) {
-    const inW = !!wishlist[id];
-    mBtn.innerHTML = inW ? '<i class="fas fa-heart"></i> Убрать из избранного' : '<i class="far fa-heart"></i> В избранное';
-    mBtn.classList.toggle('active', inW);
-  }
-  // обновить список избранного если открыт
-  if (document.getElementById('wishlist-modal')?.classList.contains('open')) renderWishlistModal();
-}
-
-function renderWishlistModal() {
-  const list  = document.getElementById('wishlist-items');
-  const total = document.getElementById('wishlist-total');
-  const items = Object.values(wishlist);
-  if (!items.length) {
-    list.innerHTML = '<p class="wishlist-empty">Избранное пусто — добавьте фильмы нажав ♥ на карточке</p>';
-    total.textContent = '';
-    return;
-  }
-  list.innerHTML = items.map(f => `
-    <div class="wl-item">
-      <img src="${f.image}" alt="${f.title}" class="wl-img">
-      <div class="wl-info">
-        <div class="wl-title">${f.title}</div>
-        <div class="wl-meta">${f.year} · ${f.genre}</div>
-        <div class="wl-rating"><i class="fas fa-star"></i> ${f.rating}</div>
-      </div>
-      <button class="wl-remove" data-id="${f.id}"><i class="fas fa-times"></i></button>
-    </div>`).join('');
-  total.textContent = `${items.length} ${pluralFilm(items.length)} в избранном`;
-}
-
-function openWishlistModal() {
-  renderWishlistModal();
-  document.getElementById('wishlist-modal').classList.add('open');
-  document.body.style.overflow = 'hidden';
-}
-function closeWishlistModal() {
-  document.getElementById('wishlist-modal')?.classList.remove('open');
-  document.body.style.overflow = '';
-}
-
-// ── МОДАЛЬНОЕ ОКНО ФИЛЬМА ─────────────────────────────
 function openFilmModal(id) {
-  const film = FILMS.find(f => f.id === +id);
+  const film = FILMS.find(f => f.id == id);
   if (!film) return;
-  currentModalId = film.id;
-  const inW = !!wishlist[film.id];
-
-  document.getElementById('modal-img').src              = film.image;
-  document.getElementById('modal-img').alt               = film.title;
-  document.getElementById('modal-title').textContent     = film.title;
-  document.getElementById('modal-year').textContent      = film.year;
-  document.getElementById('modal-duration').textContent  = film.duration;
-  document.getElementById('modal-genre').textContent     = film.genre;
-  document.getElementById('modal-rating').textContent    = film.rating;
-  document.getElementById('modal-desc').textContent      = film.description;
-
+  currentModalId = id;
+  addToRecent(id);
+  const modal = document.getElementById('film-modal');
+  const inW = !!wishlist[id];
   const wBtn = document.getElementById('modal-wishlist-btn');
-  wBtn.dataset.id = film.id;
-  wBtn.innerHTML  = inW ? '<i class="fas fa-heart"></i> Убрать из избранного' : '<i class="far fa-heart"></i> В избранное';
-  wBtn.classList.toggle('active', inW);
-
-  document.getElementById('film-modal').classList.add('open');
+  if (wBtn) {
+    wBtn.dataset.id = id;
+    wBtn.innerHTML = `<i class="fa${inW?'s':'r'} fa-heart"></i> ${inW ? 'В избранном' : 'В избранное'}`;
+    wBtn.classList.toggle('active', inW);
+  }
+  const badgesHTML = [
+    `<span class="badge badge-rating">${film.rating}</span>`,
+    ...film.badges.map(b => `<span class="badge ${b.cls}">${b.text}</span>`)
+  ].join('');
+  document.getElementById('modal-img').innerHTML = `<img src="${film.image}" alt="${film.title}">`;
+  document.getElementById('modal-badges').innerHTML = badgesHTML;
+  document.getElementById('modal-title').textContent = film.title;
+  document.getElementById('modal-meta').innerHTML = `<span>${film.year}</span> • <span>${film.duration}</span> • <span>${film.genre}</span>`;
+  document.getElementById('modal-desc').textContent = film.description;
+  modal.classList.add('open');
   document.body.style.overflow = 'hidden';
-  addToRecent(film.id);
 }
 
 function closeFilmModal() {
-  document.getElementById('film-modal')?.classList.remove('open');
+  const modal = document.getElementById('film-modal');
+  modal.classList.remove('open');
   document.body.style.overflow = '';
   currentModalId = null;
 }
 
 function navigateModal(dir) {
-  const list = searchQuery
-    ? FILMS.filter(f => f.title.toLowerCase().includes(searchQuery) || f.genre.toLowerCase().includes(searchQuery))
-    : getFilteredSortedFilms();
-  const idx = list.findIndex(f => f.id === currentModalId);
+  if (!currentModalId) return;
+  const idx = FILMS.findIndex(f => f.id == currentModalId);
   if (idx === -1) return;
-  openFilmModal(list[(idx + dir + list.length) % list.length].id);
+  const newIdx = (idx + dir + FILMS.length) % FILMS.length;
+  closeFilmModal();
+  setTimeout(() => openFilmModal(FILMS[newIdx].id), 400);
 }
 
-// ── СЛУЧАЙНЫЙ ФИЛЬМ ───────────────────────────────────
+function openWishlistModal() {
+  const modal = document.getElementById('wishlist-modal');
+  const container = document.getElementById('wishlist-items');
+  const ids = Object.keys(wishlist);
+  if (!ids.length) {
+    container.innerHTML = '<div class="wl-empty"><i class="far fa-heart"></i><p>Ваше избранное пока пусто</p></div>';
+  } else {
+    const html = ids.map(id => {
+      const f = FILMS.find(x => x.id == id);
+      if (!f) return '';
+      return `
+        <div class="wl-card">
+          <img src="${f.image}" alt="${f.title}" class="js-open-modal" data-id="${f.id}">
+          <div class="wl-info">
+            <h4 class="js-open-modal" data-id="${f.id}">${f.title}</h4>
+            <p>${f.year} • ${f.genre}</p>
+          </div>
+          <button class="wl-remove" data-id="${f.id}"><i class="fas fa-times"></i></button>
+        </div>`;
+    }).join('');
+    container.innerHTML = html;
+  }
+  modal.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeWishlistModal() {
+  const modal = document.getElementById('wishlist-modal');
+  modal.classList.remove('open');
+  document.body.style.overflow = '';
+}
+
 function openRandomFilm() {
-  const list = getFilteredSortedFilms();
-  if (!list.length) return;
-  const film = list[Math.floor(Math.random() * list.length)];
-  showToast(`Открываем «${film.title}»...`, 'dice');
+  const film = FILMS[Math.floor(Math.random() * FILMS.length)];
+  showToast(`Ваша судьба: «${film.title}»`, 'dice');
   setTimeout(() => openFilmModal(film.id), 400);
 }
 
-// ── ЖИВОЙ ПОИСК ───────────────────────────────────────
 function applySearch(query) {
   searchQuery = query.toLowerCase().trim();
   if (!searchQuery) { renderCatalog(getFilteredSortedFilms()); return; }
@@ -323,7 +257,6 @@ function applySearch(query) {
   ));
 }
 
-// ── КНОПКА «НАВЕРХ» ───────────────────────────────────
 function initBackToTop() {
   const btn = document.getElementById('back-to-top-index');
   if (!btn) return;
@@ -331,12 +264,9 @@ function initBackToTop() {
   btn.addEventListener('click', () => window.scrollTo({ top:0, behavior:'smooth' }));
 }
 
-// ══════════════════════════════════════════════════════
-// ИНИЦИАЛИЗАЦИЯ
-// ══════════════════════════════════════════════════════
+// инит
 document.addEventListener('DOMContentLoaded', () => {
-
-  // тема BB-8
+  // тема
   const toggle = document.querySelector('.bb8-toggle__checkbox');
   if (toggle) {
     if (localStorage.getItem('theme') === 'light') { document.body.classList.add('light-theme'); toggle.checked = true; }
@@ -349,7 +279,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const grid = document.getElementById('js-films-grid');
   if (!grid) return;
 
-  // skeleton → реальный рендер
   showSkeletons(8);
   setTimeout(() => {
     renderCatalog(getFilteredSortedFilms());
@@ -357,21 +286,17 @@ document.addEventListener('DOMContentLoaded', () => {
     renderRecent();
   }, 350);
 
-  // фильтры
   document.querySelectorAll('.js-filter-btn').forEach(btn =>
     btn.addEventListener('click', () => applyFilter(btn.dataset.filter))
   );
 
-  // сортировка
   document.getElementById('sort-select')?.addEventListener('change', e => {
     activeSortKey = e.target.value;
     if (searchQuery) applySearch(searchQuery); else renderCatalog(getFilteredSortedFilms());
   });
 
-  // поиск
   document.querySelector('.poda-input')?.addEventListener('input', e => applySearch(e.target.value));
 
-  // делегирование: грид
   grid.addEventListener('click', e => {
     const trigger = e.target.closest('.js-open-modal');
     if (trigger) { openFilmModal(trigger.dataset.id); return; }
@@ -379,42 +304,30 @@ document.addEventListener('DOMContentLoaded', () => {
     if (wBtn) { toggleWishlist(wBtn.dataset.id); return; }
   });
 
-  // делегирование: недавно смотрели
   document.getElementById('recently-list')?.addEventListener('click', e => {
     const item = e.target.closest('.js-open-modal');
     if (item) openFilmModal(item.dataset.id);
   });
 
-  // избранное в шапке
   document.getElementById('wishlist-toggle-btn')?.addEventListener('click', openWishlistModal);
-
-  // «Мне повезёт»
   document.getElementById('btn-lucky')?.addEventListener('click', openRandomFilm);
-
-  // избранное в модалке фильма
   document.getElementById('modal-wishlist-btn')?.addEventListener('click', e => toggleWishlist(e.currentTarget.dataset.id));
-
-  // стрелки модалки
   document.getElementById('modal-prev')?.addEventListener('click', () => navigateModal(-1));
   document.getElementById('modal-next')?.addEventListener('click', () => navigateModal(1));
-
-  // закрытие модалок
   document.getElementById('film-modal-close')?.addEventListener('click', closeFilmModal);
   document.getElementById('film-modal')?.addEventListener('click', e => { if (e.target.id === 'film-modal') closeFilmModal(); });
   document.getElementById('wishlist-modal-close')?.addEventListener('click', closeWishlistModal);
   document.getElementById('wishlist-modal')?.addEventListener('click', e => { if (e.target.id === 'wishlist-modal') closeWishlistModal(); });
 
-  // удаление из избранного внутри модалки
   document.getElementById('wishlist-items')?.addEventListener('click', e => {
     const r = e.target.closest('.wl-remove');
     if (r) toggleWishlist(r.dataset.id);
   });
 
-  // клавиатура
   document.addEventListener('keydown', e => {
     const isOpen = document.getElementById('film-modal')?.classList.contains('open');
     if (isOpen && e.key === 'ArrowRight') navigateModal(1);
-    if (isOpen && e.key === 'ArrowLeft')  navigateModal(-1);
+    if (isOpen && e.key === 'ArrowLeft') navigateModal(-1);
     if (e.key === 'Escape') { closeFilmModal(); closeWishlistModal(); }
   });
 

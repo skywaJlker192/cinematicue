@@ -1,11 +1,5 @@
-/* =====================================================
-   CINEMATHEQUE — about.js
-   ТЗ: прогресс чтения + кнопка "наверх"
-   ===================================================== */
-
 document.addEventListener('DOMContentLoaded', () => {
-
-  // ─── ТЕМА (общий код) ──────────────────────────────
+  // тема
   const toggle = document.querySelector('.bb8-toggle__checkbox');
   if (toggle) {
     const body = document.body;
@@ -19,7 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // ─── ПРОГРЕСС ЧТЕНИЯ ───────────────────────────────
+  // прогресс чтения
   const progressBar = document.getElementById('reading-progress');
 
   function updateProgress() {
@@ -30,7 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
     progressBar.style.width = pct + '%';
   }
 
-  // ─── КНОПКА "НАВЕРХ" ───────────────────────────────
+  // кнопка наверх
   const backTopBtn = document.getElementById('back-to-top');
 
   function updateBackTop() {
@@ -44,13 +38,11 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // общий scroll listener
   window.addEventListener('scroll', () => {
     updateProgress();
     updateBackTop();
   }, { passive: true });
 
-  // инициализация при загрузке
   updateProgress();
   updateBackTop();
 });
