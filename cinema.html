@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Кинотеатры — Синематека</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/cinema.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+
+  <!-- ШАПКА (идентична index.html) -->
+  <header class="site-header">
+    <div class="nav-inner">
+      <a href="index.html" class="logo">
+        <div class="logo-icon">C</div>
+        <span class="logo-text">CINEMATHEQUE</span>
+      </a>
+
+      <nav class="main-nav">
+        <a href="index.html">Главная</a>
+        <a href="cinema.html" class="active">Кинотеатры</a>
+        <a href="about.html">О сервисе</a>
+        <a href="contacts.html">Контакты</a>
+      </nav>
+
+      <!-- Кнопка Избранное -->
+      <button class="wishlist-nav-btn" title="Избранное" onclick="window.location.href='index.html'">
+        <i class="fas fa-heart"></i>
+      </button>
+
+      <!-- BB-8 Theme Toggle -->
+      <label class="bb8-toggle">
+        <input class="bb8-toggle__checkbox" type="checkbox" id="theme-toggle-cinema">
+        <div class="bb8-toggle__container">
+          <div class="bb8-toggle__scenery">
+            <div class="bb8-toggle__star"></div><div class="bb8-toggle__star"></div>
+            <div class="bb8-toggle__star"></div><div class="bb8-toggle__star"></div>
+            <div class="bb8-toggle__star"></div><div class="bb8-toggle__star"></div>
+            <div class="bb8-toggle__star"></div>
+            <div class="tatto-1"></div><div class="tatto-2"></div>
+            <div class="gomrassen"></div><div class="hermes"></div><div class="chenini"></div>
+            <div class="bb8-toggle__cloud"></div><div class="bb8-toggle__cloud"></div><div class="bb8-toggle__cloud"></div>
+          </div>
+          <div class="bb8">
+            <div class="bb8__head-container">
+              <div class="bb8__antenna"></div><div class="bb8__antenna"></div>
+              <div class="bb8__head"></div>
+            </div>
+            <div class="bb8__body"></div>
+          </div>
+          <div class="artificial__hidden"><div class="bb8__shadow"></div></div>
+        </div>
+      </label>
+    </div>
+  </header>
+
+  <!-- PAGE HERO -->
+  <section class="cinema-page-hero">
+    <div class="cinema-hero-content">
+      <div class="cinema-hero-badge"><i class="fas fa-ticket-alt"></i> БРОНИРОВАНИЕ БИЛЕТОВ</div>
+      <h1 class="cinema-hero-title">КИНОТЕАТРЫ<br><span class="text-gold">МОСКВЫ</span></h1>
+      <p class="cinema-hero-sub">Выберите кинотеатр, сеанс и место — всё в одном месте</p>
+      <div class="cinema-stats" id="cinema-stats">
+        <div class="cstat"><span class="cstat-num" id="stat-cinemas">5</span><span class="cstat-label">кинотеатров</span></div>
+        <div class="cstat"><span class="cstat-num" id="stat-sessions">60+</span><span class="cstat-label">сеансов</span></div>
+        <div class="cstat"><span class="cstat-num" id="stat-orders">—</span><span class="cstat-label">продано</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MAIN CONTENT -->
+  <main class="cinema-main">
+    <div class="container">
+
+      <!-- STEP INDICATOR -->
+      <div class="booking-steps" id="booking-steps">
+        <div class="bstep active" data-step="1">
+          <div class="bstep-num">1</div>
+          <span>Кинотеатр</span>
+        </div>
+        <div class="bstep-line"></div>
+        <div class="bstep" data-step="2">
+          <div class="bstep-num">2</div>
+          <span>Сеанс</span>
+        </div>
+        <div class="bstep-line"></div>
+        <div class="bstep" data-step="3">
+          <div class="bstep-num">3</div>
+          <span>Места</span>
+        </div>
+        <div class="bstep-line"></div>
+        <div class="bstep" data-step="4">
+          <div class="bstep-num">4</div>
+          <span>Оплата</span>
+        </div>
+      </div>
+
+      <!-- ═══ STEP 1: CINEMA LIST ═══ -->
+      <section class="booking-step-content" id="step-cinemas">
+        <div class="step-header">
+          <h2>Выберите кинотеатр</h2>
+          <p class="step-sub">Все кинотеатры Москвы в одном месте</p>
+        </div>
+
+        <!-- Metro filter -->
+        <div class="cinema-filter-bar">
+          <button class="cf-btn active" data-metro="all">Все</button>
+          <button class="cf-btn" data-metro="Арбатская">Арбатская</button>
+          <button class="cf-btn" data-metro="Киевская">Киевская</button>
+          <button class="cf-btn" data-metro="Домодедовская">Домодедовская</button>
+          <button class="cf-btn" data-metro="Третьяковская">Третьяковская</button>
+          <button class="cf-btn" data-metro="Октябрьское поле">Окт. поле</button>
+        </div>
+
+        <div class="cinemas-grid" id="cinemas-grid">
+          <!-- динамически заполняется -->
+          <div class="cinema-skeleton"></div>
+          <div class="cinema-skeleton"></div>
+          <div class="cinema-skeleton"></div>
+        </div>
+      </section>
+
+      <!-- ═══ STEP 2: SESSIONS ═══ -->
+      <section class="booking-step-content hidden" id="step-sessions">
+        <button class="back-btn" id="back-to-cinemas">
+          <i class="fas fa-arrow-left"></i> Назад к кинотеатрам
+        </button>
+        <div class="step-header">
+          <h2 id="sessions-cinema-name">Выберите сеанс</h2>
+          <p class="step-sub" id="sessions-cinema-addr"></p>
+        </div>
+
+        <!-- Date picker -->
+        <div class="date-picker" id="date-picker"></div>
+
+        <!-- Sessions list -->
+        <div class="sessions-list" id="sessions-list">
+          <div class="sessions-loading"><i class="fas fa-spinner fa-spin"></i> Загружаем расписание...</div>
+        </div>
+      </section>
+
+      <!-- ═══ STEP 3: SEAT MAP ═══ -->
+      <section class="booking-step-content hidden" id="step-seats">
+        <button class="back-btn" id="back-to-sessions">
+          <i class="fas fa-arrow-left"></i> Назад к сеансам
+        </button>
+        <div class="step-header">
+          <h2 id="seats-session-info">Выберите места</h2>
+        </div>
+
+        <!-- Legend -->
+        <div class="seat-legend">
+          <div class="sl-item"><div class="sl-dot sl-vip"></div><span>VIP</span></div>
+          <div class="sl-item"><div class="sl-dot sl-comfort"></div><span>Комфорт</span></div>
+          <div class="sl-item"><div class="sl-dot sl-standard"></div><span>Стандарт</span></div>
+          <div class="sl-item"><div class="sl-dot sl-taken"></div><span>Занято</span></div>
+          <div class="sl-item"><div class="sl-dot sl-selected"></div><span>Выбрано</span></div>
+        </div>
+
+        <!-- Price info -->
+        <div class="price-info-bar" id="price-info-bar">
+          <div class="pib-item pib-vip"><i class="fas fa-crown"></i> VIP <strong id="pib-vip-price">₽1200</strong></div>
+          <div class="pib-item pib-comfort"><i class="fas fa-star"></i> Комфорт <strong id="pib-comfort-price">₽750</strong></div>
+          <div class="pib-item pib-standard"><i class="fas fa-ticket-alt"></i> Стандарт <strong id="pib-standard-price">₽450</strong></div>
+        </div>
+
+        <!-- Screen indicator -->
+        <div class="screen-label"><div class="screen-bar"></div><span>ЭКРАН</span></div>
+
+        <!-- Seat map -->
+        <div class="seat-map-wrap">
+          <div class="seat-map" id="seat-map"></div>
+        </div>
+
+        <!-- Selection summary -->
+        <div class="selection-summary" id="selection-summary" style="display:none">
+          <div class="sel-info">
+            <span id="sel-count">0 мест выбрано</span>
+            <span class="sel-seats-list" id="sel-seats-list"></span>
+          </div>
+          <div class="sel-total">Итого: <strong id="sel-total-price">₽0</strong></div>
+          <button class="btn btn-primary btn-book" id="btn-proceed-payment">
+            <i class="fas fa-lock"></i> Перейти к оплате
+          </button>
+        </div>
+      </section>
+
+      <!-- ═══ STEP 4: PAYMENT ═══ -->
+      <section class="booking-step-content hidden" id="step-payment">
+        <button class="back-btn" id="back-to-seats">
+          <i class="fas fa-arrow-left"></i> Назад к выбору мест
+        </button>
+        <div class="step-header">
+          <h2>Оформление заказа</h2>
+        </div>
+
+        <div class="payment-layout">
+          <!-- Order summary -->
+          <div class="order-card">
+            <div class="order-card-header"><i class="fas fa-receipt"></i> Детали заказа</div>
+            <div class="order-details" id="order-details"></div>
+          </div>
+
+          <!-- Payment form -->
+          <div class="payment-form-card">
+            <div class="payment-form-header"><i class="fas fa-credit-card"></i> Способ оплаты</div>
+            
+            <div class="pay-methods">
+              <label class="pay-method active" id="pm-card">
+                <input type="radio" name="pay" value="card" checked>
+                <i class="fas fa-credit-card"></i> Банковская карта
+              </label>
+              <label class="pay-method" id="pm-sbp">
+                <input type="radio" name="pay" value="sbp">
+                <i class="fas fa-mobile-alt"></i> СБП
+              </label>
+              <label class="pay-method" id="pm-wallet">
+                <input type="radio" name="pay" value="wallet">
+                <i class="fas fa-wallet"></i> Кошелёк
+              </label>
+            </div>
+
+            <!-- Card form -->
+            <div class="card-form" id="card-form">
+              <div class="form-group">
+                <label>Номер карты</label>
+                <input type="text" class="cin-input" id="card-number" placeholder="0000 0000 0000 0000" maxlength="19">
+              </div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label>Срок действия</label>
+                  <input type="text" class="cin-input" id="card-expiry" placeholder="ММ/ГГ" maxlength="5">
+                </div>
+                <div class="form-group">
+                  <label>CVV</label>
+                  <input type="text" class="cin-input" id="card-cvv" placeholder="•••" maxlength="3">
+                </div>
+              </div>
+              <div class="form-group">
+                <label>Имя держателя</label>
+                <input type="text" class="cin-input" id="card-name" placeholder="IVAN PETROV">
+              </div>
+            </div>
+
+            <div class="pay-total-row">
+              <span>Итого к оплате:</span>
+              <strong class="pay-total-amount" id="pay-final-total">₽0</strong>
+            </div>
+
+            <button class="btn btn-primary btn-pay" id="btn-pay">
+              <i class="fas fa-lock"></i> Оплатить <span id="pay-btn-amount"></span>
+            </button>
+            <p class="pay-secure"><i class="fas fa-shield-alt"></i> Защищённое соединение · Данные карты не сохраняются</p>
+          </div>
+        </div>
+      </section>
+
+    </div><!-- /container -->
+  </main>
+
+  <!-- ═══ SUCCESS MODAL ═══ -->
+  <div class="modal-overlay" id="success-modal">
+    <div class="success-modal-box">
+      <div class="success-icon-wrap">
+        <div class="success-ring"></div>
+        <i class="fas fa-check success-check"></i>
+      </div>
+      <h2 class="success-title">Оплата прошла!</h2>
+      <p class="success-sub">Ваши билеты готовы</p>
+
+      <div class="ticket-list" id="ticket-list"></div>
+
+      <div class="order-status-badge status-paid"><i class="fas fa-circle-check"></i> ОПЛАЧЕНО</div>
+
+      <div class="success-actions">
+        <button class="btn btn-primary" id="btn-download-tickets"><i class="fas fa-download"></i> Скачать билеты</button>
+        <button class="btn btn-outline" id="btn-view-orders"><i class="fas fa-list"></i> Мои заказы</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ MY ORDERS MODAL ═══ -->
+  <div class="modal-overlay" id="orders-modal">
+    <div class="modal-box orders-modal-box">
+      <button class="modal-close" id="orders-modal-close"><i class="fas fa-times"></i></button>
+      <h2 class="wishlist-modal-title"><i class="fas fa-ticket-alt"></i> Мои заказы</h2>
+      <div class="orders-list" id="orders-list">
+        <div class="orders-loading"><i class="fas fa-spinner fa-spin"></i> Загружаем...</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MY ORDERS button -->
+  <button class="my-orders-fab" id="my-orders-fab" title="Мои заказы">
+    <i class="fas fa-ticket-alt"></i>
+    <span class="orders-badge" id="orders-badge" style="display:none">0</span>
+  </button>
+
+  <!-- Toast -->
+  <div class="toast-container" id="toast-container"></div>
+
+  <!-- Back to top -->
+  <button class="back-to-top" id="back-to-top" title="Наверх"><i class="fas fa-chevron-up"></i></button>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <h4 class="footer-title">Cinematheque</h4>
+          <ul class="footer-links"><li><a href="about.html">О сервисе</a></li></ul>
+        </div>
+        <div>
+          <h4 class="footer-title">Поддержка</h4>
+          <ul class="footer-links">
+            <li><a href="contacts.html">Контакты</a></li>
+            <li><a href="contacts.html">FAQ</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="footer-title">Мы в соцсетях</h4>
+          <div class="social-icons">
+            <a href="https://vk.com/"><i class="fa-brands fa-vk"></i></a>
+            <a href="https://web.telegram.org/"><i class="fa-brands fa-telegram"></i></a>
+            <a href="https://www.youtube.com/"><i class="fa-brands fa-youtube"></i></a>
+          </div>
+        </div>
+      </div>
+      <p style="text-align:center;color:var(--text-muted)">&copy; 2026 Cinematheque Project. Учебный проект.</p>
+    </div>
+  </footer>
+
+  <script src="js/cinema.js"></script>
+</body>
+</html>

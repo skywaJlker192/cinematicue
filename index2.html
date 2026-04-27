@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Синематека — Главная</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+
+  <!-- ШАПКА -->
+  <header class="site-header">
+    <div class="nav-inner">
+      <a href="index.html" class="logo">
+        <div class="logo-icon">C</div>
+        <span class="logo-text">CINEMATHEQUE</span>
+      </a>
+      
+      <nav class="main-nav">
+        <a href="index.html" class="active">Главная</a>
+        <a href="about.html">О сервисе</a>
+        <a href="contacts.html">Контакты</a>
+      </nav>
+
+      <!-- Кнопка Избранное -->
+      <button class="wishlist-nav-btn" id="wishlist-toggle-btn" title="Избранное">
+        <i class="fas fa-heart"></i>
+        <span class="wishlist-badge" id="wishlist-badge" style="display:none">0</span>
+      </button>
+
+      <!-- BB-8 Theme Toggle -->
+      <label class="bb8-toggle">
+        <input class="bb8-toggle__checkbox" type="checkbox">
+        <div class="bb8-toggle__container">
+          <div class="bb8-toggle__scenery">
+            <div class="bb8-toggle__star"></div>
+            <div class="bb8-toggle__star"></div>
+            <div class="bb8-toggle__star"></div>
+            <div class="bb8-toggle__star"></div>
+            <div class="bb8-toggle__star"></div>
+            <div class="bb8-toggle__star"></div>
+            <div class="bb8-toggle__star"></div>
+            <div class="tatto-1"></div>
+            <div class="tatto-2"></div>
+            <div class="gomrassen"></div>
+            <div class="hermes"></div>
+            <div class="chenini"></div>
+            <div class="bb8-toggle__cloud"></div>
+            <div class="bb8-toggle__cloud"></div>
+            <div class="bb8-toggle__cloud"></div>
+          </div>
+          <div class="bb8">
+            <div class="bb8__head-container">
+              <div class="bb8__antenna"></div>
+              <div class="bb8__antenna"></div>
+              <div class="bb8__head"></div>
+            </div>
+            <div class="bb8__body"></div>
+          </div>
+          <div class="artificial__hidden">
+            <div class="bb8__shadow"></div>
+          </div>
+        </div>
+      </label>
+
+      <!-- New Futuristic Search -->
+      <div id="poda">
+        <div class="poda-glow"></div>
+        <div class="poda-darkBorderBg"></div>
+        <div class="poda-darkBorderBg"></div>
+        <div class="poda-darkBorderBg"></div>
+      
+        <div class="poda-white"></div>
+      
+        <div class="poda-border"></div>
+      
+        <div id="main">
+          <input placeholder="Поиск фильма..." type="text" name="q" class="poda-input" />
+          <div id="input-mask"></div>
+          <div id="pink-mask"></div>
+          <div class="filterBorder"></div>
+          <div id="filter-icon">
+            <svg
+              preserveAspectRatio="none"
+              height="27"
+              width="27"
+              viewBox="4.8 4.56 14.832 15.408"
+              fill="none"
+            >
+              <path
+                d="M8.16 6.65002H15.83C16.47 6.65002 16.99 7.17002 16.99 7.81002V9.09002C16.99 9.56002 16.7 10.14 16.41 10.43L13.91 12.64C13.56 12.93 13.33 13.51 13.33 13.98V16.48C13.33 16.83 13.1 17.29 12.81 17.47L12 17.98C11.24 18.45 10.2 17.92 10.2 16.99V13.91C10.2 13.5 9.97 12.98 9.73 12.69L7.52 10.36C7.23 10.08 7 9.55002 7 9.20002V7.87002C7 7.17002 7.52 6.65002 8.16 6.65002Z"
+                stroke="#ffffff"
+                stroke-width="1"
+                stroke-miterlimit="10"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              ></path>
+            </svg>
+          </div>
+          <div id="search-icon">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              viewBox="0 0 24 24"
+              stroke-width="2"
+              stroke-linejoin="round"
+              stroke-linecap="round"
+              height="24"
+              fill="none"
+              class="feather feather-search"
+            >
+              <circle stroke="url(#search)" r="8" cy="11" cx="11"></circle>
+              <line
+                stroke="url(#searchl)"
+                y2="16.65"
+                y1="22"
+                x2="16.65"
+                x1="22"
+              ></line>
+              <defs>
+                <linearGradient gradientTransform="rotate(50)" id="search">
+                  <stop stop-color="#cca43b" offset="0%"></stop>
+                  <stop stop-color="#e09f3e" offset="50%"></stop>
+                </linearGradient>
+                <linearGradient id="searchl">
+                  <stop stop-color="#cca43b" offset="0%"></stop>
+                  <stop stop-color="#e09f3e" offset="50%"></stop>
+                </linearGradient>
+              </defs>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- HERO SECTION: DUNE PART TWO -->
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-image-layer" style="background-image: url('https://image.tmdb.org/t/p/original/xOMo8BRK7PfcJv9JCnx7s5hj0PX.jpg');"></div>
+    
+    <div class="hero-content">
+      <div class="hero-tags">
+        <span class="tag gold">ПРЕМЬЕРА 2024</span>
+        <span class="tag">IMAX</span>
+        <span class="tag">SCI-FI</span>
+      </div>
+      <h1>Дюна: Часть вторая</h1>
+      <p class="hero-desc">
+        Пол Атрейдес объединяется с Чани и фрименами, чтобы отомстить заговорщикам, уничтожившим его семью. Эпическое завершение саги Дени Вильнева уже доступно в максимальном качестве.
+      </p>
+      <div class="hero-actions">
+        <button class="btn btn-primary"><i class="fa fa-play"></i> СМОТРЕТЬ СЕЙЧАС</button>
+        <button class="btn btn-outline"><i class="fa fa-plus"></i> В ИЗБРАННОЕ</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- КАТАЛОГ -->
+  <main class="section">
+    <div class="container">
+      
+      <div class="section-header">
+        <h2>Каталог <span class="results-counter" id="results-counter"></span></h2>
+        <div class="catalog-controls">
+          <div class="filter-tabs">
+            <button class="filter-tab js-filter-btn active" data-filter="all">Все</button>
+            <button class="filter-tab js-filter-btn" data-filter="movies">Фильмы</button>
+            <button class="filter-tab js-filter-btn" data-filter="series">Сериалы</button>
+            <button class="filter-tab js-filter-btn" data-filter="cartoon">Мульт</button>
+            <button class="filter-tab js-filter-btn" data-filter="new">2025–2026</button>
+          </div>
+          <div class="catalog-extra-controls">
+            <select class="sort-select" id="sort-select">
+              <option value="default">По умолчанию</option>
+              <option value="rating-desc">Рейтинг ↓</option>
+              <option value="rating-asc">Рейтинг ↑</option>
+              <option value="year-desc">Новые сначала</option>
+              <option value="year-asc">Старые сначала</option>
+              <option value="title-asc">А → Я</option>
+            </select>
+            <button class="btn-lucky" id="btn-lucky" title="Случайный фильм">
+              <i class="fas fa-dice"></i> Мне повезёт
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Недавно смотрели -->
+      <div class="recently-viewed-section" id="recently-viewed-section" style="display:none">
+        <h4 class="recently-title"><i class="fas fa-history"></i> Недавно смотрели</h4>
+        <div class="recently-list" id="recently-list"></div>
+      </div>
+
+      <div class="films-grid" id="js-films-grid"></div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <h4 class="footer-title">Cinematheque</h4>
+          <ul class="footer-links">
+            <li><a href="about.html">О сервисе</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="footer-title">Поддержка</h4>
+          <ul class="footer-links">
+            <li><a href="contacts.html">Контакты</a></li>
+            <li><a href="contacts.html">FAQ</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="footer-title">Мы в соцсетях</h4>
+          <div class="social-icons">
+            <a href="https://vk.com/"><i class="fa-brands fa-vk"></i></a>
+            <a href="https://web.telegram.org/"><i class="fa-brands fa-telegram"></i></a>
+            <a href="https://www.youtube.com/"><i class="fa-brands fa-youtube"></i></a>
+          </div>
+        </div>
+      </div>
+      <p style="text-align: center; color: var(--text-muted);">&copy; 2026 Cinematheque Project. Учебный проект.</p>
+    </div>
+  </footer>
+
+  <!-- Toast уведомления -->
+  <div class="toast-container" id="toast-container"></div>
+
+  <!-- Кнопка наверх -->
+  <button class="back-to-top" id="back-to-top-index" title="Наверх"><i class="fas fa-chevron-up"></i></button>
+
+  <!-- ═══ МОДАЛЬНОЕ ОКНО: КАРТОЧКА ФИЛЬМА ══════════════════ -->
+  <div class="modal-overlay" id="film-modal">
+    <div class="modal-box film-modal-box">
+      <button class="modal-nav modal-nav-prev" id="modal-prev" title="Предыдущий"><i class="fas fa-chevron-left"></i></button>
+      <button class="modal-close" id="film-modal-close"><i class="fas fa-times"></i></button>
+      <button class="modal-nav modal-nav-next" id="modal-next" title="Следующий"><i class="fas fa-chevron-right"></i></button>
+      <div class="film-modal-inner">
+        <div class="film-modal-left">
+          <img src="" alt="" id="modal-img" class="film-modal-img">
+        </div>
+        <div class="film-modal-right">
+          <div class="film-modal-meta">
+            <span id="modal-year"></span>
+            <span>·</span>
+            <span id="modal-duration"></span>
+            <span>·</span>
+            <span class="badge badge-rating" id="modal-rating"></span>
+          </div>
+          <h2 class="film-modal-title" id="modal-title"></h2>
+          <div class="film-modal-genre" id="modal-genre"></div>
+          <p class="film-modal-desc" id="modal-desc"></p>
+          <div class="film-modal-actions">
+            <button class="btn btn-primary"><i class="fa fa-play"></i> Смотреть</button>
+            <button class="btn btn-outline wishlist-modal-btn" id="modal-wishlist-btn" data-id=""></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ МОДАЛЬНОЕ ОКНО: ИЗБРАННОЕ ════════════════════════ -->
+  <div class="modal-overlay" id="wishlist-modal">
+    <div class="modal-box wishlist-modal-box">
+      <button class="modal-close" id="wishlist-modal-close"><i class="fas fa-times"></i></button>
+      <h2 class="wishlist-modal-title"><i class="fas fa-heart"></i> Избранное</h2>
+      <div class="wishlist-total" id="wishlist-total"></div>
+      <div class="wishlist-items" id="wishlist-items"></div>
+    </div>
+  </div>
+
+  <script src="js/catalog.js"></script>
+
+</body>
+</html>
