@@ -8,11 +8,11 @@ const API = 'http://localhost:3001/api';
 
 // ─── Demo data (offline fallback) ─────────────────────────────────────────────
 const DEMO_CINEMAS = [
-  { id:1, name:'IMAX Октябрь',              address:'Новый Арбат, 24',           city:'Москва', metro:'Арбатская',         rating:4.8, session_count:12, description:'Один из лучших IMAX-залов России. Экран 18×24 метра, звук Dolby Atmos.' },
-  { id:2, name:'Синема Парк Vegas',          address:'Каширское шоссе, 61',       city:'Москва', metro:'Домодедовская',      rating:4.6, session_count:20, description:'Современный мегаплекс в ТЦ Vegas. 14 залов, IMAX и 4DX.' },
-  { id:3, name:'Формула Кино Европейский',   address:'Киевская пл., 2',           city:'Москва', metro:'Киевская',           rating:4.5, session_count:16, description:'Кинотеатр в сердце Москвы. Удобное расположение у трёх линий метро.' },
-  { id:4, name:'Люмьер',                     address:'ул. Пятницкая, 25с1',      city:'Москва', metro:'Третьяковская',      rating:4.7, session_count:8,  description:'Артхаусный кинотеатр. Авторское кино и ретроспективы.' },
-  { id:5, name:'Каро 11 Октябрьское поле',   address:'ул. Маршала Бирюзова, 32', city:'Москва', metro:'Октябрьское поле',   rating:4.4, session_count:18, description:'Крупный кинотеатр на севере Москвы. 11 залов, Dolby Cinema.' },
+  { id:1, name:'Каро 11 Охта',            address:'Якорная ул., 5А',           city:'Санкт-Петербург', metro:'Ладожская',         rating:4.7, session_count:12, description:'11 залов, Dolby Atmos, премьеры мирового кино.' },
+  { id:2, name:'Формула Кино Галерея',     address:'Лиговский пр., 30А',        city:'Санкт-Петербург', metro:'Площадь Восстания', rating:4.5, session_count:20, description:'Современный кинотеатр в ТРЦ Галерея, 10 залов.' },
+  { id:3, name:'Мираж Синема ТРК Питерлэнд',address:'Приморский пр., 72',      city:'Санкт-Петербург', metro:'Беговая',           rating:4.6, session_count:18, description:'IMAX, VIP-залы с кожаными креслами, панорамный экран.' },
+  { id:4, name:'Синема Парк Гранд Каньон',  address:'пр. Энгельса, 154',        city:'Санкт-Петербург', metro:'Проспект Просвещения', rating:4.4, session_count:14, description:'14 залов, IMAX, 4DX, детская комната.' },
+  { id:5, name:'Аврора',                   address:'Невский пр., 60',           city:'Санкт-Петербург', metro:'Маяковская',        rating:4.8, session_count:8,  description:'Исторический кинотеатр в центре, арт-хаус и премьеры.' },
 ];
 
 const DEMO_FILMS = [
@@ -20,6 +20,7 @@ const DEMO_FILMS = [
   { title:'F1',                  genre:'Спорт, Драма',poster:'images/f1.jpg',                 duration:'2ч 15м' },
   { title:'Оппенгеймер',         genre:'Биография',  poster:'images/oppenheimer.webp',       duration:'3ч 00м' },
   { title:'Дэдпул и Росомаха',   genre:'Экшн',       poster:'images/dedpool&wolverine.webp', duration:'2ч 10м' },
+  { title:'Головоломка 2',       genre:'Мультфильм', poster:'images/insideout2.webp',          duration:'1ч 40м' },
 ];
 
 function makeDemoSessions(cinemaId) {
@@ -642,6 +643,32 @@ function initMetroFilter() {
   });
 }
 
+// ─── Поддержка параметра ?film= (быстрый переход к фильму) ─────────────────────
+function applyFilmFilter() {
+  const params = new URLSearchParams(window.location.search);
+  const filmName = params.get('film');
+  if (!filmName) return;
+  // переопределяем loadSessions после того как cinema.js определит свои функции
+  // Ждём, пока DOM загрузится и глобальные функции станут доступны
+  window.addEventListener('load', () => {
+    if (typeof loadSessions !== 'function') return;
+    const originalLoadSessions = loadSessions;
+    loadSessions = async function(cinemaId) {
+      await originalLoadSessions(cinemaId);
+      if (!state.sessions) return;
+      state.sessions = state.sessions.filter(s => s.film_title === filmName);
+      const picker = document.getElementById('date-picker');
+      if (picker) picker.innerHTML = '';
+      const dates = getUniqueDates();
+      if (dates.length) {
+        renderDatePicker();
+      } else {
+        document.getElementById('sessions-list').innerHTML = '<p class="no-results">Нет сеансов этого фильма в выбранном кинотеатре</p>';
+      }
+    };
+  });
+}
+
 // ─── Init ─────────────────────────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', () => {
 
@@ -659,6 +686,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initMetroFilter();
   initCardMasks();
   updateOrdersBadge();
+  applyFilmFilter();   // <-- включает фильтрацию по параметру film
 
   // Cinema selection (delegated)
   document.getElementById('cinemas-grid').addEventListener('click', e => {

@@ -52,6 +52,8 @@ function buildSeed() {
     { title:'Оппенгеймер',         genre:'Биография',   poster:'images/oppenheimer.webp',         duration:'3ч 00м' },
     { title:'Дэдпул и Росомаха',   genre:'Экшн',        poster:'images/dedpool&wolverine.webp',   duration:'2ч 10м' },
     { title:'Головоломка 2',       genre:'Мультфильм',  poster:'images/insideout2.webp',          duration:'1ч 40м' },
+    { title:'Барби',                genre:'Комедия',    poster:'images/barbie.webp',              duration:'1ч 54м' },
+    { title:'Человек-паук: Паутина',genre:'Мультфильм', poster:'images/sm.webp',                  duration:'2ч 20м' },
   ];
 
   const halls = [];
@@ -68,45 +70,56 @@ function buildSeed() {
   const formats = ['2D','3D','IMAX','Dolby'];
   const langs   = ['RU','RU Sub'];
 
-  cinemas.forEach(c => {
+    cinemas.forEach(c => {
     // 2 зала на каждый кинотеатр
     const hallDefs = [
       { name:'Зал 1 — IMAX',    rows:12, cols:14 },
       { name:'Зал 2 — Комфорт', rows:10, cols:12 },
     ];
+
+    // Случайно выбираем от 4 до 7 фильмов для этого кинотеатра
+    const shuffledFilms = [...films].sort(() => Math.random() - 0.5);
+    const filmsForThisCinema = shuffledFilms.slice(0, 4 + Math.floor(Math.random() * 4)); // 4..7
+
     hallDefs.forEach(hd => {
       const hall = { id: hallId++, cinema_id: c.id, name: hd.name, rows: hd.rows, cols: hd.cols };
       halls.push(hall);
 
-      films.slice(0,3).forEach(film => {
-        dates.slice(0,4).forEach(date => {
-          const t      = times[Math.floor(Math.random()*times.length)];
-          const fmt    = formats[Math.floor(Math.random()*formats.length)];
-          const lang   = langs[Math.floor(Math.random()*langs.length)];
-          const stdP   = 350 + Math.floor(Math.random()*5)*50;
-          const sid    = sessionId++;
-          sessions.push({
-            id: sid, cinema_id: c.id, hall_id: hall.id,
-            film_title: film.title, film_genre: film.genre,
-            film_poster: film.poster, film_duration: film.duration,
-            date, time_start: t, format: fmt, language: lang,
-            price_standard: stdP,
-            price_comfort:  stdP + 300,
-            price_vip:      stdP + 750,
-            hall_name: hall.name, rows: hall.rows, cols: hall.cols,
-          });
+      filmsForThisCinema.forEach(film => {
+        // Для каждого фильма генерируем сеансы на несколько дат
+        dates.slice(0, 4).forEach(date => {
+          // Случайное количество сеансов этого фильма в этот день (1 или 2)
+          const sessionsCount = 1 + Math.floor(Math.random() * 2); // 1..2
+          for (let sc = 0; sc < sessionsCount; sc++) {
+            const t      = times[Math.floor(Math.random() * times.length)];
+            const fmt    = formats[Math.floor(Math.random() * formats.length)];
+            const lang   = langs[Math.floor(Math.random() * langs.length)];
+            // Базовая цена + случайный довесок ±50
+            const stdP   = 350 + Math.floor(Math.random() * 5) * 50 + Math.floor(Math.random() * 3 - 1) * 50;
+            const sid    = sessionId++;
+            sessions.push({
+              id: sid, cinema_id: c.id, hall_id: hall.id,
+              film_title: film.title, film_genre: film.genre,
+              film_poster: film.poster, film_duration: film.duration,
+              date, time_start: t, format: fmt, language: lang,
+              price_standard: stdP,
+              price_comfort:  stdP + 300,
+              price_vip:      stdP + 750,
+              hall_name: hall.name, rows: hall.rows, cols: hall.cols,
+            });
 
-          // места
-          for (let r = 1; r <= hall.rows; r++) {
-            for (let col = 1; col <= hall.cols; col++) {
-              let cat = 'standard';
-              if (r <= 2)              cat = 'vip';
-              else if (r >= hall.rows-1) cat = 'comfort';
-              seats.push({
-                id: seatId++, session_id: sid, hall_id: hall.id,
-                row_num: r, seat_num: col, category: cat,
-                status: Math.random() < 0.22 ? 'taken' : 'free',
-              });
+            // Генерация мест
+            for (let r = 1; r <= hall.rows; r++) {
+              for (let col = 1; col <= hall.cols; col++) {
+                let cat = 'standard';
+                if (r <= 2)              cat = 'vip';
+                else if (r >= hall.rows-1) cat = 'comfort';
+                seats.push({
+                  id: seatId++, session_id: sid, hall_id: hall.id,
+                  row_num: r, seat_num: col, category: cat,
+                  status: Math.random() < 0.22 ? 'taken' : 'free',
+                });
+              }
             }
           }
         });

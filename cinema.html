@@ -60,7 +60,7 @@
   <section class="cinema-page-hero">
     <div class="cinema-hero-content">
       <div class="cinema-hero-badge"><i class="fas fa-ticket-alt"></i> БРОНИРОВАНИЕ БИЛЕТОВ</div>
-      <h1 class="cinema-hero-title">КИНОТЕАТРЫ<br><span class="text-gold">МОСКВЫ</span></h1>
+      <h1 class="cinema-hero-title">КИНОТЕАТРЫ<br><span class="text-gold">САНКТ-ПЕТЕРБУРГА</span></h1>
       <p class="cinema-hero-sub">Выберите кинотеатр, сеанс и место — всё в одном месте</p>
       <div class="cinema-stats" id="cinema-stats">
         <div class="cstat"><span class="cstat-num" id="stat-cinemas">5</span><span class="cstat-label">кинотеатров</span></div>
@@ -101,17 +101,17 @@
       <section class="booking-step-content" id="step-cinemas">
         <div class="step-header">
           <h2>Выберите кинотеатр</h2>
-          <p class="step-sub">Все кинотеатры Москвы в одном месте</p>
+          <p class="step-sub">Все кинотеатры Санкт-Петербурга в одном месте</p>
         </div>
 
-        <!-- Metro filter -->
+        <!-- Metro filter (обновлён для СПб) -->
         <div class="cinema-filter-bar">
           <button class="cf-btn active" data-metro="all">Все</button>
-          <button class="cf-btn" data-metro="Арбатская">Арбатская</button>
-          <button class="cf-btn" data-metro="Киевская">Киевская</button>
-          <button class="cf-btn" data-metro="Домодедовская">Домодедовская</button>
-          <button class="cf-btn" data-metro="Третьяковская">Третьяковская</button>
-          <button class="cf-btn" data-metro="Октябрьское поле">Окт. поле</button>
+          <button class="cf-btn" data-metro="Ладожская">Ладожская</button>
+          <button class="cf-btn" data-metro="Площадь Восстания">Пл. Восстания</button>
+          <button class="cf-btn" data-metro="Беговая">Беговая</button>
+          <button class="cf-btn" data-metro="Проспект Просвещения">Пр. Просвещения</button>
+          <button class="cf-btn" data-metro="Маяковская">Маяковская</button>
         </div>
 
         <div class="cinemas-grid" id="cinemas-grid">
@@ -332,5 +332,48 @@
   </footer>
 
   <script src="js/cinema.js"></script>
+  
+  <!-- ДОПОЛНИТЕЛЬНЫЙ СКРИПТ: поддержка параметра ?film= для быстрого перехода -->
+  <script>
+  (function() {
+    // Проверяем, есть ли параметр film в URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const filmFilter = urlParams.get('film');
+    if (!filmFilter) return; // если параметра нет, ничего не делаем
+
+    // Переопределяем loadSessions после загрузки cinema.js
+    // Ждём полной загрузки DOM и инициализации всех глобальных функций
+    window.addEventListener('load', function() {
+      // Проверяем, что глобальная функция loadSessions существует (она в cinema.js)
+      if (typeof window.loadSessions !== 'function') return;
+      
+      // Сохраняем оригинальную функцию
+      const originalLoadSessions = window.loadSessions;
+      
+      // Переопределяем
+      window.loadSessions = async function(cinemaId) {
+        // Сначала вызываем оригинал, который загрузит все сеансы
+        await originalLoadSessions(cinemaId);
+        
+        // Если у нас есть фильтр по фильму, фильтруем сеансы
+        if (!filmFilter || !state.sessions) return;
+        
+        // Оставляем только сеансы с нужным фильмом
+        state.sessions = state.sessions.filter(s => s.film_title === filmFilter);
+        
+        // Перерисовываем даты и сеансы
+        const picker = document.getElementById('date-picker');
+        if (picker) picker.innerHTML = '';
+        const dates = getUniqueDates();
+        if (dates.length) {
+          renderDatePicker(); // функция из cinema.js
+        } else {
+          document.getElementById('sessions-list').innerHTML = 
+            '<p class="no-results">Нет сеансов этого фильма в выбранном кинотеатре</p>';
+        }
+      };
+    });
+  })();
+  </script>
 </body>
 </html>
