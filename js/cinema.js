@@ -80,14 +80,103 @@ let state = {
   selectedSeatIds: new Set(),
   currentOrder: null,
   currentTickets: [],
-  userToken: localStorage.getItem('cine_user_token') || genToken(),
+  userToken: localStorage.getItem('cine_user_token') || null,
   ordersCount: 0,
+  currentUser: null,
 };
 
-function genToken() {
-  const t = 'usr_' + Math.random().toString(36).slice(2) + Date.now().toString(36);
-  localStorage.setItem('cine_user_token', t);
-  return t;
+// ─── Auth functions ───────────────────────────────────────────────────────────
+async function registerUser(email, password) {
+  const data = await apiFetch(`${API}/register`, {
+    method: 'POST',
+    body: JSON.stringify({ email, password })
+  });
+  localStorage.setItem('cine_user_token', data.token);
+  state.userToken = data.token;
+  state.currentUser = data.user;
+  showToast('Регистрация успешна!', 'success');
+  updateUIForAuth();
+  return data.user;
+}
+
+async function loginUser(email, password) {
+  const data = await apiFetch(`${API}/login`, {
+    method: 'POST',
+    body: JSON.stringify({ email, password })
+  });
+  localStorage.setItem('cine_user_token', data.token);
+  state.userToken = data.token;
+  state.currentUser = data.user;
+  showToast('Вход выполнен', 'success');
+  updateUIForAuth();
+  return data.user;
+}
+
+async function fetchProfile() {
+  const token = localStorage.getItem('cine_user_token');
+  if (!token) return null;
+  try {
+    const data = await apiFetch(`${API}/profile`, {
+      headers: { 'Authorization': 'Bearer ' + token }
+    });
+    state.currentUser = data.user;
+    state.userToken = token;
+    return data.user;
+  } catch (e) {
+    localStorage.removeItem('cine_user_token');
+    state.userToken = null;
+    state.currentUser = null;
+    return null;
+  }
+}
+
+function logout() {
+  localStorage.removeItem('cine_user_token');
+  state.userToken = null;
+  state.currentUser = null;
+  showToast('Вы вышли из аккаунта', 'info');
+  updateUIForAuth();
+}
+
+function updateUIForAuth() {
+  const loginBtn = document.getElementById('btn-login');
+  const regBtn = document.getElementById('btn-register');
+  const userLabel = document.getElementById('auth-user-label');
+  const logoutBtn = document.getElementById('btn-logout');
+
+  if (state.currentUser) {
+    if (loginBtn) loginBtn.style.display = 'none';
+    if (regBtn) regBtn.style.display = 'none';
+    if (userLabel) {
+      userLabel.style.display = 'inline-block';
+      userLabel.textContent = state.currentUser.email;
+    }
+    if (logoutBtn) logoutBtn.style.display = 'inline-block';
+  } else {
+    if (loginBtn) loginBtn.style.display = 'inline-block';
+    if (regBtn) regBtn.style.display = 'inline-block';
+    if (userLabel) userLabel.style.display = 'none';
+    if (logoutBtn) logoutBtn.style.display = 'none';
+  }
+}
+
+async function updateSubscription(status) {
+  if (!state.userToken) {
+    showToast('Сначала войдите в аккаунт', 'error');
+    return;
+  }
+  try {
+    const data = await apiFetch(`${API}/profile/subscription`, {
+      method: 'PUT',
+      headers: { 'Authorization': 'Bearer ' + state.userToken },
+      body: JSON.stringify({ subscription: status })
+    });
+    if (state.currentUser) state.currentUser.subscription = data.subscription;
+    showToast(status ? 'Подписка активирована' : 'Подписка отключена', 'success');
+    updateUIForAuth();
+  } catch (e) {
+    showToast('Ошибка обновления подписки', 'error');
+  }
 }
 
 // ─── API helpers ──────────────────────────────────────────────────────────────
@@ -196,7 +285,18 @@ async function loadSessions(cinemaId) {
   } catch {
     state.sessions = makeDemoSessions(cinemaId);
   }
-  renderDatePicker();
+
+  if (!state.sessions || !Array.isArray(state.sessions) || state.sessions.length === 0) {
+    document.getElementById('sessions-list').innerHTML = '<p class="no-results">В этом кинотеатре пока нет сеансов</p>';
+    return;
+  }
+
+  try {
+    renderDatePicker();
+  } catch (e) {
+    console.error('Ошибка при отображении дат:', e);
+    document.getElementById('sessions-list').innerHTML = '<p class="no-results">Не удалось загрузить расписание</p>';
+  }
 }
 
 function getUniqueDates() {
@@ -235,7 +335,6 @@ function renderSessionsForDate(date) {
   const list = document.getElementById('sessions-list');
   if (!filtered.length) { list.innerHTML = '<p class="no-results">На эту дату нет сеансов</p>'; return; }
 
-  // Group by film
   const byFilm = {};
   filtered.forEach(s => { (byFilm[s.film_title] = byFilm[s.film_title]||[]).push(s); });
 
@@ -425,14 +524,12 @@ async function processPayment() {
   btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Обрабатываем...';
 
   try {
-    // Simulate payment processing delay
     await new Promise(r => setTimeout(r, 1800));
 
     const seatIds = [...state.selectedSeatIds];
     let order, tickets;
 
     if (state.offline) {
-      // Demo mode: create local order
       order = {
         id: Date.now(),
         session_id: state.selectedSession.id,
@@ -456,30 +553,25 @@ async function processPayment() {
         };
       });
 
-      // Mark seats as taken in local state
       seatIds.forEach(id => {
         const seat = state.allSeats.find(s=>s.id===id);
         if (seat) seat.status = 'taken';
       });
 
-      // Save to localStorage
       const saved = JSON.parse(localStorage.getItem('cine_orders')||'[]');
       saved.unshift({ order, tickets, session: state.selectedSession, cinema: state.selectedCinema });
       localStorage.setItem('cine_orders', JSON.stringify(saved.slice(0,50)));
 
     } else {
-      // Create order
       const created = await apiFetch(`${API}/orders`, {
         method: 'POST',
         body: JSON.stringify({ session_id: state.selectedSession.id, seat_ids: seatIds, user_token: state.userToken })
       });
 
-      // Pay immediately
       const paid = await apiFetch(`${API}/orders/${created.order.id}/pay`, { method:'PUT' });
       order   = paid.order;
       tickets = paid.tickets;
 
-      // Refresh seat map
       seatIds.forEach(id => {
         const seat = state.allSeats.find(s=>s.id===id);
         if (seat) seat.status = 'taken';
@@ -525,7 +617,6 @@ function showSuccessModal(order, tickets) {
 }
 
 function generateBarcodeSVG(code) {
-  // Simple visual barcode (decorative)
   const bars = Array.from({length:30}, (_,i) => `<rect x="${i*3}" y="0" width="${1+i%3}" height="30" fill="currentColor" opacity="${0.5+Math.random()*0.5}"/>`).join('');
   return `<svg width="90" height="30" viewBox="0 0 90 30">${bars}</svg>`;
 }
@@ -581,8 +672,13 @@ async function openOrdersModal() {
           <div class="order-status-badge ${statusClass}">${statusText}</div>
         </div>
         ${(order.tickets||[]).length ? `<div class="order-tickets-mini">
-          ${order.tickets.slice(0,3).map(t=>`<span class="otm-ticket cat-${t.category}">Р${t.row_num}М${t.seat_num}</span>`).join('')}
-          ${order.tickets.length>3?`<span class="otm-more">+${order.tickets.length-3}</span>`:''}
+          ${order.tickets.slice(0,3).map(t => `
+            <div style="display:flex; align-items:center; gap:6px; margin-bottom:4px;">
+              <span class="otm-ticket cat-${t.category}">Р${t.row_num}М${t.seat_num}</span>
+              ${generateBarcodeSVG(t.barcode||'')}
+            </div>
+          `).join('')}
+          ${order.tickets.length>3 ? `<span class="otm-more">+${order.tickets.length-3}</span>` : ''}
         </div>` : ''}
         <div class="order-item-footer">
           <span class="order-total">₽${(order.total_price||0).toLocaleString('ru')}</span>
@@ -592,7 +688,6 @@ async function openOrdersModal() {
     `;
   }).join('');
 
-  // Cancel handlers
   list.querySelectorAll('.btn-cancel-order').forEach(btn => {
     btn.addEventListener('click', () => cancelOrder(btn.dataset.id));
   });
@@ -648,8 +743,6 @@ function applyFilmFilter() {
   const params = new URLSearchParams(window.location.search);
   const filmName = params.get('film');
   if (!filmName) return;
-  // переопределяем loadSessions после того как cinema.js определит свои функции
-  // Ждём, пока DOM загрузится и глобальные функции станут доступны
   window.addEventListener('load', () => {
     if (typeof loadSessions !== 'function') return;
     const originalLoadSessions = loadSessions;
@@ -669,11 +762,69 @@ function applyFilmFilter() {
   });
 }
 
+// ─── Live Card Update ─────────────────────────────────────────────────────────
+function initCardLiveUpdate() {
+  const numberInput = document.getElementById('card-number');
+  const nameInput   = document.getElementById('card-name');
+  const expiryInput = document.getElementById('card-expiry');
+  const cvvInput    = document.getElementById('card-cvv');
+
+  const displayNumber = document.getElementById('card-display-number');
+  const displayHolder = document.getElementById('card-display-holder');
+  const displayExpiry = document.getElementById('card-display-expiry');
+  const displayCVV    = document.getElementById('card-display-cvv');
+
+  if (!numberInput || !displayNumber) return;
+
+  numberInput.addEventListener('input', () => {
+    let val = numberInput.value.replace(/\D/g, '').slice(0, 16);
+    displayNumber.textContent = val.padEnd(16, '•').replace(/(.{4})/g, '$1 ').trim() || '•••• •••• •••• ••••';
+  });
+
+  nameInput?.addEventListener('input', () => {
+    displayHolder.textContent = nameInput.value.toUpperCase() || 'IVAN PETROV';
+  });
+
+  expiryInput?.addEventListener('input', () => {
+    displayExpiry.textContent = expiryInput.value || '••/••';
+  });
+
+  cvvInput?.addEventListener('focus', () => {
+    document.querySelector('.flip-card')?.classList.add('show-back');
+  });
+
+  cvvInput?.addEventListener('blur', () => {
+    document.querySelector('.flip-card')?.classList.remove('show-back');
+  });
+
+  cvvInput?.addEventListener('input', () => {
+    displayCVV.textContent = cvvInput.value.padEnd(3, '*') || '***';
+  });
+}
+
+// ─── Auth UI ──────────────────────────────────────────────────────────────────
+let authMode = 'login';
+
+function showAuthModal(mode = 'login') {
+  authMode = mode;
+  const modal = document.getElementById('auth-modal');
+  if (!modal) return;
+  modal.classList.add('open');
+  document.getElementById('auth-modal-title').textContent = mode === 'login' ? 'Вход' : 'Регистрация';
+  document.getElementById('auth-submit-btn').textContent = mode === 'login' ? 'Войти' : 'Зарегистрироваться';
+  document.getElementById('auth-toggle-link').textContent = mode === 'login' ? 'Нет аккаунта? Зарегистрироваться' : 'Уже есть аккаунт? Войти';
+  document.getElementById('auth-error').style.display = 'none';
+}
+
+function closeAuthModal() {
+  const modal = document.getElementById('auth-modal');
+  if (modal) modal.classList.remove('open');
+}
+
 // ─── Init ─────────────────────────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', () => {
-
   // Theme
-  const toggle = document.getElementById('theme-toggle-cinema');
+  const toggle = document.getElementById('theme-toggle-cinema') || document.querySelector('.bb8-toggle__checkbox');
   if (toggle) {
     if (localStorage.getItem('theme') === 'light') { document.body.classList.add('light-theme'); toggle.checked = true; }
     toggle.addEventListener('change', () => {
@@ -682,60 +833,110 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  loadCinemas();
-  initMetroFilter();
-  initCardMasks();
-  updateOrdersBadge();
-  applyFilmFilter();   // <-- включает фильтрацию по параметру film
+  // Auth modal handlers
+  const submitBtn = document.getElementById('auth-submit-btn');
+  if (submitBtn) {
+    submitBtn.addEventListener('click', async () => {
+      const email = document.getElementById('auth-email').value.trim();
+      const password = document.getElementById('auth-password').value;
+      const errorEl = document.getElementById('auth-error');
 
-  // Cinema selection (delegated)
-  document.getElementById('cinemas-grid').addEventListener('click', e => {
-    const btn = e.target.closest('.btn-choose-cinema');
-    if (btn) selectCinema(btn.dataset.id);
-  });
+      if (!email || !password) {
+        errorEl.textContent = 'Заполните все поля';
+        errorEl.style.display = 'block';
+        return;
+      }
 
-  // Back buttons
-  document.getElementById('back-to-cinemas')?.addEventListener('click', () => goToStep(1));
-  document.getElementById('back-to-sessions')?.addEventListener('click', () => goToStep(2));
-  document.getElementById('back-to-seats')?.addEventListener('click', () => goToStep(3));
-
-  // Proceed to payment
-  document.getElementById('btn-proceed-payment')?.addEventListener('click', proceedToPayment);
-
-  // Pay
-  document.getElementById('btn-pay')?.addEventListener('click', processPayment);
-
-  // Pay method switch
-  document.querySelectorAll('.pay-method').forEach(el => {
-    el.querySelector('input')?.addEventListener('change', () => {
-      document.querySelectorAll('.pay-method').forEach(m => m.classList.remove('active'));
-      el.classList.add('active');
-      const val = el.querySelector('input').value;
-      document.getElementById('card-form').style.display = val === 'card' ? 'block' : 'none';
+      try {
+        if (authMode === 'register') {
+          await registerUser(email, password);
+        } else {
+          await loginUser(email, password);
+        }
+        closeAuthModal();
+      } catch (e) {
+        errorEl.textContent = e.message || 'Ошибка';
+        errorEl.style.display = 'block';
+      }
     });
+  }
+
+  const toggleLink = document.getElementById('auth-toggle-link');
+  if (toggleLink) {
+    toggleLink.addEventListener('click', (e) => {
+      e.preventDefault();
+      authMode = authMode === 'login' ? 'register' : 'login';
+      document.getElementById('auth-modal-title').textContent = authMode === 'login' ? 'Вход' : 'Регистрация';
+      document.getElementById('auth-submit-btn').textContent = authMode === 'login' ? 'Войти' : 'Зарегистрироваться';
+      toggleLink.textContent = authMode === 'login' ? 'Нет аккаунта? Зарегистрироваться' : 'Уже есть аккаунт? Войти';
+      document.getElementById('auth-error').style.display = 'none';
+    });
+  }
+
+  const authModal = document.getElementById('auth-modal');
+  if (authModal) {
+    authModal.addEventListener('click', (e) => {
+      if (e.target.id === 'auth-modal') closeAuthModal();
+    });
+  }
+
+  // Fetch profile and update UI
+  fetchProfile().then(user => {
+    if (user) updateUIForAuth();
   });
 
-  // Success modal
-  document.getElementById('btn-view-orders')?.addEventListener('click', () => {
-    document.getElementById('success-modal').classList.remove('open');
-    openOrdersModal();
-  });
-  document.getElementById('btn-download-tickets')?.addEventListener('click', () => {
-    showToast('Билеты сохранены (демо)', 'success');
-  });
-  document.getElementById('success-modal')?.addEventListener('click', e => {
-    if (e.target.id==='success-modal') document.getElementById('success-modal').classList.remove('open');
-  });
+  // Page-specific init
+  if (document.getElementById('cinemas-grid')) {
+    loadCinemas();
+    initMetroFilter();
+    initCardMasks();
+    initCardLiveUpdate();   // ← активация живой карты
+    updateOrdersBadge();
+    applyFilmFilter();
 
-  // Orders modal
-  document.getElementById('my-orders-fab')?.addEventListener('click', openOrdersModal);
-  document.getElementById('orders-modal-close')?.addEventListener('click', () => document.getElementById('orders-modal').classList.remove('open'));
-  document.getElementById('orders-modal')?.addEventListener('click', e => {
-    if (e.target.id==='orders-modal') document.getElementById('orders-modal').classList.remove('open');
+    document.getElementById('cinemas-grid').addEventListener('click', e => {
+      const btn = e.target.closest('.btn-choose-cinema');
+      if (btn) selectCinema(btn.dataset.id);
+    });
+
+    document.getElementById('back-to-cinemas')?.addEventListener('click', () => goToStep(1));
+    document.getElementById('back-to-sessions')?.addEventListener('click', () => goToStep(2));
+    document.getElementById('back-to-seats')?.addEventListener('click', () => goToStep(3));
+    document.getElementById('btn-proceed-payment')?.addEventListener('click', proceedToPayment);
+    document.getElementById('btn-pay')?.addEventListener('click', processPayment);
+
+    document.querySelectorAll('.pay-method').forEach(el => {
+  el.querySelector('input')?.addEventListener('change', () => {
+    document.querySelectorAll('.pay-method').forEach(m => m.classList.remove('active'));
+    el.classList.add('active');
+    const val = el.querySelector('input').value;
+    document.getElementById('card-form').style.display = val === 'card' ? 'block' : 'none';
+    // Скрываем/показываем пластиковую карту
+    const cardVisual = document.querySelector('.card-visual-wrapper');
+    if (cardVisual) cardVisual.style.display = val === 'card' ? 'flex' : 'none';
   });
+});
+
+    document.getElementById('btn-view-orders')?.addEventListener('click', () => {
+      document.getElementById('success-modal').classList.remove('open');
+      openOrdersModal();
+    });
+    document.getElementById('btn-download-tickets')?.addEventListener('click', () => {
+      showToast('Билеты сохранены (демо)', 'success');
+    });
+    document.getElementById('success-modal')?.addEventListener('click', e => {
+      if (e.target.id === 'success-modal') document.getElementById('success-modal').classList.remove('open');
+    });
+
+    document.getElementById('my-orders-fab')?.addEventListener('click', openOrdersModal);
+    document.getElementById('orders-modal-close')?.addEventListener('click', () => document.getElementById('orders-modal').classList.remove('open'));
+    document.getElementById('orders-modal')?.addEventListener('click', e => {
+      if (e.target.id === 'orders-modal') document.getElementById('orders-modal').classList.remove('open');
+    });
+  }
 
   // Back to top
-  const topBtn = document.getElementById('back-to-top');
+  const topBtn = document.getElementById('back-to-top') || document.getElementById('back-to-top-index');
   if (topBtn) {
     window.addEventListener('scroll', () => topBtn.classList.toggle('visible', scrollY>400), {passive:true});
     topBtn.addEventListener('click', () => window.scrollTo({top:0,behavior:'smooth'}));
@@ -743,7 +944,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // ESC
   document.addEventListener('keydown', e => {
-    if (e.key==='Escape') {
+    if (e.key === 'Escape') {
       document.querySelectorAll('.modal-overlay.open').forEach(m => m.classList.remove('open'));
     }
   });

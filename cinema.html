@@ -6,11 +6,86 @@
   <title>Кинотеатры — Синематека</title>
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/cinema.css">
+  <style>
+    /* Исправление окна авторизации ТОЛЬКО на cinema.html */
+    #auth-modal .modal-box {
+      background: #1a1a1a !important;
+      border: 1px solid #cca43b !important;
+      border-radius: 16px !important;
+      max-width: 400px !important;
+      width: 90% !important;
+      padding: 2rem 1.8rem 1.5rem !important;
+      margin: 0 auto !important;
+      color: #fff !important;
+      box-shadow: 0 16px 48px rgba(0,0,0,0.7) !important;
+      position: relative !important;
+      z-index: 1001 !important;
+      text-align: center !important;
+    }
+
+    #auth-modal .wishlist-modal-title {
+      font-family: 'Bebas Neue', sans-serif !important;
+      font-size: 2rem !important;
+      color: #cca43b !important;
+      letter-spacing: 0.05em !important;
+      margin-bottom: 1.5rem !important;
+      text-align: center !important;
+      text-transform: uppercase !important;
+    }
+
+    #auth-modal .form-group {
+      text-align: left !important;
+      margin-bottom: 1rem !important;
+    }
+
+    #auth-modal .cin-input {
+      background: #2a2a2a !important;
+      border: 1px solid #444 !important;
+      color: #fff !important;
+      font-family: 'Rajdhani', sans-serif !important;
+      font-size: 1rem !important;
+      padding: 12px 14px !important;
+      border-radius: 10px !important;
+      width: 100% !important;
+      box-sizing: border-box !important;
+    }
+
+    #auth-modal .btn-primary {
+      background: linear-gradient(135deg, #cca43b, #e09f3e) !important;
+      color: #000 !important;
+      border: none !important;
+      font-family: 'Rajdhani', sans-serif !important;
+      font-weight: 700 !important;
+      font-size: 1rem !important;
+      letter-spacing: 0.1em !important;
+      padding: 12px 20px !important;
+      width: 100% !important;
+      border-radius: 10px !important;
+      margin-top: 0.5rem !important;
+      cursor: pointer !important;
+    }
+
+    #auth-modal #auth-toggle-link {
+      color: #cca43b !important;
+      text-decoration: none !important;
+      font-family: 'Rajdhani', sans-serif !important;
+      font-size: 0.9rem !important;
+      font-weight: 600 !important;
+    }
+
+    #auth-modal #auth-error {
+      color: #e74c3c !important;
+      font-family: 'Rajdhani', sans-serif !important;
+      font-size: 0.85rem !important;
+      margin-bottom: 0.8rem !important;
+      text-align: left !important;
+    }
+  </style>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body>
 
-  <!-- ШАПКА (идентична index.html) -->
+  <!-- ШАПКА -->
   <header class="site-header">
     <div class="nav-inner">
       <a href="index.html" class="logo">
@@ -24,6 +99,14 @@
         <a href="about.html">О сервисе</a>
         <a href="contacts.html">Контакты</a>
       </nav>
+
+      <!-- Блок авторизации -->
+      <div class="auth-block" id="auth-block">
+        <button class="btn-auth" id="btn-login" onclick="showAuthModal('login')">Войти</button>
+        <button class="btn-auth" id="btn-register" onclick="showAuthModal('register')">Регистрация</button>
+        <span class="auth-user" id="auth-user-label" style="display:none;"></span>
+        <button class="btn-auth" id="btn-logout" style="display:none;" onclick="logout()">Выйти</button>
+      </div>
 
       <!-- Кнопка Избранное -->
       <button class="wishlist-nav-btn" title="Избранное" onclick="window.location.href='index.html'">
@@ -59,7 +142,7 @@
   <!-- PAGE HERO -->
   <section class="cinema-page-hero">
     <div class="cinema-hero-content">
-      <div class="cinema-hero-badge"><i class="fas fa-ticket-alt"></i> БРОНИРОВАНИЕ БИЛЕТОВ</div>
+      <div class="cinema-hero-sub"><i class="fas fa-ticket-alt"></i> БРОНИРОВАНИЕ БИЛЕТОВ</div>
       <h1 class="cinema-hero-title">КИНОТЕАТРЫ<br><span class="text-gold">САНКТ-ПЕТЕРБУРГА</span></h1>
       <p class="cinema-hero-sub">Выберите кинотеатр, сеанс и место — всё в одном месте</p>
       <div class="cinema-stats" id="cinema-stats">
@@ -192,10 +275,41 @@
         <button class="back-btn" id="back-to-seats">
           <i class="fas fa-arrow-left"></i> Назад к выбору мест
         </button>
+        <div class="card-visual-wrapper">
+          <div class="flip-card">
+            <div class="flip-card-inner">
+              <div class="flip-card-front">
+                <div class="card-chips">
+                  <span class="card-brand">CINEMATHEQUE</span>
+                  <svg class="card-chip-icon" width="32" height="26" viewBox="0 0 48 36">
+                    <rect x="4" y="6" width="40" height="24" rx="3" fill="none" stroke="#d4af37" stroke-width="2"/>
+                    <line x1="20" y1="6" x2="20" y2="30" stroke="#d4af37" stroke-width="1.5"/>
+                  </svg>
+                  <svg class="card-contactless" width="24" height="24" viewBox="0 0 50 50">
+                    <path d="M10 20 Q20 10 30 20" fill="none" stroke="#d4af37" stroke-width="2"/>
+                    <path d="M15 15 Q22 8 30 15" fill="none" stroke="#d4af37" stroke-width="2"/>
+                  </svg>
+                </div>
+                <p class="card-number" id="card-display-number">•••• •••• •••• ••••</p>
+                <p class="card-holder" id="card-display-holder">IVAN PETROV</p>
+                <p class="card-expiry" id="card-display-expiry">••/••</p>
+              </div>
+              <div class="flip-card-back">
+                <div class="card-stripe"></div>
+                <div class="card-signature">
+                  <span>Авторизованная подпись</span>
+                </div>
+                <div class="card-cvv-strip">
+                  <p class="card-cvv-code" id="card-display-cvv">***</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
         <div class="step-header">
           <h2>Оформление заказа</h2>
         </div>
-
+        
         <div class="payment-layout">
           <!-- Order summary -->
           <div class="order-card">
@@ -331,42 +445,50 @@
     </div>
   </footer>
 
+  <!-- Модальное окно авторизации (расположено правильно) -->
+  <div class="modal-overlay" id="auth-modal">
+    <div class="modal-box" style="max-width:400px;">
+      <button class="modal-close" onclick="closeAuthModal()"><i class="fas fa-times"></i></button>
+      <h2 class="wishlist-modal-title" id="auth-modal-title">Вход</h2>
+      <div class="auth-form" id="auth-form">
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" class="cin-input" id="auth-email" placeholder="example@mail.ru">
+        </div>
+        <div class="form-group">
+          <label>Пароль</label>
+          <input type="password" class="cin-input" id="auth-password" placeholder="••••••">
+        </div>
+        <div id="auth-error" style="color:#E74C3C; font-size:0.9rem; margin-bottom:10px; display:none;"></div>
+        <button class="btn btn-primary" id="auth-submit-btn" style="width:100%;">Войти</button>
+        <p style="text-align:center; margin-top:12px;">
+          <a href="#" id="auth-toggle-link">Нет аккаунта? Зарегистрироваться</a>
+        </p>
+      </div>
+    </div>
+  </div>
+
   <script src="js/cinema.js"></script>
   
-  <!-- ДОПОЛНИТЕЛЬНЫЙ СКРИПТ: поддержка параметра ?film= для быстрого перехода -->
+  <!-- ДОПОЛНИТЕЛЬНЫЙ СКРИПТ: поддержка параметра ?film= -->
   <script>
   (function() {
-    // Проверяем, есть ли параметр film в URL
     const urlParams = new URLSearchParams(window.location.search);
     const filmFilter = urlParams.get('film');
-    if (!filmFilter) return; // если параметра нет, ничего не делаем
+    if (!filmFilter) return;
 
-    // Переопределяем loadSessions после загрузки cinema.js
-    // Ждём полной загрузки DOM и инициализации всех глобальных функций
     window.addEventListener('load', function() {
-      // Проверяем, что глобальная функция loadSessions существует (она в cinema.js)
       if (typeof window.loadSessions !== 'function') return;
-      
-      // Сохраняем оригинальную функцию
       const originalLoadSessions = window.loadSessions;
-      
-      // Переопределяем
       window.loadSessions = async function(cinemaId) {
-        // Сначала вызываем оригинал, который загрузит все сеансы
         await originalLoadSessions(cinemaId);
-        
-        // Если у нас есть фильтр по фильму, фильтруем сеансы
-        if (!filmFilter || !state.sessions) return;
-        
-        // Оставляем только сеансы с нужным фильмом
+        if (!state.sessions) return;
         state.sessions = state.sessions.filter(s => s.film_title === filmFilter);
-        
-        // Перерисовываем даты и сеансы
         const picker = document.getElementById('date-picker');
         if (picker) picker.innerHTML = '';
         const dates = getUniqueDates();
         if (dates.length) {
-          renderDatePicker(); // функция из cinema.js
+          renderDatePicker();
         } else {
           document.getElementById('sessions-list').innerHTML = 
             '<p class="no-results">Нет сеансов этого фильма в выбранном кинотеатре</p>';

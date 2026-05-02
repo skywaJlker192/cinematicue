@@ -39,21 +39,19 @@ function nextId(arr) {
 // ─── Seed данные ─────────────────────────────────────────────
 function buildSeed() {
   const cinemas = [
-  { id:1, name:'Каро 11 Охта',            address:'Якорная ул., 5А',           city:'Санкт-Петербург', metro:'Ладожская',         rating:4.7, description:'11 залов, Dolby Atmos, премьеры мирового кино.' },
-  { id:2, name:'Формула Кино Галерея',     address:'Лиговский пр., 30А',        city:'Санкт-Петербург', metro:'Площадь Восстания', rating:4.5, description:'Современный кинотеатр в ТРЦ Галерея, 10 залов.' },
-  { id:3, name:'Мираж Синема ТРК Питерлэнд', address:'Приморский пр., 72',      city:'Санкт-Петербург', metro:'Беговая',           rating:4.6, description:'IMAX, VIP-залы с кожаными креслами, панорамный экран.' },
-  { id:4, name:'Синема Парк Гранд Каньон', address:'пр. Энгельса, 154',        city:'Санкт-Петербург', metro:'Проспект Просвещения', rating:4.4, description:'14 залов, IMAX, 4DX, детская комната.' },
-  { id:5, name:'Аврора',                   address:'Невский пр., 60',           city:'Санкт-Петербург', metro:'Маяковская',        rating:4.8, description:'Исторический кинотеатр в центре, арт-хаус и премьеры.' },
-];
+    { id:1, name:'Каро 11 Охта',            address:'Якорная ул., 5А',           city:'Санкт-Петербург', metro:'Ладожская',         rating:4.7, description:'11 залов, Dolby Atmos, премьеры мирового кино.' },
+    { id:2, name:'Формула Кино Галерея',     address:'Лиговский пр., 30А',        city:'Санкт-Петербург', metro:'Площадь Восстания', rating:4.5, description:'Современный кинотеатр в ТРЦ Галерея, 10 залов.' },
+    { id:3, name:'Мираж Синема ТРК Питерлэнд',address:'Приморский пр., 72',      city:'Санкт-Петербург', metro:'Беговая',           rating:4.6, description:'IMAX, VIP-залы с кожаными креслами, панорамный экран.' },
+    { id:4, name:'Синема Парк Гранд Каньон',  address:'пр. Энгельса, 154',        city:'Санкт-Петербург', metro:'Проспект Просвещения', rating:4.4, description:'14 залов, IMAX, 4DX, детская комната.' },
+    { id:5, name:'Аврора',                   address:'Невский пр., 60',           city:'Санкт-Петербург', metro:'Маяковская',        rating:4.8, description:'Исторический кинотеатр в центре, арт-хаус и премьеры.' },
+  ];
 
   const films = [
     { title:'Дюна: Часть вторая', genre:'Фантастика',   poster:'images/dune2.webp',              duration:'2ч 46м' },
-    { title:'F1',                  genre:'Спорт, Драма',poster:'images/f1.jpg',                   duration:'2ч 15м' },
-    { title:'Оппенгеймер',         genre:'Биография',   poster:'images/oppenheimer.webp',         duration:'3ч 00м' },
-    { title:'Дэдпул и Росомаха',   genre:'Экшн',        poster:'images/dedpool&wolverine.webp',   duration:'2ч 10м' },
-    { title:'Головоломка 2',       genre:'Мультфильм',  poster:'images/insideout2.webp',          duration:'1ч 40м' },
-    { title:'Барби',                genre:'Комедия',    poster:'images/barbie.webp',              duration:'1ч 54м' },
-    { title:'Человек-паук: Паутина',genre:'Мультфильм', poster:'images/sm.webp',                  duration:'2ч 20м' },
+    { title:'F1',                  genre:'Спорт, Драма',poster:'images/f1.jpg',                 duration:'2ч 15м' },
+    { title:'Оппенгеймер',         genre:'Биография',   poster:'images/oppenheimer.webp',       duration:'3ч 00м' },
+    { title:'Дэдпул и Росомаха',   genre:'Экшн',        poster:'images/dedpool&wolverine.webp', duration:'2ч 10м' },
+    { title:'Головоломка 2',       genre:'Мультфильм',  poster:'images/insideout2.webp',        duration:'1ч 40м' },
   ];
 
   const halls = [];
@@ -70,31 +68,27 @@ function buildSeed() {
   const formats = ['2D','3D','IMAX','Dolby'];
   const langs   = ['RU','RU Sub'];
 
-    cinemas.forEach(c => {
-    // 2 зала на каждый кинотеатр
+  cinemas.forEach(c => {
     const hallDefs = [
       { name:'Зал 1 — IMAX',    rows:12, cols:14 },
       { name:'Зал 2 — Комфорт', rows:10, cols:12 },
     ];
 
-    // Случайно выбираем от 4 до 7 фильмов для этого кинотеатра
+    // случайный набор от 3 до 5 фильмов для каждого кинотеатра
     const shuffledFilms = [...films].sort(() => Math.random() - 0.5);
-    const filmsForThisCinema = shuffledFilms.slice(0, 4 + Math.floor(Math.random() * 4)); // 4..7
+    const filmsForThisCinema = shuffledFilms.slice(0, 3 + Math.floor(Math.random() * 3)); // 3..5
 
     hallDefs.forEach(hd => {
       const hall = { id: hallId++, cinema_id: c.id, name: hd.name, rows: hd.rows, cols: hd.cols };
       halls.push(hall);
 
       filmsForThisCinema.forEach(film => {
-        // Для каждого фильма генерируем сеансы на несколько дат
         dates.slice(0, 4).forEach(date => {
-          // Случайное количество сеансов этого фильма в этот день (1 или 2)
-          const sessionsCount = 1 + Math.floor(Math.random() * 2); // 1..2
+          const sessionsCount = 1 + Math.floor(Math.random() * 2); // 1 или 2 сеанса
           for (let sc = 0; sc < sessionsCount; sc++) {
             const t      = times[Math.floor(Math.random() * times.length)];
             const fmt    = formats[Math.floor(Math.random() * formats.length)];
             const lang   = langs[Math.floor(Math.random() * langs.length)];
-            // Базовая цена + случайный довесок ±50
             const stdP   = 350 + Math.floor(Math.random() * 5) * 50 + Math.floor(Math.random() * 3 - 1) * 50;
             const sid    = sessionId++;
             sessions.push({
@@ -108,7 +102,6 @@ function buildSeed() {
               hall_name: hall.name, rows: hall.rows, cols: hall.cols,
             });
 
-            // Генерация мест
             for (let r = 1; r <= hall.rows; r++) {
               for (let col = 1; col <= hall.cols; col++) {
                 let cat = 'standard';
@@ -127,7 +120,7 @@ function buildSeed() {
     });
   });
 
-  return { cinemas, halls, sessions, seats, orders: [], tickets: [] };
+  return { cinemas, halls, sessions, seats, orders: [], tickets: [], users: [] };
 }
 
 function getDB() {
@@ -309,6 +302,90 @@ app.get('/api/orders', (req, res) => {
 
 // ─── Start ────────────────────────────────────────────────────
 getDB(); // инициализация при старте
+// ==================== АККАУНТЫ ====================
+const bcrypt = require('bcrypt');
+
+// Регистрация
+app.post('/api/register', async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    if (!email || !password) return res.status(400).json({ ok: false, error: 'Email и пароль обязательны' });
+
+    const db = getDB();
+    if (db.users.find(u => u.email === email)) {
+      return res.status(409).json({ ok: false, error: 'Пользователь уже существует' });
+    }
+
+    const hashed = await bcrypt.hash(password, 10);
+    const user = {
+      id: nextId(db.users),
+      email,
+      password: hashed,
+      subscription: false,
+      createdAt: new Date().toISOString()
+    };
+    db.users.push(user);
+    writeDB(db);
+
+    const token = 'usr_' + user.id + '_' + Math.random().toString(36).slice(2);
+    res.json({ ok: true, token, user: { id: user.id, email, subscription: false } });
+  } catch (err) {
+    res.status(500).json({ ok: false, error: 'Ошибка сервера' });
+  }
+});
+
+// Вход
+app.post('/api/login', async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    const db = getDB();
+    const user = db.users.find(u => u.email === email);
+    if (!user) return res.status(401).json({ ok: false, error: 'Неверный email или пароль' });
+
+    const valid = await bcrypt.compare(password, user.password);
+    if (!valid) return res.status(401).json({ ok: false, error: 'Неверный email или пароль' });
+
+    const token = 'usr_' + user.id + '_' + Math.random().toString(36).slice(2);
+    res.json({ ok: true, token, user: { id: user.id, email, subscription: user.subscription } });
+  } catch (err) {
+    res.status(500).json({ ok: false, error: 'Ошибка сервера' });
+  }
+});
+
+// Получение профиля
+app.get('/api/profile', (req, res) => {
+  const authHeader = req.headers.authorization;
+  if (!authHeader) return res.status(401).json({ ok: false, error: 'Токен не предоставлен' });
+  const token = authHeader.replace('Bearer ', '');
+  const match = token.match(/^usr_(\d+)_/);
+  if (!match) return res.status(401).json({ ok: false, error: 'Неверный токен' });
+
+  const userId = parseInt(match[1]);
+  const db = getDB();
+  const user = db.users.find(u => u.id === userId);
+  if (!user) return res.status(404).json({ ok: false, error: 'Пользователь не найден' });
+
+  res.json({ ok: true, user: { id: user.id, email: user.email, subscription: user.subscription } });
+});
+
+// Обновление подписки
+app.put('/api/profile/subscription', (req, res) => {
+  const authHeader = req.headers.authorization;
+  if (!authHeader) return res.status(401).json({ ok: false, error: 'Требуется авторизация' });
+  const token = authHeader.replace('Bearer ', '');
+  const match = token.match(/^usr_(\d+)_/);
+  if (!match) return res.status(401).json({ ok: false, error: 'Неверный токен' });
+
+  const userId = parseInt(match[1]);
+  const db = getDB();
+  const user = db.users.find(u => u.id === userId);
+  if (!user) return res.status(404).json({ ok: false, error: 'Пользователь не найден' });
+
+  user.subscription = req.body.subscription === true;
+  writeDB(db);
+  res.json({ ok: true, subscription: user.subscription });
+});
+
 app.listen(PORT, () => {
   console.log(`\n🎬  CINEMATHEQUE Backend запущен`);
   console.log(`    http://localhost:${PORT}\n`);
