@@ -328,8 +328,8 @@ app.post('/api/register', async (req, res) => {
 
     const token = 'usr_' + user.id + '_' + Math.random().toString(36).slice(2);
     res.json({ ok: true, token, user: { id: user.id, email, subscription: false } });
-  } catch (err) {
-    res.status(500).json({ ok: false, error: 'Ошибка сервера' });
+  } catch {
+  res.status(500).json({ ok: false, error: 'Ошибка сервера' });
   }
 });
 
@@ -346,9 +346,9 @@ app.post('/api/login', async (req, res) => {
 
     const token = 'usr_' + user.id + '_' + Math.random().toString(36).slice(2);
     res.json({ ok: true, token, user: { id: user.id, email, subscription: user.subscription } });
-  } catch (err) {
-    res.status(500).json({ ok: false, error: 'Ошибка сервера' });
-  }
+  } catch {
+  res.status(500).json({ ok: false, error: 'Ошибка сервера' });
+ }
 });
 
 // Получение профиля
@@ -411,9 +411,9 @@ app.post('/api/register', async (req, res) => {
 
     const token = 'usr_' + user.id + '_' + Math.random().toString(36).slice(2);
     res.json({ ok: true, token, user: { id: user.id, email, subscription: false } });
-  } catch (err) {
-    res.status(500).json({ ok: false, error: 'Ошибка сервера' });
-  }
+  } catch {
+  res.status(500).json({ ok: false, error: 'Ошибка сервера' });
+ }
 });
 
 app.post('/api/login', async (req, res) => {
@@ -428,9 +428,9 @@ app.post('/api/login', async (req, res) => {
 
     const token = 'usr_' + user.id + '_' + Math.random().toString(36).slice(2);
     res.json({ ok: true, token, user: { id: user.id, email, subscription: user.subscription } });
-  } catch (err) {
-    res.status(500).json({ ok: false, error: 'Ошибка сервера' });
-  }
+  } catch {
+  res.status(500).json({ ok: false, error: 'Ошибка сервера' });
+ }
 });
 // Временный тестовый аккаунт для продолжения практики
 (function ensureTestUser() {
