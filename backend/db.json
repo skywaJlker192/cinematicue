@@ -320293,6 +320293,27 @@
       "password": "$2b$10$wvKMbvLJ/sNkq9QlP4cXdeo0f89Hwn9LqvgsFLF7aHz3130iFh2Bq",
       "subscription": false,
       "createdAt": "2026-05-02T19:05:50.489Z"
+    },
+    {
+      "id": 3,
+      "email": "12313",
+      "password": "$2b$10$o5D1b48Qu1bE06nkcTVOOOwOYKTadwmTJf.nZgIXwOw20HBYNN3am",
+      "subscription": false,
+      "createdAt": "2026-05-04T12:34:01.719Z"
+    },
+    {
+      "id": 4,
+      "email": "test@gmail.com",
+      "password": "$2b$10$iJzBoFpDTC5blqoLW6/z6.dbza.N/fHn3InxXq39Mk.8vSyRDsFu6",
+      "subscription": false,
+      "createdAt": "2026-05-04T12:40:24.287Z"
+    },
+    {
+      "id": 5,
+      "email": "test@mail.ru",
+      "password": "$2b$10$VxWB4k2.5yvQifVCrPAXZOj4xJIUncf4OGVyrcFQPDi5Gos6q2HHK",
+      "subscription": false,
+      "createdAt": "2026-05-04T12:41:17.946Z"
     }
   ]
 }

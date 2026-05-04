@@ -303,7 +303,6 @@ app.get('/api/orders', (req, res) => {
 // ─── Start ────────────────────────────────────────────────────
 getDB(); // инициализация при старте
 // ==================== АККАУНТЫ ====================
-const bcrypt = require('bcrypt');
 
 // Регистрация
 app.post('/api/register', async (req, res) => {
@@ -386,6 +385,64 @@ app.put('/api/profile/subscription', (req, res) => {
   res.json({ ok: true, subscription: user.subscription });
 });
 
+// ==================== АККАУНТЫ ====================
+const bcrypt = require('bcrypt');
+
+app.post('/api/register', async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    if (!email || !password) return res.status(400).json({ ok: false, error: 'Email и пароль обязательны' });
+
+    const db = getDB();
+    if (db.users.find(u => u.email === email)) {
+      return res.status(409).json({ ok: false, error: 'Пользователь уже существует' });
+    }
+
+    const hashed = await bcrypt.hash(password, 10);
+    const user = {
+      id: nextId(db.users),
+      email,
+      password: hashed,
+      subscription: false,
+      createdAt: new Date().toISOString()
+    };
+    db.users.push(user);
+    writeDB(db);
+
+    const token = 'usr_' + user.id + '_' + Math.random().toString(36).slice(2);
+    res.json({ ok: true, token, user: { id: user.id, email, subscription: false } });
+  } catch (err) {
+    res.status(500).json({ ok: false, error: 'Ошибка сервера' });
+  }
+});
+
+app.post('/api/login', async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    const db = getDB();
+    const user = db.users.find(u => u.email === email);
+    if (!user) return res.status(401).json({ ok: false, error: 'Неверный email или пароль' });
+
+    const valid = await bcrypt.compare(password, user.password);
+    if (!valid) return res.status(401).json({ ok: false, error: 'Неверный email или пароль' });
+
+    const token = 'usr_' + user.id + '_' + Math.random().toString(36).slice(2);
+    res.json({ ok: true, token, user: { id: user.id, email, subscription: user.subscription } });
+  } catch (err) {
+    res.status(500).json({ ok: false, error: 'Ошибка сервера' });
+  }
+});
+// Временный тестовый аккаунт для продолжения практики
+(function ensureTestUser() {
+  const db = getDB();
+  if (!db.users.find(u => u.email === 'test@mail.ru')) {
+    const bcrypt = require('bcrypt');
+    const hashed = bcrypt.hashSync('123456', 10);
+    db.users.push({ id: nextId(db.users), email: 'test@mail.ru', password: hashed, subscription: false, createdAt: new Date().toISOString() });
+    writeDB(db);
+    console.log('✅ Добавлен тестовый пользователь test@mail.ru / 123456');
+  }
+})();
 app.listen(PORT, () => {
   console.log(`\n🎬  CINEMATHEQUE Backend запущен`);
   console.log(`    http://localhost:${PORT}\n`);

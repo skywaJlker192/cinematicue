@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Синематека — О сервисе</title>
   <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/cinema.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body>
@@ -23,6 +24,14 @@
         <a href="about.html" class="active">О сервисе</a>
         <a href="contacts.html">Контакты</a>
       </nav>
+
+      <!-- Блок авторизации -->
+      <div class="auth-block" id="auth-block">
+        <button class="btn-auth" id="btn-login" onclick="showAuthModal('login')">Войти</button>
+        <button class="btn-auth" id="btn-register" onclick="showAuthModal('register')">Регистрация</button>
+        <span class="auth-user" id="auth-user-label" style="display:none;"></span>
+        <button class="btn-auth" id="btn-logout" style="display:none;" onclick="logout()">Выйти</button>
+      </div>
 
       <!-- BB-8 Theme Toggle -->
       <label class="bb8-toggle">
@@ -357,8 +366,31 @@
     </div>
   </div>
 
+  <!-- ═══ МОДАЛКА АВТОРИЗАЦИИ ═══ -->
+  <div class="modal-overlay" id="auth-modal">
+    <div class="modal-box" style="max-width:400px;">
+      <button class="modal-close" onclick="closeAuthModal()"><i class="fas fa-times"></i></button>
+      <h2 class="wishlist-modal-title" id="auth-modal-title">Вход</h2>
+      <div class="auth-form" id="auth-form">
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" class="cin-input" id="auth-email" placeholder="example@mail.ru">
+        </div>
+        <div class="form-group">
+          <label>Пароль</label>
+          <input type="password" class="cin-input" id="auth-password" placeholder="••••••">
+        </div>
+        <div id="auth-error" style="color:#E74C3C; font-size:0.9rem; margin-bottom:10px; display:none;"></div>
+        <button class="btn btn-primary" id="auth-submit-btn" style="width:100%;">Войти</button>
+        <p style="text-align:center; margin-top:12px;">
+          <a href="#" id="auth-toggle-link">Нет аккаунта? Зарегистрироваться</a>
+        </p>
+      </div>
+    </div>
+  </div>
+
   <script src="js/about.js"></script>
   <script src="js/wheel.js"></script>
-
+  <script src="js/cinema.js"></script>
 </body>
 </html>
