@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+  # Основной сервис приложения
+  cinematheque:
+    build: .                   # Собираем из текущего Dockerfile
+    container_name: cinematicue-app
+    ports:
+      - "3001:3001"            # Пробрасываем порт: Хост:Контейнер
+    environment:
+      - NODE_ENV=production
+      - APP_PORT=3001
+    volumes:
+      - ./backend/db.json:/app/backend/db.json  # Сохраняем БД, чтобы данные не терялись
+    restart: unless-stopped    # Автоматический перезапуск при сбое

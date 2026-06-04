@@ -1,0 +1,31 @@
+# Зависимости
+node_modules
+backend/node_modules
+
+# Git и IDE
+.git
+.github
+.idea
+.vscode
+
+# Документы и скриншоты (не нужны в контейнере)
+screenshots
+docs
+logs
+этапы
+схемы
+итоговое_портфолио.docx
+*.md
+README.md
+
+# Конфигурации запуска (они нужны только на хосте)
+Makefile
+scripts
+.editorconfig
+.env
+.env.local
+
+# Сам Docker (чтобы не копировать сам себя)
+Dockerfile
+.dockerignore
+docker-compose.yml

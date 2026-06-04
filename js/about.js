@@ -4,7 +4,6 @@
    ===================================================== */
 
 document.addEventListener('DOMContentLoaded', () => {
-
   // ─── ТЕМА (общий код) ──────────────────────────────
   const toggle = document.querySelector('.bb8-toggle__checkbox');
   if (toggle) {
@@ -25,7 +24,8 @@ document.addEventListener('DOMContentLoaded', () => {
   function updateProgress() {
     if (!progressBar) return;
     const scrollTop = window.scrollY;
-    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const docHeight =
+      document.documentElement.scrollHeight - window.innerHeight;
     const pct = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
     progressBar.style.width = pct + '%';
   }
@@ -45,10 +45,14 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // общий scroll listener
-  window.addEventListener('scroll', () => {
-    updateProgress();
-    updateBackTop();
-  }, { passive: true });
+  window.addEventListener(
+    'scroll',
+    () => {
+      updateProgress();
+      updateBackTop();
+    },
+    { passive: true }
+  );
 
   // инициализация при загрузке
   updateProgress();

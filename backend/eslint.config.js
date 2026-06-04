@@ -7,12 +7,12 @@ module.exports = [
       ecmaVersion: 'latest',
       sourceType: 'commonjs',
       globals: {
-        ...globals.node,
-      },
+        ...globals.node
+      }
     },
     rules: {
       'no-undef': 'error',
-      'no-unused-vars': 'warn',
-    },
-  },
+      'no-unused-vars': 'warn'
+    }
+  }
 ];
