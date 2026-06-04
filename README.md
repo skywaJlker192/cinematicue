@@ -29,6 +29,7 @@ npm run dev
 make run
 
 # Открыть в браузере: http://localhost:3001
+```bash
 
 # Сборка и запуск
 docker compose up --build
