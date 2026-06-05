@@ -1,0 +1,2150 @@
+/* ================================================================
+   CINEMATHEQUE — Cinema Booking Styles (cinema.css)
+   Расширение основного style.css без изменений оригинала
+================================================================ */
+
+/* ─── Cinema Hero ─────────────────────────────────────────────── */
+.cinema-page-hero {
+  position: relative;
+  min-height: 340px;
+  display: flex;
+  align-items: center;
+  background:
+    linear-gradient(
+      135deg,
+      rgba(5, 5, 5, 0.95) 0%,
+      rgba(10, 10, 20, 0.85) 100%
+    ),
+    url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23cca43b' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  padding: 4rem 2rem;
+  overflow: hidden;
+  border-bottom: 1px solid var(--border);
+}
+
+.cinema-page-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(
+      ellipse at 20% 50%,
+      rgba(204, 164, 59, 0.08) 0%,
+      transparent 60%
+    ),
+    radial-gradient(
+      ellipse at 80% 50%,
+      rgba(42, 111, 151, 0.06) 0%,
+      transparent 60%
+    );
+  pointer-events: none;
+}
+
+.cinema-hero-content {
+  max-width: 1400px;
+  margin: 0 auto;
+  width: 100%;
+  position: relative;
+  z-index: 1;
+}
+
+.cinema-hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(204, 164, 59, 0.12);
+  border: 1px solid rgba(204, 164, 59, 0.3);
+  color: var(--accent-gold);
+  padding: 6px 16px;
+  border-radius: 100px;
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 1.2rem;
+}
+
+.cinema-hero-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(3rem, 8vw, 6rem);
+  line-height: 1;
+  color: #fff;
+  margin-bottom: 1rem;
+}
+
+.cinema-hero-sub {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 1.2rem;
+  color: var(--text-secondary);
+  margin-bottom: 2rem;
+  letter-spacing: 0.05em;
+}
+
+.cinema-stats {
+  display: flex;
+  gap: 3rem;
+}
+
+.cstat {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.cstat-num {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 2.5rem;
+  color: var(--accent-gold);
+  line-height: 1;
+}
+.cstat-label {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+/* ─── Main Layout ─────────────────────────────────────────────── */
+.cinema-main {
+  flex: 1;
+  padding: 2rem 0 4rem;
+}
+
+/* ─── Booking Steps Indicator ─────────────────────────────────── */
+.booking-steps {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  margin: 2.5rem auto 3rem;
+  max-width: 600px;
+}
+
+.bstep {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  cursor: default;
+  opacity: 0.35;
+  transition: opacity 0.3s;
+}
+
+.bstep.active {
+  opacity: 1;
+}
+.bstep.done {
+  opacity: 0.7;
+}
+
+.bstep-num {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 2px solid var(--text-muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--text-muted);
+  transition: all 0.3s;
+}
+
+.bstep.active .bstep-num {
+  border-color: var(--accent-gold);
+  background: var(--accent-gold);
+  color: #000;
+  box-shadow: 0 0 20px rgba(204, 164, 59, 0.4);
+}
+
+.bstep.done .bstep-num {
+  border-color: var(--accent-green);
+  background: var(--accent-green);
+  color: #fff;
+}
+
+.bstep span {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+
+.bstep.active span {
+  color: var(--accent-gold);
+}
+.bstep.done span {
+  color: var(--accent-green);
+}
+
+.bstep-line {
+  flex: 1;
+  height: 2px;
+  background: var(--border);
+  min-width: 40px;
+  max-width: 80px;
+  margin-bottom: 22px;
+}
+
+/* ─── Step Header ─────────────────────────────────────────────── */
+.booking-step-content {
+  display: block;
+}
+.booking-step-content.hidden {
+  display: none;
+}
+
+.step-header {
+  margin-bottom: 2rem;
+}
+.step-header h2 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  color: #fff;
+  margin-bottom: 0.3rem;
+}
+.step-sub {
+  font-family: 'Rajdhani', sans-serif;
+  color: var(--text-secondary);
+  font-size: 1rem;
+  letter-spacing: 0.05em;
+}
+
+/* ─── Back Button ─────────────────────────────────────────────── */
+.back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: none;
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  transition: var(--transition);
+  margin-bottom: 1.5rem;
+}
+.back-btn:hover {
+  border-color: var(--accent-gold);
+  color: var(--accent-gold);
+}
+
+/* ─── Cinema Filter Bar ───────────────────────────────────────── */
+.cinema-filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 2rem;
+}
+
+.cf-btn {
+  background: var(--bg-panel);
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+  padding: 8px 18px;
+  border-radius: 100px;
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  transition: var(--transition);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.cf-btn:hover {
+  border-color: var(--accent-gold);
+  color: var(--text-primary);
+}
+.cf-btn.active {
+  background: var(--accent-gold);
+  border-color: var(--accent-gold);
+  color: #000;
+}
+
+/* ─── Cinemas Grid ────────────────────────────────────────────── */
+.cinemas-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 1.5rem;
+}
+
+.cinema-skeleton {
+  height: 280px;
+  border-radius: 16px;
+  background: linear-gradient(
+    90deg,
+    var(--bg-panel) 25%,
+    rgba(255, 255, 255, 0.04) 50%,
+    var(--bg-panel) 75%
+  );
+  background-size: 400% 100%;
+  animation: shimmer 1.5s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 100% 0;
+  }
+  100% {
+    background-position: -100% 0;
+  }
+}
+
+/* ─── Cinema Card ─────────────────────────────────────────────── */
+.cinema-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+  transition: var(--transition);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.cinema-card:hover {
+  border-color: var(--border-bright);
+  transform: translateY(-4px);
+  box-shadow:
+    0 16px 48px rgba(0, 0, 0, 0.4),
+    var(--shadow-gold);
+}
+
+.cinema-card-header {
+  background: linear-gradient(
+    135deg,
+    var(--bg-panel),
+    rgba(204, 164, 59, 0.05)
+  );
+  padding: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--border);
+}
+
+.cinema-card-icon {
+  width: 56px;
+  height: 56px;
+  background: linear-gradient(135deg, var(--accent-gold), var(--accent-amber));
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  color: #000;
+}
+
+.cinema-card-rating {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--accent-gold);
+}
+
+.cinema-card-rating .fa-star {
+  font-size: 0.85rem;
+}
+
+.cinema-card-body {
+  padding: 1.5rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.cinema-card-name {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.6rem;
+  color: #fff;
+  margin-bottom: 0.6rem;
+}
+
+.cinema-card-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 0.8rem;
+}
+
+.cinema-card-meta span {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.cinema-card-meta span i {
+  color: var(--accent-gold);
+  width: 14px;
+}
+
+.cinema-card-desc {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  margin-bottom: 1.2rem;
+  flex: 1;
+  font-family: 'Cormorant Garamond', serif;
+}
+
+.cinema-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.cinema-sessions-count {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.cinema-sessions-count i {
+  color: var(--accent-blue);
+}
+
+.btn-sm {
+  padding: 8px 16px !important;
+  font-size: 0.9rem !important;
+}
+
+.btn-choose-cinema {
+  background: linear-gradient(135deg, var(--accent-gold), var(--accent-amber));
+  color: #000;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 700;
+  font-size: 0.95rem;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: var(--transition);
+}
+.btn-choose-cinema:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 16px rgba(204, 164, 59, 0.4);
+}
+
+/* ─── Date Picker ─────────────────────────────────────────────── */
+.date-picker {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  padding-bottom: 12px;
+  margin-bottom: 2rem;
+  scrollbar-width: thin;
+  scrollbar-color: var(--accent-gold) transparent;
+}
+
+.date-picker::-webkit-scrollbar {
+  height: 4px;
+}
+.date-picker::-webkit-scrollbar-track {
+  background: transparent;
+}
+.date-picker::-webkit-scrollbar-thumb {
+  background: var(--accent-gold);
+  border-radius: 2px;
+}
+
+.date-btn {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  padding: 12px 16px;
+  background: var(--bg-panel);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: var(--transition);
+  min-width: 70px;
+}
+.date-btn:hover {
+  border-color: var(--border-bright);
+}
+.date-btn.active {
+  background: var(--accent-gold);
+  border-color: var(--accent-gold);
+}
+
+.date-day {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-secondary);
+}
+.date-num {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.8rem;
+  color: #fff;
+  line-height: 1;
+}
+.date-mon {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  text-transform: capitalize;
+}
+
+.date-btn.active .date-day,
+.date-btn.active .date-num,
+.date-btn.active .date-mon {
+  color: #000;
+}
+
+/* ─── Film Sessions Group ─────────────────────────────────────── */
+.film-sessions-group {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+  margin-bottom: 1.5rem;
+  transition: border-color 0.3s;
+}
+.film-sessions-group:hover {
+  border-color: var(--border-bright);
+}
+
+.fsg-header {
+  display: flex;
+  gap: 1.2rem;
+  padding: 1.5rem;
+}
+
+.fsg-poster {
+  width: 80px;
+  height: 112px;
+  border-radius: 10px;
+  object-fit: cover;
+  flex-shrink: 0;
+  border: 1px solid var(--border);
+}
+
+.fsg-info {
+  flex: 1;
+}
+.fsg-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.8rem;
+  color: #fff;
+  margin-bottom: 0.3rem;
+}
+.fsg-meta {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  margin-bottom: 1rem;
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.fsg-times {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+/* Session Time Button */
+.session-time-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  padding: 12px 14px;
+  background: var(--bg-panel);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: var(--transition);
+  min-width: 90px;
+}
+.session-time-btn:hover {
+  border-color: var(--accent-gold);
+  background: rgba(204, 164, 59, 0.06);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(204, 164, 59, 0.15);
+}
+
+.stb-time {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.6rem;
+  color: #fff;
+  line-height: 1;
+}
+.stb-format,
+.stb-lang {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+}
+.stb-hall {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 0.7rem;
+  color: var(--text-muted);
+}
+.stb-price {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--accent-gold);
+}
+
+.sessions-loading,
+.seats-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 4rem;
+  font-family: 'Rajdhani', sans-serif;
+  color: var(--text-secondary);
+  font-size: 1.1rem;
+}
+
+.no-results {
+  text-align: center;
+  color: var(--text-secondary);
+  padding: 3rem;
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 1rem;
+}
+
+/* ─── Seat Map ────────────────────────────────────────────────── */
+.seat-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 1.5rem;
+  padding: 16px 20px;
+  background: var(--bg-panel);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+.sl-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.sl-dot {
+  width: 22px;
+  height: 22px;
+  border-radius: 5px;
+  border: 2px solid transparent;
+}
+.sl-item span {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+.sl-vip {
+  background: linear-gradient(135deg, #8b0000, #c0392b);
+  border-color: #c0392b;
+}
+.sl-comfort {
+  background: linear-gradient(135deg, #1a4a7a, #2980b9);
+  border-color: #2980b9;
+}
+.sl-standard {
+  background: linear-gradient(135deg, #1a3a1a, #27ae60);
+  border-color: #27ae60;
+}
+.sl-taken {
+  background: #1a1a1a;
+  border-color: #333;
+}
+.sl-selected {
+  background: linear-gradient(135deg, #8b6914, #cca43b);
+  border-color: #cca43b;
+}
+
+/* Price info bar */
+.price-info-bar {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.pib-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  border-radius: 10px;
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 600;
+  border: 1px solid transparent;
+}
+.pib-item strong {
+  font-size: 1.1rem;
+  margin-left: 6px;
+}
+
+.pib-vip {
+  background: rgba(192, 57, 43, 0.12);
+  border-color: rgba(192, 57, 43, 0.3);
+  color: #e74c3c;
+}
+.pib-comfort {
+  background: rgba(41, 128, 185, 0.12);
+  border-color: rgba(41, 128, 185, 0.3);
+  color: #3498db;
+}
+.pib-standard {
+  background: rgba(39, 174, 96, 0.12);
+  border-color: rgba(39, 174, 96, 0.3);
+  color: #2ecc71;
+}
+
+/* Screen */
+.screen-label {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 2rem;
+}
+.screen-bar {
+  width: min(640px, 90%);
+  height: 6px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(204, 164, 59, 0.5),
+    var(--accent-gold),
+    rgba(204, 164, 59, 0.5),
+    transparent
+  );
+  border-radius: 3px;
+  box-shadow:
+    0 0 20px rgba(204, 164, 59, 0.3),
+    0 0 40px rgba(204, 164, 59, 0.1);
+}
+.screen-label span {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 0.7rem;
+  letter-spacing: 0.3em;
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+
+/* Seat Map Scroll */
+.seat-map-wrap {
+  overflow-x: auto;
+  padding-bottom: 1rem;
+  margin-bottom: 2rem;
+}
+.seat-map {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: fit-content;
+  margin: 0 auto;
+  width: fit-content;
+}
+
+.seat-row {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.row-label {
+  width: 24px;
+  text-align: right;
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  flex-shrink: 0;
+  margin-right: 4px;
+}
+
+/* ─── SEAT ─────────────────────────────────────────────────────── */
+.seat {
+  width: 32px;
+  height: 28px;
+  border-radius: 6px 6px 4px 4px;
+  cursor: pointer;
+  transition:
+    transform 0.15s,
+    box-shadow 0.15s,
+    opacity 0.15s;
+  position: relative;
+  border: 2px solid transparent;
+  flex-shrink: 0;
+}
+
+.seat::after {
+  content: '';
+  position: absolute;
+  bottom: -3px;
+  left: 3px;
+  right: 3px;
+  height: 3px;
+  border-radius: 0 0 3px 3px;
+  background: rgba(0, 0, 0, 0.4);
+}
+
+.seat:hover:not(.seat-taken) {
+  transform: scale(1.15) translateY(-2px);
+  z-index: 10;
+}
+
+.seat-empty {
+  background: transparent;
+  cursor: default;
+  pointer-events: none;
+  border: none;
+}
+.seat-empty::after {
+  display: none;
+}
+
+/* VIP — red */
+.seat-vip.seat-free {
+  background: linear-gradient(180deg, #8b0000, #c0392b);
+  border-color: #e74c3c;
+  box-shadow: 0 2px 8px rgba(192, 57, 43, 0.3);
+}
+.seat-vip.seat-free:hover {
+  box-shadow: 0 4px 16px rgba(231, 76, 60, 0.6);
+  border-color: #ff6b6b;
+}
+
+/* Comfort — blue */
+.seat-comfort.seat-free {
+  background: linear-gradient(180deg, #1a4a7a, #2980b9);
+  border-color: #3498db;
+  box-shadow: 0 2px 8px rgba(41, 128, 185, 0.3);
+}
+.seat-comfort.seat-free:hover {
+  box-shadow: 0 4px 16px rgba(52, 152, 219, 0.6);
+  border-color: #5dade2;
+}
+
+/* Standard — green */
+.seat-standard.seat-free {
+  background: linear-gradient(180deg, #1a5c2a, #27ae60);
+  border-color: #2ecc71;
+  box-shadow: 0 2px 8px rgba(39, 174, 96, 0.3);
+}
+.seat-standard.seat-free:hover {
+  box-shadow: 0 4px 16px rgba(46, 204, 113, 0.6);
+  border-color: #58d68d;
+}
+
+/* Taken — gray */
+.seat-taken {
+  background: #1a1a1a !important;
+  border-color: #2a2a2a !important;
+  cursor: not-allowed !important;
+  opacity: 0.5;
+  box-shadow: none !important;
+}
+.seat-taken::before {
+  content: '×';
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  color: #444;
+}
+
+/* Selected — gold */
+.seat-selected {
+  background: linear-gradient(180deg, #8b6914, #cca43b) !important;
+  border-color: #e0b030 !important;
+  box-shadow: 0 0 12px rgba(204, 164, 59, 0.6) !important;
+  transform: scale(1.1) translateY(-2px);
+  z-index: 5;
+  animation: selectedPulse 2s ease-in-out infinite;
+}
+@keyframes selectedPulse {
+  0%,
+  100% {
+    box-shadow: 0 0 12px rgba(204, 164, 59, 0.5);
+  }
+  50% {
+    box-shadow: 0 0 22px rgba(204, 164, 59, 0.9);
+  }
+}
+
+/* ─── Selection Summary ───────────────────────────────────────── */
+.selection-summary {
+  position: sticky;
+  bottom: 1.5rem;
+  z-index: 100;
+  background: var(--bg-card);
+  border: 1px solid var(--accent-gold);
+  border-radius: 16px;
+  padding: 1.2rem 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.5),
+    0 0 32px rgba(204, 164, 59, 0.1);
+  margin-top: 1.5rem;
+  backdrop-filter: blur(12px);
+}
+
+.sel-info {
+  flex: 1;
+  min-width: 200px;
+}
+.sel-info #sel-count {
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: #fff;
+  display: block;
+  margin-bottom: 4px;
+}
+.sel-seats-list {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 0.85rem;
+  color: var(--accent-gold);
+}
+
+.sel-total {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 1rem;
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+.sel-total strong {
+  font-size: 1.5rem;
+  color: var(--accent-gold);
+  margin-left: 6px;
+}
+
+.btn-book {
+  white-space: nowrap;
+  padding: 12px 28px !important;
+  font-size: 1rem !important;
+  border-radius: 10px !important;
+}
+
+/* ─── Payment Layout ──────────────────────────────────────────── */
+.payment-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  max-width: 1000px;
+}
+
+@media (max-width: 768px) {
+  .payment-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+.order-card,
+.payment-form-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.order-card-header,
+.payment-form-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 1.2rem 1.5rem;
+  background: var(--bg-panel);
+  border-bottom: 1px solid var(--border);
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.order-details {
+  padding: 1.5rem;
+}
+
+.od-film {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.od-poster {
+  width: 64px;
+  height: 90px;
+  border-radius: 8px;
+  object-fit: cover;
+  border: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+.od-film-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.4rem;
+  color: #fff;
+  margin-bottom: 0.3rem;
+}
+
+.od-meta {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  margin-bottom: 2px;
+}
+
+.od-seats {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 1.5rem;
+}
+.od-seat-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 12px;
+  background: var(--bg-panel);
+  border-radius: 8px;
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}
+.od-seat-cat {
+  padding: 3px 10px;
+  border-radius: 100px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+.od-seat-price {
+  margin-left: auto;
+  font-weight: 700;
+  color: var(--accent-gold);
+}
+.od-total {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 12px;
+  background: rgba(204, 164, 59, 0.06);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  font-family: 'Rajdhani', sans-serif;
+  color: var(--text-secondary);
+}
+.od-total strong {
+  font-size: 1.5rem;
+  color: var(--accent-gold);
+}
+
+/* Category badges */
+.cat-vip {
+  background: rgba(192, 57, 43, 0.2);
+  color: #e74c3c;
+  border: 1px solid rgba(192, 57, 43, 0.4);
+}
+.cat-comfort {
+  background: rgba(41, 128, 185, 0.2);
+  color: #3498db;
+  border: 1px solid rgba(41, 128, 185, 0.4);
+}
+.cat-standard {
+  background: rgba(39, 174, 96, 0.2);
+  color: #2ecc71;
+  border: 1px solid rgba(39, 174, 96, 0.4);
+}
+
+/* ─── Payment Form ────────────────────────────────────────────── */
+.payment-form-card {
+  padding: 0;
+}
+.payment-form-card > *:not(.payment-form-header) {
+  padding: 0 1.5rem;
+}
+.pay-methods {
+  display: flex;
+  gap: 10px;
+  padding: 1.5rem 1.5rem 1rem;
+  flex-wrap: wrap;
+}
+
+.pay-method {
+  flex: 1;
+  min-width: 100px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  border: 2px solid var(--border);
+  border-radius: 10px;
+  cursor: pointer;
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  transition: var(--transition);
+  white-space: nowrap;
+}
+.pay-method input {
+  display: none;
+}
+.pay-method.active {
+  border-color: var(--accent-gold);
+  color: var(--accent-gold);
+  background: rgba(204, 164, 59, 0.06);
+}
+.pay-method:hover {
+  border-color: var(--border-bright);
+}
+
+.card-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding-bottom: 1.5rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.form-group label {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.cin-input {
+  background: var(--bg-panel);
+  border: 1px solid var(--border);
+  color: var(--text-primary);
+  padding: 12px 14px;
+  border-radius: 10px;
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 1rem;
+  letter-spacing: 0.05em;
+  transition: var(--transition);
+  width: 100%;
+}
+.cin-input:focus {
+  outline: none;
+  border-color: var(--accent-gold);
+  box-shadow: 0 0 0 3px rgba(204, 164, 59, 0.1);
+}
+.cin-input::placeholder {
+  color: var(--text-muted);
+}
+
+.pay-total-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  border-top: 1px solid var(--border);
+  margin-top: 0.5rem;
+  font-family: 'Rajdhani', sans-serif;
+  color: var(--text-secondary);
+}
+.pay-total-amount {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 2rem;
+  color: var(--accent-gold);
+}
+
+.btn-pay {
+  width: calc(100% - 3rem) !important;
+  margin: 0 1.5rem 1rem !important;
+  padding: 16px !important;
+  font-size: 1.1rem !important;
+  border-radius: 12px !important;
+  letter-spacing: 0.1em;
+  justify-content: center;
+}
+
+.pay-secure {
+  text-align: center;
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  padding: 0 1.5rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+/* ─── Success Modal ───────────────────────────────────────────── */
+.success-modal-box {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  padding: 2.5rem;
+  max-width: 560px;
+  width: 90%;
+  text-align: center;
+  position: relative;
+  z-index: 1002;
+  max-height: 90vh;
+  overflow-y: auto;
+  animation: modalAppear 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+@keyframes modalAppear {
+  from {
+    opacity: 0;
+    transform: scale(0.8) translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.success-icon-wrap {
+  position: relative;
+  width: 80px;
+  height: 80px;
+  margin: 0 auto 1.5rem;
+}
+
+.success-ring {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 3px solid var(--accent-gold);
+  animation: ringPulse 1.5s ease-out forwards;
+}
+@keyframes ringPulse {
+  0% {
+    transform: scale(0.5);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1.3);
+    opacity: 0;
+  }
+}
+
+.success-check {
+  font-size: 2.5rem;
+  color: var(--accent-gold);
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: checkBounce 0.6s 0.3s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+@keyframes checkBounce {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  60% {
+    transform: scale(1.3);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.success-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 2.5rem;
+  color: #fff;
+  margin-bottom: 0.3rem;
+}
+
+.success-sub {
+  font-family: 'Rajdhani', sans-serif;
+  color: var(--text-secondary);
+  font-size: 1.1rem;
+  margin-bottom: 1.5rem;
+}
+
+/* ─── Ticket Item ─────────────────────────────────────────────── */
+.ticket-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 1.5rem;
+  text-align: left;
+}
+
+.ticket-item {
+  background: var(--bg-panel);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 1.2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.ticket-item::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background: linear-gradient(180deg, var(--accent-gold), var(--accent-amber));
+}
+
+.ticket-item-left {
+  flex: 1;
+}
+.ticket-film {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.2rem;
+  color: #fff;
+  margin-bottom: 4px;
+}
+.ticket-info {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  margin-bottom: 2px;
+}
+.ticket-cat {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 100px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  margin-top: 6px;
+}
+
+.ticket-item-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+}
+.ticket-price {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.5rem;
+  color: var(--accent-gold);
+}
+.ticket-barcode {
+  opacity: 0.4;
+  color: var(--text-primary);
+}
+
+/* ─── Status Badges ───────────────────────────────────────────── */
+.order-status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 20px;
+  border-radius: 100px;
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 700;
+  font-size: 0.9rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin: 1rem auto;
+}
+.status-paid {
+  background: rgba(39, 174, 96, 0.15);
+  border: 1px solid rgba(39, 174, 96, 0.4);
+  color: #2ecc71;
+}
+.status-pending {
+  background: rgba(204, 164, 59, 0.15);
+  border: 1px solid rgba(204, 164, 59, 0.4);
+  color: var(--accent-gold);
+}
+.status-cancelled {
+  background: rgba(192, 57, 43, 0.15);
+  border: 1px solid rgba(192, 57, 43, 0.4);
+  color: #e74c3c;
+}
+
+/* ─── Success Actions ─────────────────────────────────────────── */
+.success-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 1.5rem;
+}
+
+/* ─── Orders Modal ────────────────────────────────────────────── */
+.orders-modal-box {
+  max-width: 640px !important;
+  max-height: 85vh;
+  overflow-y: auto;
+}
+
+.orders-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 1rem 0;
+}
+
+.order-item {
+  background: var(--bg-panel);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 1.2rem;
+  transition: border-color 0.2s;
+}
+.order-item:hover {
+  border-color: var(--border-bright);
+}
+
+.order-item-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 0.8rem;
+}
+
+.order-film-name {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.2rem;
+  color: #fff;
+  margin-bottom: 3px;
+}
+.order-item-meta {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  margin-bottom: 2px;
+}
+
+.order-tickets-mini {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 0.8rem;
+}
+.otm-ticket {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 100px;
+}
+.otm-more {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  padding: 3px 8px;
+}
+
+.order-item-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.order-total {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.4rem;
+  color: var(--accent-gold);
+}
+.btn-cancel-order {
+  background: none;
+  border: 1px solid rgba(192, 57, 43, 0.4);
+  color: #e74c3c;
+  padding: 6px 14px;
+  border-radius: 8px;
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+}
+.btn-cancel-order:hover {
+  background: rgba(192, 57, 43, 0.1);
+}
+
+.orders-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 3rem;
+  font-family: 'Rajdhani', sans-serif;
+  color: var(--text-secondary);
+}
+.no-orders {
+  text-align: center;
+  padding: 3rem;
+}
+.no-orders i {
+  font-size: 3rem;
+  color: var(--text-muted);
+  margin-bottom: 1rem;
+  display: block;
+}
+.no-orders p {
+  font-family: 'Rajdhani', sans-serif;
+  color: var(--text-secondary);
+}
+
+/* ─── FAB (My Orders Button) ──────────────────────────────────── */
+.my-orders-fab {
+  position: fixed;
+  bottom: 5rem;
+  right: 2rem;
+  z-index: 900;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent-gold), var(--accent-amber));
+  color: #000;
+  border: none;
+  font-size: 1.3rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 20px rgba(204, 164, 59, 0.4);
+  transition: var(--transition);
+}
+.my-orders-fab:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 28px rgba(204, 164, 59, 0.6);
+}
+
+.orders-badge {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  background: var(--accent-red);
+  color: #fff;
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 0.7rem;
+  font-weight: 700;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ─── Cinema Button on Index Page ─────────────────────────────── */
+.cinema-promo-section {
+  background: linear-gradient(
+    135deg,
+    rgba(10, 10, 20, 0.95),
+    rgba(5, 5, 10, 0.98)
+  );
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  padding: 4rem 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.cinema-promo-section::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(
+      ellipse at 30% 50%,
+      rgba(204, 164, 59, 0.06) 0%,
+      transparent 60%
+    ),
+    radial-gradient(
+      ellipse at 70% 50%,
+      rgba(42, 111, 151, 0.05) 0%,
+      transparent 60%
+    );
+  pointer-events: none;
+}
+
+.cinema-promo-inner {
+  display: flex;
+  align-items: center;
+  gap: 3rem;
+  position: relative;
+  z-index: 1;
+}
+
+.cinema-promo-text {
+  flex: 1;
+}
+
+.cinema-promo-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(204, 164, 59, 0.1);
+  border: 1px solid rgba(204, 164, 59, 0.25);
+  color: var(--accent-gold);
+  padding: 5px 14px;
+  border-radius: 100px;
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+}
+
+.cinema-promo-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  color: #fff;
+  line-height: 1;
+  margin-bottom: 0.8rem;
+}
+
+.cinema-promo-desc {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  max-width: 500px;
+}
+
+.cinema-promo-features {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 1.2rem;
+}
+
+.cpf-tag {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  background: var(--bg-panel);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+.cpf-tag i {
+  color: var(--accent-gold);
+  font-size: 0.8rem;
+}
+
+.cinema-promo-action {
+  flex-shrink: 0;
+  text-align: center;
+}
+
+/* Кнопки авторизации */
+.auth-block {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-left: auto;
+}
+.btn-auth {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: var(--transition);
+  white-space: nowrap;
+}
+.btn-auth:hover {
+  border-color: var(--accent-gold);
+  color: var(--accent-gold);
+}
+.auth-user {
+  color: var(--accent-gold);
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 0.95rem;
+  margin-right: 10px;
+}
+
+.btn-go-cinema {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  background: linear-gradient(135deg, var(--accent-gold), var(--accent-amber));
+  color: #000;
+  text-decoration: none;
+  padding: 1.5rem 2.5rem;
+  border-radius: 16px;
+  border: none;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.8rem;
+  letter-spacing: 0.05em;
+  transition: var(--transition);
+  box-shadow: 0 8px 32px rgba(204, 164, 59, 0.3);
+  cursor: pointer;
+  min-width: 220px;
+}
+.btn-go-cinema:hover {
+  transform: translateY(-4px) scale(1.03);
+  box-shadow: 0 16px 48px rgba(204, 164, 59, 0.5);
+  color: #000;
+}
+.btn-go-cinema .btn-sub {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  opacity: 0.7;
+}
+.btn-go-cinema i {
+  font-size: 2rem;
+}
+
+/* ─── Responsive ──────────────────────────────────────────────── */
+@media (max-width: 900px) {
+  .cinema-promo-inner {
+    flex-direction: column;
+    text-align: center;
+  }
+  .cinema-promo-desc {
+    max-width: 100%;
+  }
+  .cinema-promo-features {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 700px) {
+  .cinema-stats {
+    gap: 1.5rem;
+  }
+  .booking-steps {
+    gap: 0;
+  }
+  .bstep span {
+    display: none;
+  }
+  .bstep-line {
+    min-width: 20px;
+  }
+  .fsg-header {
+    flex-direction: column;
+  }
+  .fsg-poster {
+    width: 100%;
+    height: 160px;
+    border-radius: 10px;
+  }
+  .seat {
+    width: 26px;
+    height: 22px;
+    border-radius: 5px 5px 3px 3px;
+  }
+  .selection-summary {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .payment-layout {
+    grid-template-columns: 1fr;
+  }
+  .date-btn {
+    min-width: 60px;
+    padding: 10px 12px;
+  }
+  .cinema-promo-section {
+    padding: 2.5rem 0;
+  }
+}
+
+/* Light theme tweaks */
+body.light-theme .cinema-card {
+  background: #fff;
+}
+body.light-theme .order-card,
+body.light-theme .payment-form-card {
+  background: #fff;
+}
+body.light-theme .fsg-header,
+body.light-theme .film-sessions-group {
+  background: #fff;
+  border-color: rgba(0, 0, 0, 0.1);
+}
+body.light-theme .od-seat-row,
+body.light-theme .order-item {
+  background: #f4f5f7;
+}
+body.light-theme .selection-summary {
+  background: rgba(255, 255, 255, 0.95);
+}
+body.light-theme .cin-input {
+  background: #f4f5f7;
+  color: #000;
+  border-color: rgba(0, 0, 0, 0.15);
+}
+body.light-theme .date-btn {
+  background: #f4f5f7;
+  border-color: rgba(0, 0, 0, 0.1);
+}
+body.light-theme .date-btn.active {
+  background: var(--accent-gold);
+}
+body.light-theme .session-time-btn {
+  background: #f4f5f7;
+  border-color: rgba(0, 0, 0, 0.1);
+}
+body.light-theme .cf-btn {
+  background: #f4f5f7;
+  border-color: rgba(0, 0, 0, 0.1);
+}
+body.light-theme .seat-map-wrap {
+  background: rgba(0, 0, 0, 0.02);
+  border-radius: 12px;
+  padding: 1rem;
+}
+body.light-theme .ticket-item {
+  background: #f4f5f7;
+}
+body.light-theme .price-info-bar .pib-item {
+  border-color: rgba(0, 0, 0, 0.1);
+}
+
+/* ─── Auth Buttons (компактные, как ссылки) ──────────────────────── */
+.auth-block {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-left: auto;
+}
+
+.btn-auth {
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  cursor: pointer;
+  padding: 6px 0;
+  transition:
+    color 0.2s,
+    border-color 0.2s;
+  border-bottom: 2px solid transparent;
+}
+
+.btn-auth:hover {
+  color: var(--accent-gold);
+  border-bottom-color: var(--accent-gold);
+}
+
+/* Разделитель между кнопками */
+.auth-block .btn-auth + .btn-auth {
+  margin-left: 16px;
+}
+
+/* Email пользователя */
+.auth-user {
+  color: var(--accent-gold);
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 600;
+  font-size: 0.95rem;
+  margin-right: 12px;
+}
+
+/* Кнопка "Выйти" – как и остальные */
+#btn-logout {
+  /* наследует стиль .btn-auth */
+}
+
+/* ─── Animated Credit Card ────────────────────────────────────── */
+.card-visual-wrapper {
+  display: flex;
+  justify-content: center;
+  margin: -60px auto 40px;
+  perspective: 1200px;
+  z-index: 10;
+  position: relative;
+}
+
+.flip-card {
+  background: transparent;
+  width: 320px;
+  height: 190px;
+  perspective: 1200px;
+  color: #fff;
+}
+
+.flip-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  text-align: left;
+  transition: transform 0.6s;
+  transform-style: preserve-3d;
+}
+
+.flip-card:hover .flip-card-inner,
+.flip-card.show-back .flip-card-inner {
+  transform: rotateY(180deg);
+}
+
+.flip-card-front,
+.flip-card-back {
+  position: absolute;
+  inset: 0;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #1e1e24, #141418);
+  box-shadow:
+    0 12px 28px rgba(0, 0, 0, 0.6),
+    0 0 0 1px var(--border);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  overflow: hidden;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.flip-card-front {
+  background: linear-gradient(135deg, #1e1e24, #141418);
+}
+
+.flip-card-back {
+  background: linear-gradient(135deg, #141418, #1e1e24);
+  transform: rotateY(180deg);
+}
+
+/* Чип и логотип */
+.card-chips {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.card-brand {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1rem;
+  letter-spacing: 0.15em;
+  color: var(--accent-gold);
+  text-transform: uppercase;
+}
+
+.card-chip-icon,
+.card-contactless {
+  opacity: 0.6;
+  color: var(--accent-gold);
+}
+
+/* Номер карты */
+.card-number {
+  font-family: 'Courier New', monospace;
+  font-size: 1.2rem;
+  letter-spacing: 0.15em;
+  margin: 15px 0 25px 0;
+  color: #eee;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+/* Держатель и срок */
+.card-holder {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #bbb;
+}
+
+.card-expiry {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 0.85rem;
+  color: #bbb;
+}
+
+/* Обратная сторона */
+.card-stripe {
+  background: #111;
+  height: 32px;
+  width: 100%;
+  margin-bottom: 15px;
+  border-radius: 2px;
+}
+
+.card-signature {
+  background: #f5f5f5;
+  padding: 5px 10px;
+  border-radius: 3px;
+  margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 0.8rem;
+  color: #666;
+  width: 80%;
+  align-self: flex-end;
+}
+
+.card-cvv-strip {
+  background: #fff;
+  padding: 6px 12px;
+  border-radius: 3px;
+  width: 55%;
+  align-self: flex-end;
+  text-align: right;
+}
+
+.card-cvv-code {
+  margin: 0;
+  font-family: 'Courier New', monospace;
+  font-weight: bold;
+  color: #000;
+  font-size: 1rem;
+}
+
+/* ─── Точная настройка окна авторизации ─────────────────────────────────── */
+#auth-modal .modal-box {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 2rem 1.8rem 1.5rem;
+  max-width: 400px;
+  width: 90%;
+  margin: 0 auto;
+  color: var(--text-primary);
+  box-shadow:
+    0 16px 48px rgba(0, 0, 0, 0.5),
+    0 0 20px rgba(204, 164, 59, 0.3);
+  position: relative;
+  z-index: 1001;
+  text-align: center; /* всё содержимое по центру */
+}
+
+#auth-modal .wishlist-modal-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 2rem;
+  color: var(--accent-gold);
+  letter-spacing: 0.05em;
+  margin-bottom: 1.5rem;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+#auth-modal .form-group {
+  text-align: left; /* поля остаются выровненными влево */
+  margin-bottom: 1rem;
+}
+
+#auth-modal .cin-input {
+  background: var(--bg-panel);
+  border: 1px solid var(--border);
+  color: var(--text-primary);
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 1rem;
+  padding: 12px 14px;
+  border-radius: 10px;
+  width: 100%;
+  box-sizing: border-box;
+  transition: border-color 0.2s;
+}
+
+#auth-modal .cin-input:focus {
+  border-color: var(--accent-gold);
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(204, 164, 59, 0.1);
+}
+
+#auth-modal .btn-primary {
+  background: linear-gradient(135deg, var(--accent-gold), var(--accent-amber));
+  color: #000;
+  border: none;
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 700;
+  font-size: 1rem;
+  letter-spacing: 0.1em;
+  padding: 12px 20px;
+  width: 100%;
+  border-radius: 10px;
+  cursor: pointer;
+  margin-top: 0.5rem;
+  transition: 0.2s;
+}
+
+#auth-modal .btn-primary:hover {
+  box-shadow: 0 4px 16px rgba(204, 164, 59, 0.4);
+}
+
+#auth-modal #auth-toggle-link {
+  color: var(--accent-gold);
+  text-decoration: none;
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+#auth-modal #auth-toggle-link:hover {
+  text-decoration: underline;
+}
+
+#auth-modal #auth-error {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 0.85rem;
+  margin-top: -0.5rem;
+  margin-bottom: 0.8rem;
+  text-align: left;
+}
