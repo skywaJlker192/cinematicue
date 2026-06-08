@@ -12,10 +12,16 @@
 
 const express = require('express');
 const cors = require('cors');
+const app = express();
+
+// Разрешаем запросы с любых источников для разработки
+app.use(cors({
+  origin: ['http://localhost:3001', 'http://127.0.0.1:3001', 'http://localhost:5500', 'http://127.0.0.1:5500', 'file://'],
+  credentials: true
+}));
 const fs = require('fs');
 const path = require('path');
 
-const app = express();
 const PORT = 3001;
 const DB_FILE = path.join(__dirname, 'db.json');
 
