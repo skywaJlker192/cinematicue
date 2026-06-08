@@ -14,7 +14,6 @@ Cinematheque — это единая платформа, которая объе
 
 ### Локальный запуск (Node.js)
 
-```bash
 git clone https://github.com/skywaJlker192/cinematicue.git
 cd cinematicue
 
