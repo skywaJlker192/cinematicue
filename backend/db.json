@@ -320314,6 +320314,13 @@
       "password": "$2b$10$VxWB4k2.5yvQifVCrPAXZOj4xJIUncf4OGVyrcFQPDi5Gos6q2HHK",
       "subscription": false,
       "createdAt": "2026-05-04T12:41:17.946Z"
+    },
+    {
+      "id": 6,
+      "email": "demo@test.ru",
+      "password": "$2b$10$rRQI99qlPjb8vzO3nd8V7OX5YqAFpHgVTAgwrZtKWA.xcDcnIitwS",
+      "subscription": false,
+      "createdAt": "2026-06-09T15:22:47.549Z"
     }
   ]
 }
