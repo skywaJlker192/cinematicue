@@ -1,0 +1,42 @@
+# Зависимости
+node_modules/
+backend/node_modules/
+
+# Переменные окружения с секретами
+.env
+.env.local
+.env.production
+backend/.env
+
+# Бэкапы и дампы
+backups/
+*.sql
+*.dump
+
+# Логи
+*.log
+logs/
+
+# Сборки
+dist/
+build/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# ОС
+.DS_Store
+Thumbs.db
+
+# Документы практики (не в основном репозитории)
+этапы/
+схемы/
+итоговое_портфолио.docx
+УП03_Этап*/
+
+# Скриншоты и временные файлы
+screenshots/
+*.tmp
