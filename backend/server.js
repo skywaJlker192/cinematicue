@@ -12,13 +12,19 @@
 
 const express = require('express');
 const cors = require('cors');
+app.use(
+  cors({
+    origin: [
+      'http://localhost:3001',
+      'http://127.0.0.1:3001',
+      'https://cinematicue.onrender.com'
+    ],
+    credentials: true
+  })
+);
 const app = express();
 
-// Разрешаем запросы с любых источников для разработки
-app.use(cors({
-  origin: ['http://localhost:3001', 'http://127.0.0.1:3001', 'http://localhost:5500', 'http://127.0.0.1:5500', 'file://'],
-  credentials: true
-}));
+
 const fs = require('fs');
 const path = require('path');
 
