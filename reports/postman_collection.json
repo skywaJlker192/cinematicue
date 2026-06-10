@@ -1,0 +1,96 @@
+{
+  "info": {
+    "name": "Cinematheque API Tests",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Health Check",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3001/api/health",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3001",
+          "path": ["api", "health"]
+        }
+      }
+    },
+    {
+      "name": "Get Cinemas",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3001/api/cinemas",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3001",
+          "path": ["api", "cinemas"]
+        }
+      }
+    },
+    {
+      "name": "Login Success",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"email\":\"demo@cinematheque.ru\",\"password\":\"demo_password\"}"
+        },
+        "url": {
+          "raw": "http://localhost:3001/api/login",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3001",
+          "path": ["api", "login"]
+        }
+      }
+    },
+    {
+      "name": "Login Failed - Wrong Password",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"email\":\"demo@cinematheque.ru\",\"password\":\"wrong_password\"}"
+        },
+        "url": {
+          "raw": "http://localhost:3001/api/login",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3001",
+          "path": ["api", "login"]
+        }
+      }
+    },
+    {
+      "name": "Get Sessions",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3001/api/cinemas/1/sessions",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3001",
+          "path": ["api", "cinemas", "1", "sessions"]
+        }
+      }
+    }
+  ]
+}

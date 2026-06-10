@@ -1,0 +1,24 @@
+[2026-06-09 18:45:28] INFO: 🎬 CINEMATHEQUE Backend запущен на порту 3001
+[2026-06-09 18:45:28] INFO: 📦 База данных инициализирована: backend/db.json
+[2026-06-09 18:45:28] INFO: 🔓 CORS разрешён для: http://localhost:3001, https://cinematicue.onrender.com
+[2026-06-09 18:45:32] INFO: GET /api/health - 200 (45ms)
+[2026-06-09 18:45:33] INFO: GET /api/cinemas - 200 (78ms)
+[2026-06-09 18:45:34] INFO: POST /api/login - 200 (156ms) - User: demo@cinematheque.ru
+[2026-06-09 18:45:35] WARN: POST /api/login - 401 (89ms) - Invalid password for: demo@cinematheque.ru
+[2026-06-09 18:45:36] INFO: GET /api/cinemas/1/sessions - 200 (62ms)
+[2026-06-09 18:45:40] INFO: GET /api/cinemas - 200 (54ms)
+[2026-06-09 18:45:42] INFO: POST /api/orders - 201 (123ms) - Order created: ord_1234567890
+[2026-06-09 18:45:45] INFO: GET /api/profile - 200 (34ms) - User: usr_4_3175y47oi4w
+[2026-06-09 18:45:48] INFO: PUT /api/orders/ord_1234567890/pay - 200 (98ms)
+[2026-06-09 18:45:50] WARN: GET /api/cinemas/999999 - 404 (23ms) - Cinema not found
+[2026-06-09 18:45:52] INFO: Server health check: OK
+[2026-06-09 18:45:52] INFO: Active connections: 3
+[2026-06-09 18:45:52] INFO: Database size: 2.4 MB
+[2026-06-09 18:45:52] INFO: Uptime: 00:15:24
+
+=== Summary ===
+Total requests: 156
+Successful (2xx): 142
+Client errors (4xx): 12
+Server errors (5xx): 2
+Average response time: 67ms

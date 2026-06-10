@@ -1,0 +1,33 @@
+> cinematicue@1.0.0 test
+> jest tests --coverage
+
+PASS  tests/api/cinemas.test.js
+  GET /api/cinemas
+    ✓ returns 200 and list of cinemas (78ms)
+    ✓ returns cinema by id (45ms)
+    ✓ returns 404 for non-existent cinema (32ms)
+
+PASS  tests/api/auth.test.js
+  POST /api/login
+    ✓ returns 200 and token for valid credentials (156ms)
+    ✓ returns 401 for invalid password (89ms)
+    ✓ returns 400 for missing email (23ms)
+
+PASS  tests/api/sessions.test.js
+  GET /api/cinemas/:id/sessions
+    ✓ returns 200 and sessions list (62ms)
+    ✓ filters sessions by date (54ms)
+
+Test Suites: 3 passed, 3 total
+Tests:       8 passed, 8 total
+Snapshots:   0 total
+Time:        2.456s
+Ran all test suites.
+
+----------------|---------|----------|---------|---------|-------------------
+File            | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s
+----------------|---------|----------|---------|---------|-------------------
+All files       |   87.34 |    76.92 |   82.14 |   88.46 |
+ server.js      |   92.15 |    81.25 |   88.89 |   93.02 | 245-248
+ routes/api.js  |   85.67 |    74.19 |   78.57 |   86.54 | 112-118,145
+----------------|---------|----------|---------|---------|-------------------

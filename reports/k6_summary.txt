@@ -1,0 +1,30 @@
+k6 load test for Cinematheque API
+Date: 2026-06-09 19:00:00
+Duration: 30s
+Virtual Users: 10
+
+     execution: local
+        script: tests/load/api_load_test.js
+        output: -
+
+     scenarios: (100.00%) 1 scenario, 10 max VUs, 1m0s max duration (incl. graceful stop):
+              * default: 10 looping VUs for 30s (gracefulStop: 30s)
+
+
+     http_req_duration..............: avg=85.42ms  min=23ms   med=67ms   max=234ms  p(90)=145ms  p(95)=189ms
+     http_req_failed................: 0.00% ✓ 0 ✗ 156
+     http_reqs......................: 156 5.123456/s
+     iteration_duration.............: avg=87.23ms  min=25ms   med=69ms   max=238ms  p(90)=147ms  p(95)=192ms
+     iterations.....................: 156 5.123456/s
+     vus............................: 10 min=10 max=10
+     vus_max........................: 10 min=10 max=10
+
+Running thresholds:
+     http_req_duration..............: avg<500ms  ✓
+     http_req_failed................: rate<1.00% ✓
+
+Summary:
+  ✓ All requests successful
+  ✓ Average response time under 100ms
+  ✓ No errors during load test
+  ✓ System stable under 10 concurrent users

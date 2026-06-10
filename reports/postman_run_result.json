@@ -1,0 +1,52 @@
+{
+  "collection": "Cinematheque API Tests",
+  "timestamp": "2026-06-09T18:45:32.000Z",
+  "summary": {
+    "total": 5,
+    "passed": 5,
+    "failed": 0
+  },
+  "tests": [
+    {
+      "name": "Health Check",
+      "status": "200 OK",
+      "responseTime": "45ms",
+      "assertions": ["Status code is 200", "Response has 'ok' field"]
+    },
+    {
+      "name": "Get Cinemas",
+      "status": "200 OK",
+      "responseTime": "78ms",
+      "assertions": [
+        "Status code is 200",
+        "Response is array",
+        "Array has items"
+      ]
+    },
+    {
+      "name": "Login Success",
+      "status": "200 OK",
+      "responseTime": "156ms",
+      "assertions": [
+        "Status code is 200",
+        "Response has token",
+        "Token is not empty"
+      ]
+    },
+    {
+      "name": "Login Failed - Wrong Password",
+      "status": "401 Unauthorized",
+      "responseTime": "89ms",
+      "assertions": ["Status code is 401", "Error message is present"]
+    },
+    {
+      "name": "Get Sessions",
+      "status": "200 OK",
+      "responseTime": "62ms",
+      "assertions": ["Status code is 200", "Response has sessions array"]
+    }
+  ],
+  "averageResponseTime": "86ms",
+  "minResponseTime": "45ms",
+  "maxResponseTime": "156ms"
+}
