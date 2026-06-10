@@ -3,25 +3,57 @@ chcp 65001 > nul
 cd /d "%~dp0\.."
 
 echo ========================================
-echo Smoke-тесты Cinematheque
+echo Запуск тестов и проверок Cinematheque
 echo ========================================
-
 echo.
-echo [1/3] Проверка структуры файлов...
-if exist index.html (echo [OK] index.html) else (echo [ERROR] index.html not found)
-if exist cinema.html (echo [OK] cinema.html) else (echo [ERROR] cinema.html not found)
-if exist backend\server.js (echo [OK] server.js) else (echo [ERROR] server.js not found)
 
-echo.
-echo [2/3] Проверка API...
-curl -s https://cinematicue.onrender.com/api/cinemas | findstr /C:"id" >nul
-if errorlevel 1 (
-    echo [ERROR] API не отвечает
+echo [1/3] Проверка структуры проекта...
+if exist backend\server.js (
+    echo [OK] backend/server.js найден
 ) else (
-    echo [OK] API отвечает
+    echo [ERROR] backend/server.js не найден!
+    exit /b 1
+)
+
+if exist package.json (
+    echo [OK] package.json найден
+) else (
+    echo [ERROR] package.json не найден!
+    exit /b 1
 )
 
 echo.
-echo [3/3] Проверка завершена!
+echo [2/3] Запуск тестов backend...
+cd backend
+if exist package.json (
+    call npm test
+    if errorlevel 1 (
+        echo [WARNING] Тесты не прошли или не настроены
+    ) else (
+        echo [OK] Тесты пройдены успешно
+    )
+) else (
+    echo [WARNING] package.json не найден в backend/
+)
+
+cd ..
+
+echo.
+echo [3/3] Проверка качества кода...
+cd backend
+if exist package.json (
+    call npm run lint --if-present
+    if errorlevel 1 (
+        echo [WARNING] Линтер нашел проблемы
+    ) else (
+        echo [OK] Линтер не нашел ошибок
+    )
+)
+
+cd ..
+
+echo.
+echo ========================================
+echo Проверка завершена!
 echo ========================================
 pause

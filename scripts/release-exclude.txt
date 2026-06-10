@@ -1,0 +1,10 @@
+node_modules
+release
+.git
+.gitignore
+backups
+logs
+*.log
+.env
+.vscode
+.idea
