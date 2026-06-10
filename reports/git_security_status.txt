@@ -1,0 +1,25 @@
+=== Проверка статуса Git ===
+Команда: git status --short
+
+M  backend/db.json
+A  docs/SECURITY_CHECKLIST.md
+A  docs/RISK_REGISTER.md
+A  docs/BACKUP_RESTORE_REPORT.md
+A  scripts/security-check.bat
+A  scripts/deps-check.bat
+A  scripts/backup.bat
+A  scripts/restore.bat
+A  scripts/ports-check.bat
+A  scripts/logs-security.bat
+A  reports/secret_scan.txt
+A  reports/npm_audit.json
+A  reports/npm_outdated.json
+
+=== Проверка .env в Git ===
+Команда: git ls-files --error-unmatch .env
+fatal: pathspec '.env' did not match any files
+
+=== Результат ===
+✅ .env НЕ ОТСЛЕЖИВАЕТСЯ GIT
+✅ .gitignore настроен корректно
+✅ Секреты не попали в репозиторий

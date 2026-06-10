@@ -1,0 +1,32 @@
+{
+  "express": {
+    "current": "4.21.0",
+    "wanted": "4.21.2",
+    "latest": "5.0.1",
+    "location": "node_modules/express",
+    "dependent": {
+      "name": "cinematicue",
+      "version": "1.0.0"
+    }
+  },
+  "cors": {
+    "current": "2.8.5",
+    "wanted": "2.8.5",
+    "latest": "2.8.5",
+    "location": "node_modules/cors",
+    "dependent": {
+      "name": "cinematicue",
+      "version": "1.0.0"
+    }
+  },
+  "bcrypt": {
+    "current": "5.1.1",
+    "wanted": "5.1.1",
+    "latest": "5.1.1",
+    "location": "node_modules/bcrypt",
+    "dependent": {
+      "name": "cinematicue",
+      "version": "1.0.0"
+    }
+  }
+}

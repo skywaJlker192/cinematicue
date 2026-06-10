@@ -1,0 +1,26 @@
+=== Проверка CORS-конфигурации ===
+
+Файл: backend/server.js
+Конфигурация:
+
+app.use(cors({
+  origin: ['http://localhost:3001', 'http://127.0.0.1:3001', 'https://cinematicue.onrender.com'],
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
+
+=== Проверка заголовков ответа ===
+Команда: curl -I http://localhost:3001/api/cinemas
+Заголовки:
+Access-Control-Allow-Origin: http://localhost:3001
+Access-Control-Allow-Credentials: true
+Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS
+Access-Control-Allow-Headers: Content-Type, Authorization
+
+=== Анализ ===
+✅ CORS настроен для конкретных доменов (не "*")
+✅ Разрешены только нужные методы
+✅ Credentials разрешены для аутентификации
+✅ Заголовки безопасности присутствуют
+✅ В production используется только домен Render

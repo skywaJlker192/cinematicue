@@ -1,0 +1,17 @@
+=== Проверка .env.example ===
+Содержимое файла .env.example:
+
+APP_PORT=3001
+NODE_ENV=development
+JWT_SECRET=change_me_in_real_project
+CORS_ORIGIN=https://cinematicue.onrender.com
+DB_PATH=./backend/db.json
+TEST_USER_EMAIL=demo@cinematheque.ru
+TEST_USER_PASSWORD=demo_password
+
+=== Анализ ===
+✅ JWT_SECRET содержит заглушку: change_me_in_real_project
+✅ TEST_USER_PASSWORD содержит пример: demo_password
+✅ Нет реальных паролей, токенов или API-ключей
+✅ Все значения являются примерами для разработки
+✅ Файл готов к использованию в качестве шаблона
