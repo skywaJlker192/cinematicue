@@ -1,5 +1,5 @@
 # 🎬 Cinematheque Project
-<img width="403" height="329" alt="image" src="https://github.com/user-attachments/assets/44aa6547-e396-4f0d-a54f-e858189ebc7f" />
+<img width="319" height="256" alt="image" src="https://github.com/user-attachments/assets/d8d9afbe-821a-48e3-a777-730d5b3fe591" />
 
 ## Ссылка на сайт https://cinematicue.onrender.com/index.html
 Cinematheque Project — это учебный проект по веб-разработке, представляющий собой стильный онлайн-кинотеатр с возможностью бронирования билетов в реальные кинотеатры Санкт‑Петербурга. Виртуальная библиотека мирового кинематографа, где собраны фильмы и сериалы от timeless классики до горячих новинок 2026 года, плюс полноценный цикл покупки билетов: от выбора места в зале до электронного билета с QR‑кодом.
